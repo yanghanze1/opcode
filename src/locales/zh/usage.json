@@ -1,0 +1,87 @@
+{
+  "title": "使用统计",
+  "subtitle": "跟踪你的 Claude Code 使用情况和成本",
+  "tabs": {
+    "overview": "概览",
+    "models": "按模型",
+    "projects": "按 Project",
+    "sessions": "按 Session",
+    "timeline": "Timeline"
+  },
+  "date_ranges": {
+    "all": "全部时间",
+    "7d": "最近 7 天",
+    "30d": "最近 30 天"
+  },
+  "summary": {
+    "total_cost": "总成本",
+    "total_sessions": "总 Sessions",
+    "total_tokens": "总 Tokens",
+    "avg_cost_per_session": "平均成本/Session"
+  },
+  "overview": {
+    "token_breakdown": "Token 明细",
+    "input_tokens": "Input Tokens",
+    "output_tokens": "Output Tokens",
+    "cache_write": "Cache Write",
+    "cache_read": "Cache Read",
+    "most_used_models": "最常用的模型",
+    "top_projects": "热门 Projects"
+  },
+  "models": {
+    "title": "按模型统计使用量",
+    "most_used": "最常用的模型",
+    "sessions": "{{count}} 个 sessions",
+    "no_data": "暂无模型使用数据",
+    "input": "Input:",
+    "output": "Output:",
+    "cache_w": "Cache W:",
+    "cache_r": "Cache R:"
+  },
+  "projects": {
+    "title": "按 Project 统计使用量",
+    "top_projects": "热门 Projects",
+    "project_path": "Project 路径",
+    "no_data": "暂无 project 使用数据",
+    "total_projects": "共 {{count}} 个 projects",
+    "showing": "显示 {{start}}-{{end}}，共 {{total}}",
+    "per_session": "/session"
+  },
+  "sessions": {
+    "title": "按 Session 统计使用量",
+    "session_id": "Session ID",
+    "date": "日期",
+    "cost": "成本",
+    "tokens": "Tokens",
+    "model": "模型",
+    "no_data": "所选时间段内暂无 session 数据",
+    "total_sessions": "共 {{count}} 个 sessions",
+    "showing": "显示 {{start}}-{{end}}，共 {{total}}"
+  },
+  "timeline": {
+    "title": "每日使用情况",
+    "daily_cost": "每日成本",
+    "daily_sessions": "每日 Sessions",
+    "no_data": "所选时间段内暂无使用数据",
+    "daily_usage_over_time": "每日使用趋势",
+    "models_used": "{{count}} 个模型"
+  },
+  "pagination": {
+    "previous": "上一页",
+    "next": "下一页",
+    "page": "第 {{current}} 页，共 {{total}} 页"
+  },
+  "messages": {
+    "loading": "加载使用统计中...",
+    "failed_to_load": "加载使用统计失败。请重试。",
+    "no_data": "所选时间段内暂无使用数据"
+  },
+  "filters": {
+    "filter_by_date": "按日期筛选",
+    "filter_by_model": "按模型筛选",
+    "filter_by_project": "按 Project 筛选"
+  },
+  "buttons": {
+    "try_again": "重试"
+  }
+}

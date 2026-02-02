@@ -64,4 +64,24 @@ When submitting a pull request, please follow these guidelines:
 - Run `cargo test` for Rust code
 - Test the application manually before submitting
 
+## Contributing Translations
+
+We welcome translation contributions! opcode supports multiple languages and we'd love your help making it accessible to more users.
+
+### How to Contribute Translations
+
+1. **Read the Translation Guide**: See [docs/TRANSLATION_GUIDE.md](docs/TRANSLATION_GUIDE.md) for detailed instructions
+2. **Add or Improve Translations**: Edit files in `src/locales/[language-code]/`
+3. **Test Your Changes**: Run the app and verify translations appear correctly
+4. **Submit a Pull Request**: Use the prefix `i18n:` in your PR title (e.g., `i18n: Add French translation`)
+
+### Translation Guidelines
+
+- **Preserve Technical Terms**: Keep terms like "Agent", "MCP Server", "Token", etc. in English
+- **Be Consistent**: Use the same translation for the same term throughout
+- **Professional Tone**: Maintain a professional, technical style
+- **Test Thoroughly**: Check all modules and ensure UI layout isn't broken
+
+For more details, see our [Translation Contribution Guide](docs/TRANSLATION_GUIDE.md).
+
 Please adhere to the coding conventions, maintain clear documentation, and provide thorough testing for your contributions. 

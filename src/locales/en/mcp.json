@@ -1,0 +1,144 @@
+{
+  "title": "MCP Servers",
+  "subtitle": "Manage Model Context Protocol servers",
+  "tabs": {
+    "servers": "Servers",
+    "add_server": "Add Server",
+    "import_export": "Import/Export"
+  },
+  "buttons": {
+    "add_server": "Add Server",
+    "remove_server": "Remove Server",
+    "refresh": "Refresh",
+    "import": "Import",
+    "export": "Export",
+    "save": "Save",
+    "test_connection": "Test Connection",
+    "add_variable": "Add Variable",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "hide": "Hide",
+    "show_full": "Show full",
+    "try_again": "Try Again",
+    "add_stdio_server": "Add Stdio Server",
+    "add_sse_server": "Add SSE Server",
+    "adding_server": "Adding Server..."
+  },
+  "labels": {
+    "server_name": "Server Name",
+    "server_type": "Server Type",
+    "command": "Command",
+    "arguments": "Arguments",
+    "environment_variables": "Environment Variables",
+    "status": "Status",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "scope": "Scope",
+    "url": "URL",
+    "running": "Running"
+  },
+  "scopes": {
+    "local": "Local (this project only)",
+    "project": "Project (shared via .mcp.json)",
+    "user": "User (all projects)"
+  },
+  "server_list": {
+    "title": "Configured Servers",
+    "no_servers": "No MCP servers configured",
+    "no_servers_description": "Add a server to get started with Model Context Protocol",
+    "servers_count": "{{count}} server(s) configured",
+    "scope_count": "({{count}})",
+    "env_vars_count": "Environment variables: {{count}}"
+  },
+  "add_server": {
+    "title": "Add MCP Server",
+    "description": "Configure a new Model Context Protocol server",
+    "server_name_placeholder": "my-server",
+    "command_placeholder": "/path/to/server",
+    "args_placeholder": "arg1 arg2 arg3",
+    "url_placeholder": "https://example.com/sse-endpoint",
+    "env_key_placeholder": "KEY",
+    "env_value_placeholder": "value",
+    "server_name_help": "A unique name to identify this server",
+    "command_help": "The command to execute the server",
+    "args_help": "Space-separated command arguments",
+    "url_help": "The SSE endpoint URL",
+    "args_optional": "Arguments (optional)",
+    "examples_title": "Example Commands",
+    "example_postgres": "Postgres: /path/to/postgres-mcp-server --connection-string \"postgresql://...\"",
+    "example_weather": "Weather API: /usr/local/bin/weather-cli --api-key ABC123",
+    "example_sse": "SSE Server: https://api.example.com/mcp/stream"
+  },
+  "import_export": {
+    "title": "Import/Export Servers",
+    "import_title": "Import Servers",
+    "import_description": "Import MCP server configurations from a file",
+    "export_title": "Export Servers",
+    "export_description": "Export your MCP server configurations to a file",
+    "import_button": "Import from File",
+    "export_button": "Export to File"
+  },
+  "messages": {
+    "server_added": "MCP server added successfully!",
+    "server_removed": "Server \"{{name}}\" removed successfully!",
+    "servers_imported": "Successfully imported {{count}} server(s)!",
+    "servers_imported_with_errors": "Imported {{imported}} server(s), {{failed}} failed",
+    "failed_to_load": "Failed to load MCP servers. Make sure Claude Code is installed.",
+    "failed_to_add": "Failed to add server",
+    "failed_to_remove": "Failed to remove server",
+    "failed_to_import": "Failed to import servers",
+    "failed_to_export": "Failed to export servers"
+  },
+  "validation": {
+    "name_required": "Server name is required",
+    "command_required": "Command is required",
+    "url_required": "URL is required"
+  },
+  "import_export": {
+    "title": "Import/Export",
+    "description": "Import MCP servers from other sources or export your configuration",
+    "import_scope": "Import Scope",
+    "import_scope_description": "Choose where to save servers imported from JSON files",
+    "scope_local": "Local (this project only)",
+    "scope_project": "Project (shared via .mcp.json)",
+    "scope_user": "User (all projects)",
+    "import_from_desktop": {
+      "title": "Import from Claude Desktop",
+      "description": "Automatically import all MCP servers from Claude Desktop. Installs to user scope (available in all projects).",
+      "button": "Import from Claude Desktop",
+      "importing": "Importing..."
+    },
+    "import_from_json": {
+      "title": "Import from JSON",
+      "description": "Import server configurations from a JSON file",
+      "button": "Choose JSON File",
+      "importing": "Importing..."
+    },
+    "export": {
+      "title": "Export Configuration",
+      "description": "Export your MCP server configuration",
+      "button": "Export (Coming Soon)",
+      "coming_soon": "Coming Soon"
+    },
+    "serve_as_mcp": {
+      "title": "Use Claude Code as MCP Server",
+      "description": "Start Claude Code as an MCP server that other applications can connect to",
+      "button": "Start MCP Server"
+    },
+    "json_format_examples": {
+      "title": "JSON Format Examples",
+      "single_server": "Single server:",
+      "multiple_servers": "Multiple servers (.mcp.json format):"
+    },
+    "messages": {
+      "import_success": "Successfully imported: {{servers}}",
+      "import_failed": "Failed to import some servers:\n{{details}}",
+      "invalid_json": "Invalid JSON file. Please check the format.",
+      "unrecognized_format": "Unrecognized JSON format. MCP server configuration required.",
+      "enter_server_name": "Enter a name for this server:",
+      "export_coming_soon": "Export feature coming soon!",
+      "mcp_server_started": "Claude Code MCP server started. You can now connect to it from other applications.",
+      "failed_to_start": "Failed to start Claude Code as MCP server"
+    }
+  }
+}

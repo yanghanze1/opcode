@@ -1,0 +1,351 @@
+{
+  "title": "设置",
+  "subtitle": "配置 Claude Code 偏好设置",
+  "buttons": {
+    "save_settings": "保存设置",
+    "add_rule": "添加规则",
+    "add_variable": "添加变量"
+  },
+  "tabs": {
+    "general": "常规",
+    "permissions": "权限",
+    "environment": "环境",
+    "advanced": "高级",
+    "hooks": "Hooks",
+    "commands": "命令",
+    "storage": "存储",
+    "proxy": "代理"
+  },
+  "general": {
+    "title": "常规设置",
+    "theme": {
+      "label": "主题",
+      "description": "选择你喜欢的颜色主题",
+      "dark": "深色",
+      "gray": "灰色",
+      "light": "浅色",
+      "custom": "自定义"
+    },
+    "custom_theme": {
+      "title": "自定义主题颜色",
+      "background": "背景",
+      "foreground": "前景",
+      "primary": "主色",
+      "card": "卡片",
+      "accent": "强调色",
+      "destructive": "警告色",
+      "description": "使用 CSS 颜色值（hex、rgb、oklch 等）。更改立即生效。"
+    },
+    "coauthored": {
+      "label": "包含 \"Co-authored by Claude\"",
+      "description": "在 git commits 和 pull requests 中添加 Claude 署名"
+    },
+    "verbose": {
+      "label": "详细输出",
+      "description": "显示完整的 bash 和命令输出"
+    },
+    "cleanup": {
+      "label": "聊天记录保留天数",
+      "description": "本地保留聊天记录的时长（默认：30 天）"
+    },
+    "analytics": {
+      "label": "启用分析",
+      "description": "通过分享匿名使用数据帮助改进 opcode",
+      "enabled": "分析已启用",
+      "disabled": "分析已禁用",
+      "privacy_title": "你的隐私受到保护",
+      "privacy_items": [
+        "不收集个人信息或文件内容",
+        "所有数据都是匿名的，使用随机 ID",
+        "你可以随时禁用分析"
+      ]
+    },
+    "tab_persistence": {
+      "label": "记住打开的标签页",
+      "description": "重启应用时恢复你的标签页",
+      "enabled": "标签页持久化已启用 - 重启时将恢复你的标签页",
+      "disabled": "标签页持久化已禁用 - 标签页不会被保存"
+    },
+    "startup_intro": {
+      "label": "启动时显示欢迎介绍",
+      "description": "应用启动时显示简短的欢迎动画",
+      "enabled": "欢迎介绍已启用",
+      "disabled": "欢迎介绍已禁用"
+    },
+    "binary_path_changed": "保存设置时将应用更改。"
+  },
+  "permissions": {
+    "title": "权限规则",
+    "description": "控制 Claude Code 可以在无需手动批准的情况下使用哪些工具",
+    "allow_rules": "允许规则",
+    "deny_rules": "拒绝规则",
+    "no_allow_rules": "未配置允许规则。Claude 将请求批准所有工具。",
+    "no_deny_rules": "未配置拒绝规则。",
+    "examples": {
+      "title": "示例：",
+      "bash_all": "允许所有 bash 命令",
+      "bash_exact": "允许精确命令",
+      "bash_prefix": "允许带前缀的命令",
+      "read_file": "允许读取特定文件",
+      "edit_directory": "允许编辑 docs 目录中的文件"
+    }
+  },
+  "environment": {
+    "title": "环境变量",
+    "description": "应用于每个 Claude Code session 的环境变量",
+    "no_variables": "未配置环境变量。",
+    "key_placeholder": "KEY",
+    "value_placeholder": "value",
+    "common_variables": {
+      "title": "常用变量：",
+      "telemetry": "启用/禁用遥测（0 或 1）",
+      "model": "自定义模型名称",
+      "cost_warnings": "禁用成本警告（1）"
+    }
+  },
+  "advanced": {
+    "title": "高级设置",
+    "description": "面向高级用户的额外配置选项",
+    "api_key_helper": {
+      "label": "API Key 辅助脚本",
+      "description": "用于为 API 请求生成认证值的自定义脚本"
+    },
+    "raw_settings": {
+      "label": "原始设置（JSON）",
+      "description": "这显示将保存到 ~/.claude/settings.json 的原始 JSON"
+    }
+  },
+  "hooks": {
+    "title": "用户 Hooks",
+    "description": "配置应用于你用户账户所有 Claude Code sessions 的 hooks。这些存储在 ~/.claude/settings.json 中"
+  },
+  "messages": {
+    "saving": "保存中...",
+    "saved": "设置保存成功！",
+    "failed_to_save": "保存设置失败",
+    "failed_to_load": "加载设置失败。请确保 ~/.claude 目录存在。",
+    "failed_to_update": "更新偏好设置失败"
+  },
+  "proxy": {
+    "title": "代理设置",
+    "description": "配置 Claude API 请求的代理设置",
+    "enable_proxy": {
+      "label": "启用代理",
+      "description": "对所有 Claude API 请求使用代理"
+    },
+    "http_proxy": "HTTP 代理",
+    "https_proxy": "HTTPS 代理",
+    "no_proxy": {
+      "label": "不使用代理",
+      "description": "应绕过代理的主机列表（逗号分隔）"
+    },
+    "all_proxy": {
+      "label": "全局代理（可选）",
+      "description": "如果未设置特定协议的代理，则用于所有协议的代理 URL"
+    },
+    "messages": {
+      "saved": "代理设置已保存并应用成功。",
+      "failed_to_save": "保存代理设置失败",
+      "failed_to_load": "加载代理设置失败"
+    }
+  },
+  "checkpoint": {
+    "title": "Checkpoint 设置",
+    "description": "管理会话 checkpoints 和恢复",
+    "experimental_warning": {
+      "title": "实验性功能",
+      "description": "Checkpointing 可能会影响目录结构或导致数据丢失。请谨慎使用。"
+    },
+    "auto_checkpoint": {
+      "label": "自动 Checkpoints",
+      "description": "根据所选策略自动创建 checkpoints"
+    },
+    "strategy": {
+      "label": "Checkpoint 策略",
+      "manual": "仅手动",
+      "per_prompt": "每次提示后",
+      "per_tool_use": "工具使用后",
+      "smart": "智能（推荐）",
+      "descriptions": {
+        "manual": "仅手动创建 checkpoints",
+        "per_prompt": "每次用户提示后创建 checkpoint",
+        "per_tool_use": "每次工具使用后创建 checkpoint",
+        "smart": "在破坏性操作后创建 checkpoints"
+      }
+    },
+    "storage": {
+      "title": "存储管理",
+      "total_checkpoints": "总 checkpoints：",
+      "keep_count": "保留最近的 Checkpoints",
+      "cleanup_button": "清理",
+      "cleanup_description": "删除旧的 checkpoints，仅保留最近的"
+    },
+    "messages": {
+      "saving": "保存中...",
+      "saved": "设置保存成功",
+      "cleanup_success": "已删除 {{count}} 个旧 checkpoints",
+      "failed_to_save": "保存 checkpoint 设置失败",
+      "failed_to_load": "加载 checkpoint 设置失败",
+      "failed_to_cleanup": "清理 checkpoints 失败"
+    }
+  },
+  "hooks_editor": {
+    "title": "Hooks 配置",
+    "description": "配置在 Claude Code 生命周期各个阶段执行的 shell 命令。",
+    "local_note": "这些设置不会提交到版本控制。",
+    "unsaved_changes": "你有未保存的更改。点击保存以持久化它们。",
+    "scope": {
+      "project": "项目",
+      "local": "本地",
+      "user": "用户"
+    },
+    "buttons": {
+      "templates": "模板",
+      "save": "保存",
+      "saving": "保存中...",
+      "add_hook": "添加 Hook",
+      "add_matcher": "添加另一个匹配器",
+      "add_command": "添加另一个命令"
+    },
+    "events": {
+      "pre_tool_use": {
+        "label": "Pre Tool Use",
+        "description": "在工具调用前运行，可以阻止并提供反馈"
+      },
+      "post_tool_use": {
+        "label": "Post Tool Use",
+        "description": "在工具成功完成后运行"
+      },
+      "notification": {
+        "label": "Notification",
+        "description": "当 Claude 需要注意时自定义通知"
+      },
+      "stop": {
+        "label": "Stop",
+        "description": "当 Claude 完成响应时运行"
+      },
+      "subagent_stop": {
+        "label": "Subagent Stop",
+        "description": "当 Claude subagent（Task）完成时运行"
+      }
+    },
+    "matcher": {
+      "pattern_label": "模式",
+      "pattern_tooltip": "工具名称模式（支持正则表达式）。留空以匹配所有工具。",
+      "pattern_placeholder": "例如：Bash、Edit|Write、mcp__.*",
+      "common_patterns": "常用模式",
+      "custom": "自定义"
+    },
+    "command": {
+      "commands_label": "命令",
+      "add_command": "添加命令",
+      "no_commands": "尚未添加命令",
+      "placeholder": "输入 shell 命令...",
+      "timeout_seconds": "秒"
+    },
+    "validation": {
+      "errors_title": "验证错误：",
+      "warnings_title": "安全警告："
+    },
+    "templates": {
+      "title": "Hook 模板",
+      "description": "选择预配置的 hook 模板以快速开始"
+    },
+    "no_hooks": "此事件未配置 hooks",
+    "loading": "加载 hooks 配置中...",
+    "messages": {
+      "failed_to_load": "加载 hooks 配置失败",
+      "failed_to_save": "保存 hooks 失败"
+    }
+  },
+  "slash_commands": {
+    "title": "斜杠命令",
+    "project_title": "项目斜杠命令",
+    "description": "创建自定义命令以简化你的工作流程",
+    "project_description": "为此项目创建自定义命令",
+    "picker": {
+      "title": "Slash Commands",
+      "searching": "搜索中：\"{{query}}\"",
+      "tabs": {
+        "default": "默认",
+        "custom": "自定义"
+      },
+      "loading": "加载命令中...",
+      "no_commands": "未找到命令",
+      "no_default_commands": "无可用的默认命令",
+      "no_custom_commands": "无可用的自定义命令",
+      "default_commands_description": "默认命令是内置的系统命令",
+      "custom_commands_description": "在 <code>.claude/commands/</code> 或 <code>~/.claude/commands/</code> 中创建命令",
+      "user_commands": "用户命令",
+      "project_commands": "项目命令",
+      "arguments": "[参数]",
+      "tools": "{{count}} 个工具",
+      "tools_plural": "{{count}} 个工具",
+      "footer": "↑↓ 导航 • Enter 选择 • Esc 关闭"
+    },
+    "buttons": {
+      "new_command": "新建命令",
+      "save": "保存",
+      "saving": "保存中...",
+      "cancel": "取消",
+      "delete": "删除",
+      "deleting": "删除中..."
+    },
+    "search_placeholder": "搜索命令...",
+    "scope_filter": {
+      "all": "所有命令",
+      "project": "项目",
+      "user": "用户"
+    },
+    "no_commands": "尚未创建命令",
+    "no_commands_project": "尚未创建项目命令",
+    "no_commands_search": "未找到命令",
+    "create_first": "创建你的第一个命令",
+    "create_first_project": "创建你的第一个项目命令",
+    "badges": {
+      "arguments": "参数",
+      "bash": "Bash",
+      "files": "文件"
+    },
+    "tools_count": "{{count}} 个工具",
+    "tools_count_plural": "{{count}} 个工具",
+    "show_content": "显示内容",
+    "hide_content": "隐藏内容",
+    "dialog": {
+      "create_title": "创建新命令",
+      "edit_title": "编辑命令",
+      "delete_title": "删除命令",
+      "delete_message": "你确定要删除此命令吗？",
+      "delete_warning": "此操作无法撤销。命令文件将被永久删除。"
+    },
+    "form": {
+      "scope": "作用域",
+      "scope_user": "用户（全局）",
+      "scope_project": "项目",
+      "scope_user_description": "在所有项目中可用",
+      "scope_project_description": "仅在此项目中可用",
+      "name": "命令名称*",
+      "name_placeholder": "例如：review、fix-issue",
+      "namespace": "命名空间（可选）",
+      "namespace_placeholder": "例如：frontend、backend",
+      "description": "描述（可选）",
+      "description_placeholder": "此命令功能的简要描述",
+      "content": "命令内容*",
+      "content_placeholder": "输入提示内容。使用 $ARGUMENTS 表示动态值。",
+      "content_help": "使用 $ARGUMENTS 表示用户输入，@filename 表示文件，!`command` 表示 bash 命令",
+      "allowed_tools": "允许的工具",
+      "allowed_tools_description": "选择 Claude 可以与此命令一起使用的工具",
+      "examples": "示例",
+      "preview": "预览"
+    },
+    "groups": {
+      "project_commands": "项目命令",
+      "user_commands": "用户命令"
+    },
+    "messages": {
+      "failed_to_load": "加载命令失败",
+      "failed_to_save": "保存命令失败",
+      "failed_to_delete": "删除命令失败"
+    }
+  }
+}

@@ -1,0 +1,135 @@
+{
+  "title": "MCP Servers",
+  "subtitle": "管理 Model Context Protocol 服务器",
+  "tabs": {
+    "servers": "服务器",
+    "add_server": "添加服务器",
+    "import_export": "导入/导出"
+  },
+  "buttons": {
+    "add_server": "添加服务器",
+    "remove_server": "移除服务器",
+    "refresh": "刷新",
+    "import": "导入",
+    "export": "导出",
+    "save": "保存",
+    "test_connection": "测试连接",
+    "add_variable": "添加变量",
+    "copy": "复制",
+    "copied": "已复制！",
+    "hide": "隐藏",
+    "show_full": "显示完整",
+    "try_again": "重试",
+    "add_stdio_server": "添加 Stdio 服务器",
+    "add_sse_server": "添加 SSE 服务器",
+    "adding_server": "正在添加服务器..."
+  },
+  "labels": {
+    "server_name": "服务器名称",
+    "server_type": "服务器类型",
+    "command": "命令",
+    "arguments": "参数",
+    "environment_variables": "环境变量",
+    "status": "状态",
+    "enabled": "已启用",
+    "disabled": "已禁用",
+    "scope": "作用域",
+    "url": "URL",
+    "running": "运行中"
+  },
+  "scopes": {
+    "local": "Local（仅此 Project）",
+    "project": "Project（通过 .mcp.json 共享）",
+    "user": "User（所有 Projects）"
+  },
+  "server_list": {
+    "title": "已配置的服务器",
+    "no_servers": "未配置 MCP 服务器",
+    "no_servers_description": "添加服务器以开始使用 Model Context Protocol",
+    "servers_count": "{{count}} 个服务器已配置",
+    "scope_count": "（{{count}}）",
+    "env_vars_count": "环境变量：{{count}}"
+  },
+  "add_server": {
+    "title": "添加 MCP 服务器",
+    "description": "配置一个新的 Model Context Protocol 服务器",
+    "server_name_placeholder": "my-server",
+    "command_placeholder": "/path/to/server",
+    "args_placeholder": "arg1 arg2 arg3",
+    "url_placeholder": "https://example.com/sse-endpoint",
+    "env_key_placeholder": "KEY",
+    "env_value_placeholder": "value",
+    "server_name_help": "用于标识此服务器的唯一名称",
+    "command_help": "执行服务器的命令",
+    "args_help": "空格分隔的命令参数",
+    "url_help": "SSE 端点 URL",
+    "args_optional": "参数（可选）",
+    "examples_title": "示例命令",
+    "example_postgres": "Postgres: /path/to/postgres-mcp-server --connection-string \"postgresql://...\"",
+    "example_weather": "Weather API: /usr/local/bin/weather-cli --api-key ABC123",
+    "example_sse": "SSE Server: https://api.example.com/mcp/stream"
+  },
+  "messages": {
+    "server_added": "MCP 服务器添加成功！",
+    "server_removed": "服务器 \"{{name}}\" 移除成功！",
+    "servers_imported": "成功导入 {{count}} 个服务器！",
+    "servers_imported_with_errors": "导入了 {{imported}} 个服务器，{{failed}} 个失败",
+    "failed_to_load": "加载 MCP 服务器失败。请确保 Claude Code 已安装。",
+    "failed_to_add": "添加服务器失败",
+    "failed_to_remove": "移除服务器失败",
+    "failed_to_import": "导入服务器失败",
+    "failed_to_export": "导出服务器失败"
+  },
+  "validation": {
+    "name_required": "服务器名称为必填项",
+    "command_required": "命令为必填项",
+    "url_required": "URL 为必填项"
+  },
+  "import_export": {
+    "title": "导入/导出",
+    "description": "从其他来源导入 MCP 服务器或导出你的配置",
+    "import_scope": "导入作用域",
+    "import_scope_description": "选择从 JSON 文件导入的服务器保存位置",
+    "scope_local": "Local（仅此项目）",
+    "scope_project": "Project（通过 .mcp.json 共享）",
+    "scope_user": "User（所有项目）",
+    "import_from_desktop": {
+      "title": "从 Claude Desktop 导入",
+      "description": "自动导入 Claude Desktop 的所有 MCP 服务器。安装到用户作用域（在所有项目中可用）。",
+      "button": "从 Claude Desktop 导入",
+      "importing": "导入中..."
+    },
+    "import_from_json": {
+      "title": "从 JSON 导入",
+      "description": "从 JSON 文件导入服务器配置",
+      "button": "选择 JSON 文件",
+      "importing": "导入中..."
+    },
+    "export": {
+      "title": "导出配置",
+      "description": "导出你的 MCP 服务器配置",
+      "button": "导出（即将推出）",
+      "coming_soon": "即将推出"
+    },
+    "serve_as_mcp": {
+      "title": "将 Claude Code 用作 MCP 服务器",
+      "description": "将 Claude Code 作为其他应用程序可以连接的 MCP 服务器启动",
+      "button": "启动 MCP 服务器"
+    },
+    "json_format_examples": {
+      "title": "JSON 格式示例",
+      "single_server": "单个服务器：",
+      "multiple_servers": "多个服务器（.mcp.json 格式）："
+    },
+    "messages": {
+      "import_success": "成功导入：{{servers}}",
+      "import_failed": "导入部分服务器失败：\n{{details}}",
+      "invalid_json": "无效的 JSON 文件。请检查格式。",
+      "unrecognized_format": "无法识别的 JSON 格式。需要 MCP 服务器配置。",
+      "enter_server_name": "输入此服务器的名称：",
+      "export_coming_soon": "导出功能即将推出！",
+      "mcp_server_started": "Claude Code MCP 服务器已启动。你现在可以从其他应用程序连接到它。",
+      "failed_to_start": "启动 Claude Code 作为 MCP 服务器失败"
+    }
+  }
+}

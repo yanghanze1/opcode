@@ -1,0 +1,144 @@
+{
+  "title": "CC Agents",
+  "subtitle": "Manage your Claude Code agents",
+  "buttons": {
+    "create": "Create CC Agent",
+    "import": "Import",
+    "import_from_file": "From File",
+    "import_from_github": "From GitHub",
+    "export": "Export",
+    "execute": "Execute",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save_agent": "Save Agent",
+    "back_to_agents": "Back to Agents",
+    "configure_hooks": "Configure Hooks",
+    "stop": "Stop",
+    "fullscreen": "Fullscreen",
+    "exit_fullscreen": "Exit Fullscreen",
+    "copy_output": "Copy Output",
+    "copy_as_jsonl": "Copy as JSONL",
+    "copy_as_markdown": "Copy as Markdown",
+    "saving": "Saving..."
+  },
+  "labels": {
+    "agent_name": "Agent Name",
+    "agent_icon": "Agent Icon",
+    "model": "Model",
+    "default_task": "Default Task (Optional)",
+    "system_prompt": "System Prompt",
+    "task_description": "Task Description",
+    "model_selection": "Model Selection",
+    "basic_information": "Basic Information",
+    "configuration": "Configuration",
+    "created": "Created",
+    "edit_agent": "Edit Agent",
+    "create_new_agent": "Create New Agent",
+    "update_agent_config": "Update your Claude Code agent configuration",
+    "configure_new_agent": "Configure a new Claude Code agent",
+    "execution_history": "Execution History",
+    "task": "Task"
+  },
+  "models": {
+    "sonnet": {
+      "name": "Claude 4 Sonnet",
+      "description": "Faster, efficient for most tasks",
+      "short_desc": "Faster, efficient"
+    },
+    "opus": {
+      "name": "Claude 4 Opus",
+      "description": "More capable, better for complex tasks",
+      "short_desc": "More capable"
+    }
+  },
+  "messages": {
+    "no_agents": "No agents yet",
+    "create_first_agent": "Create your first CC Agent to get started",
+    "agent_created": "Agent created successfully",
+    "agent_updated": "Agent updated successfully",
+    "agent_deleted": "Agent deleted successfully",
+    "agent_exported": "Agent \"{{name}}\" exported successfully",
+    "agent_imported": "Agent imported successfully",
+    "agent_imported_github": "Agent imported successfully from GitHub",
+    "failed_to_load": "Failed to load agents",
+    "failed_to_create": "Failed to create agent",
+    "failed_to_update": "Failed to update agent",
+    "failed_to_delete": "Failed to delete agent",
+    "failed_to_export": "Failed to export agent",
+    "failed_to_import": "Failed to import agent",
+    "failed_to_execute": "Failed to execute agent",
+    "unsaved_changes": "You have unsaved changes. Are you sure you want to leave?",
+    "agent_running_warning": "An agent is currently running. If you navigate away, the agent will continue running in the background. You can view running sessions in the 'Running Sessions' tab within CC Agents.\n\nDo you want to continue?",
+    "ready_to_execute": "Ready to Execute",
+    "enter_task": "Enter a task to run the agent",
+    "initializing": "Initializing agent...",
+    "execution_cancelled": "Agent execution was cancelled",
+    "execution_failed": "Agent execution failed",
+    "execution_stopped": "Agent execution stopped",
+    "failed_to_stop": "Failed to stop agent - it may have already completed",
+    "failed_to_stop_with_error": "Failed to stop execution: {{error}}",
+    "loading": "Loading agent run...",
+    "run_not_found": "Run not found"
+  },
+  "placeholders": {
+    "agent_name": "e.g., Code Assistant",
+    "default_task": "e.g., Review this code for security issues",
+    "task_input": "What would you like the agent to do?"
+  },
+  "validation": {
+    "name_required": "Agent name is required",
+    "prompt_required": "System prompt is required"
+  },
+  "status": {
+    "running": "Running",
+    "complete": "Complete",
+    "ready": "Ready",
+    "completed": "Completed",
+    "failed": "Failed",
+    "pending": "Pending"
+  },
+  "execution": {
+    "title": "Agent Execution",
+    "working_in": "Working in:",
+    "recent_executions": "Recent Executions",
+    "configure_hooks_title": "Configure Hooks",
+    "configure_hooks_description": "Configure hooks that run before, during, and after tool executions",
+    "project_settings": "Project Settings",
+    "local_settings": "Local Settings",
+    "project_hooks_info": "Project hooks are stored in .claude/settings.json and are committed to version control, allowing team members to share configurations.",
+    "local_hooks_info": "Local hooks are stored in .claude/settings.local.json and are not committed to version control, perfect for personal preferences."
+  },
+  "delete_dialog": {
+    "title": "Delete Agent",
+    "description": "Are you sure you want to delete the agent \"{{name}}\"? This action cannot be undone and will permanently remove the agent and all its associated data.",
+    "deleting": "Deleting..."
+  },
+  "system_prompt_description": "Define the behavior and capabilities of your Claude Code agent",
+  "default_task_description": "This will be used as the default task placeholder when executing the agent",
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "page_of": "Page {{current}} of {{total}}"
+  },
+  "history": {
+    "recent_executions": "Recent Executions",
+    "no_history": "No execution history yet"
+  },
+  "modal": {
+    "title": "Agent Management",
+    "description": "Create new agents or manage running agent executions",
+    "available_agents": "Available Agents",
+    "running_agents": "Running Agents",
+    "no_agents_available": "No agents available",
+    "create_first": "Create your first agent to get started",
+    "no_running": "No running agents",
+    "running_appear_here": "Agent executions will appear here when started"
+  },
+  "execution_control": {
+    "executing": "Executing...",
+    "stop": "Stop",
+    "time": "Time",
+    "tokens": "tokens",
+    "started": "Started"
+  }
+}

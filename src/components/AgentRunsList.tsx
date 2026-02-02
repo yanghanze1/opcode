@@ -9,6 +9,7 @@ import { formatISOTimestamp } from "@/lib/date-utils";
 import type { AgentRunWithMetrics } from "@/lib/api";
 import { AGENT_ICONS } from "./CCAgents";
 import { useTabState } from "@/hooks/useTabState";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface AgentRunsListProps {
   /**
@@ -41,6 +42,7 @@ export const AgentRunsList: React.FC<AgentRunsListProps> = ({
   onRunClick,
   className,
 }) => {
+  const { t } = useTranslation('agents');
   const [currentPage, setCurrentPage] = useState(1);
   const { createAgentTab } = useTabState();
   
@@ -91,7 +93,7 @@ export const AgentRunsList: React.FC<AgentRunsListProps> = ({
     return (
       <div className={cn("text-center py-8 text-muted-foreground", className)}>
         <Play className="h-8 w-8 mx-auto mb-2 opacity-50" />
-        <p className="text-sm">No execution history yet</p>
+        <p className="text-sm">{t('history.no_history')}</p>
       </div>
     );
   }
@@ -133,25 +135,25 @@ export const AgentRunsList: React.FC<AgentRunsListProps> = ({
                         {run.status === "running" && (
                           <div className="flex items-center gap-1">
                             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                            <span className="text-xs text-green-600 font-medium">Running</span>
+                            <span className="text-xs text-green-600 font-medium">{t('status.running')}</span>
                           </div>
                         )}
                       </div>
-                      
+
                       <p className="text-xs text-muted-foreground truncate mb-1">
                         {run.task}
                       </p>
-                      
+
                       <div className="flex items-center gap-3 text-xs text-muted-foreground">
                         <div className="flex items-center gap-1">
                           <Clock className="h-3 w-3" />
                           <span>{formatISOTimestamp(run.created_at)}</span>
                         </div>
-                        
+
                         {run.metrics?.duration_ms && (
                           <span>{formatDuration(run.metrics.duration_ms)}</span>
                         )}
-                        
+
                         {run.metrics?.total_tokens && (
                           <div className="flex items-center gap-1">
                             <Hash className="h-3 w-3" />
@@ -160,9 +162,9 @@ export const AgentRunsList: React.FC<AgentRunsListProps> = ({
                         )}
                       </div>
                     </div>
-                    
+
                     <div className="flex-shrink-0">
-                      <Badge 
+                      <Badge
                         variant={
                           run.status === "completed" ? "default" :
                           run.status === "running" ? "secondary" :
@@ -171,10 +173,10 @@ export const AgentRunsList: React.FC<AgentRunsListProps> = ({
                         }
                         className="text-xs"
                       >
-                        {run.status === "completed" ? "Completed" :
-                         run.status === "running" ? "Running" :
-                         run.status === "failed" ? "Failed" :
-                         "Pending"}
+                        {run.status === "completed" ? t('status.complete') :
+                         run.status === "running" ? t('status.running') :
+                         run.status === "failed" ? t('status.failed') :
+                         t('status.pending')}
                       </Badge>
                     </div>
                   </div>

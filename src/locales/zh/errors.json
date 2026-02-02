@@ -1,0 +1,82 @@
+{
+  "general": {
+    "unknown_error": "发生未知错误",
+    "network_error": "网络错误。请检查你的连接。",
+    "timeout_error": "请求超时。请重试。",
+    "permission_denied": "权限被拒绝",
+    "not_found": "未找到资源",
+    "server_error": "服务器错误。请稍后重试。"
+  },
+  "agents": {
+    "load_failed": "加载 agents 失败",
+    "create_failed": "创建 agent 失败",
+    "update_failed": "更新 agent 失败",
+    "delete_failed": "删除 agent 失败",
+    "execute_failed": "执行 agent 失败",
+    "export_failed": "导出 agent 失败",
+    "import_failed": "导入 agent 失败",
+    "not_found": "未找到 agent",
+    "invalid_configuration": "无效的 agent 配置"
+  },
+  "projects": {
+    "load_failed": "加载 projects 失败",
+    "open_failed": "打开 project 失败",
+    "invalid_path": "无效的 project 路径",
+    "not_found": "未找到 project",
+    "access_denied": "无法访问 project 目录"
+  },
+  "sessions": {
+    "load_failed": "加载 sessions 失败",
+    "create_failed": "创建 session 失败",
+    "delete_failed": "删除 session 失败",
+    "not_found": "未找到 session",
+    "invalid_session": "无效的 session 数据"
+  },
+  "settings": {
+    "load_failed": "加载设置失败",
+    "save_failed": "保存设置失败",
+    "invalid_format": "无效的设置格式",
+    "directory_not_found": "未找到设置目录。请确保 ~/.claude 目录存在。"
+  },
+  "mcp": {
+    "load_failed": "加载 MCP 服务器失败",
+    "add_failed": "添加 MCP 服务器失败",
+    "remove_failed": "移除 MCP 服务器失败",
+    "import_failed": "导入 MCP 服务器失败",
+    "export_failed": "导出 MCP 服务器失败",
+    "invalid_configuration": "无效的 MCP 服务器配置",
+    "server_not_found": "未找到 MCP 服务器"
+  },
+  "usage": {
+    "load_failed": "加载使用统计失败",
+    "no_data": "暂无使用数据",
+    "invalid_date_range": "无效的日期范围"
+  },
+  "files": {
+    "read_failed": "读取文件失败",
+    "write_failed": "写入文件失败",
+    "delete_failed": "删除文件失败",
+    "not_found": "未找到文件",
+    "access_denied": "无法访问文件",
+    "invalid_path": "无效的文件路径"
+  },
+  "validation": {
+    "required_field": "此字段为必填项",
+    "invalid_format": "无效的格式",
+    "invalid_email": "无效的邮箱地址",
+    "invalid_url": "无效的 URL",
+    "too_short": "值太短",
+    "too_long": "值太长",
+    "must_be_number": "必须是数字",
+    "must_be_positive": "必须是正数"
+  },
+  "auth": {
+    "unauthorized": "未授权。请检查你的 API key。",
+    "session_expired": "Session 已过期。请重新登录。",
+    "invalid_credentials": "无效的凭据"
+  },
+  "clipboard": {
+    "copy_failed": "复制到剪贴板失败",
+    "paste_failed": "从剪贴板粘贴失败"
+  }
+}

@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { 
-  ArrowLeft, 
-  Copy, 
-  ChevronDown, 
+import {
+  ArrowLeft,
+  Copy,
+  ChevronDown,
   Clock,
   Hash,
   DollarSign,
@@ -21,6 +21,7 @@ import { StreamMessage } from "./StreamMessage";
 import { AGENT_ICONS } from "./CCAgents";
 import type { ClaudeStreamMessage } from "./AgentExecution";
 import { ErrorBoundary } from "./ErrorBoundary";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface AgentRunViewProps {
   /**
@@ -48,6 +49,7 @@ export const AgentRunView: React.FC<AgentRunViewProps> = ({
   onBack,
   className,
 }) => {
+  const { t } = useTranslation('agents');
   const [run, setRun] = useState<AgentRunWithMetrics | null>(null);
   const [messages, setMessages] = useState<ClaudeStreamMessage[]>([]);
   const [loading, setLoading] = useState(true);
@@ -101,7 +103,7 @@ export const AgentRunView: React.FC<AgentRunViewProps> = ({
       }
     } catch (err) {
       console.error("Failed to load run:", err);
-      setError("Failed to load execution details");
+      setError(t('messages.failed_to_load'));
     } finally {
       setLoading(false);
     }
@@ -233,8 +235,8 @@ export const AgentRunView: React.FC<AgentRunViewProps> = ({
   if (error || !run) {
     return (
       <div className={cn("flex flex-col items-center justify-center h-full", className)}>
-        <p className="text-destructive mb-4">{error || "Run not found"}</p>
-        <Button onClick={onBack}>Go Back</Button>
+        <p className="text-destructive mb-4">{error || t('messages.run_not_found')}</p>
+        <Button onClick={onBack}>{t('common:buttons.go_back')}</Button>
       </div>
     );
   }
@@ -262,11 +264,11 @@ export const AgentRunView: React.FC<AgentRunViewProps> = ({
               {renderIcon(run.agent_icon)}
               <div>
                 <h2 className="text-lg font-semibold">{run.agent_name}</h2>
-                <p className="text-xs text-muted-foreground">Execution History</p>
+                <p className="text-xs text-muted-foreground">{t('labels.execution_history')}</p>
               </div>
             </div>
           </div>
-          
+
           <div className="flex items-center gap-2">
             {run?.status === 'running' && (
               <Button
@@ -276,10 +278,10 @@ export const AgentRunView: React.FC<AgentRunViewProps> = ({
                 className="text-destructive hover:text-destructive"
               >
                 <StopCircle className="h-4 w-4 mr-1" />
-                Stop
+                {t('buttons.stop')}
               </Button>
             )}
-            
+
             <Popover
               trigger={
                 <Button
@@ -288,7 +290,7 @@ export const AgentRunView: React.FC<AgentRunViewProps> = ({
                   className="flex items-center gap-2"
                 >
                   <Copy className="h-4 w-4" />
-                  Copy Output
+                  {t('buttons.copy_output')}
                   <ChevronDown className="h-3 w-3" />
                 </Button>
               }
@@ -300,7 +302,7 @@ export const AgentRunView: React.FC<AgentRunViewProps> = ({
                     className="w-full justify-start"
                     onClick={handleCopyAsJsonl}
                   >
-                    Copy as JSONL
+                    {t('buttons.copy_as_jsonl')}
                   </Button>
                   <Button
                     variant="ghost"
@@ -308,7 +310,7 @@ export const AgentRunView: React.FC<AgentRunViewProps> = ({
                     className="w-full justify-start"
                     onClick={handleCopyAsMarkdown}
                   >
-                    Copy as Markdown
+                    {t('buttons.copy_as_markdown')}
                   </Button>
                 </div>
               }
@@ -324,10 +326,10 @@ export const AgentRunView: React.FC<AgentRunViewProps> = ({
           <CardContent className="p-4">
             <div className="space-y-2">
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-medium">Task:</h3>
+                <h3 className="text-sm font-medium">{t('labels.task')}:</h3>
                 <p className="text-sm text-muted-foreground flex-1">{run.task}</p>
                 <Badge variant="outline" className="text-xs">
-                  {run.model === 'opus' ? 'Claude 4 Opus' : 'Claude 4 Sonnet'}
+                  {run.model === 'opus' ? t('models.opus.name') : t('models.sonnet.name')}
                 </Badge>
               </div>
               

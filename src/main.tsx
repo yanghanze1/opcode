@@ -8,6 +8,7 @@ import { PostHogProvider } from "posthog-js/react";
 import "./assets/shimmer.css";
 import "./styles.css";
 import AppIcon from "./assets/nfo/asterisk-logo.png";
+import "./i18n/config"; // Initialize i18next
 
 // Initialize analytics before rendering
 analytics.initialize();

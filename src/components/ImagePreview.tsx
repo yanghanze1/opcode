@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { motion, AnimatePresence } from "framer-motion";
 import { convertFileSrc } from "@tauri-apps/api/core";
+import { useTranslation } from "react-i18next";
 
 interface ImagePreviewProps {
   /**
@@ -40,6 +41,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
   onRemove,
   className,
 }) => {
+  const { t } = useTranslation();
   const [selectedImageIndex, setSelectedImageIndex] = useState<number | null>(null);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const [imageErrors, setImageErrors] = useState<Set<number>>(new Set());
@@ -89,7 +91,7 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
               >
                 {imageErrors.has(index) ? (
                   <div className="w-full h-full bg-muted flex items-center justify-center">
-                    <span className="text-xs text-muted-foreground">Error</span>
+                    <span className="text-xs text-muted-foreground">{t('common:image_preview.error')}</span>
                   </div>
                 ) : (
                   <img
@@ -126,18 +128,18 @@ export const ImagePreview: React.FC<ImagePreviewProps> = ({
 
         {images.length > 10 && (
           <div className="flex-shrink-0 w-16 h-16 rounded-md border border-border bg-muted flex items-center justify-center">
-            <span className="text-xs text-muted-foreground">+{images.length - 10}</span>
+            <span className="text-xs text-muted-foreground">{t('common:image_preview.more_images', { count: images.length - 10 })}</span>
           </div>
         )}
       </div>
 
       {/* Full-size preview dialog */}
-      <Dialog 
-        open={selectedImageIndex !== null} 
+      <Dialog
+        open={selectedImageIndex !== null}
         onOpenChange={(open) => !open && setSelectedImageIndex(null)}
       >
         <DialogContent className="max-w-4xl max-h-[90vh] p-0">
-          <DialogTitle className="sr-only">Image Preview</DialogTitle>
+          <DialogTitle className="sr-only">{t('common:image_preview.title')}</DialogTitle>
           {selectedImageIndex !== null && (
             <div className="relative w-full h-full flex items-center justify-center p-4">
               <img

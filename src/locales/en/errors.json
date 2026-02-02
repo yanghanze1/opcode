@@ -1,0 +1,82 @@
+{
+  "general": {
+    "unknown_error": "An unknown error occurred",
+    "network_error": "Network error. Please check your connection.",
+    "timeout_error": "Request timed out. Please try again.",
+    "permission_denied": "Permission denied",
+    "not_found": "Resource not found",
+    "server_error": "Server error. Please try again later."
+  },
+  "agents": {
+    "load_failed": "Failed to load agents",
+    "create_failed": "Failed to create agent",
+    "update_failed": "Failed to update agent",
+    "delete_failed": "Failed to delete agent",
+    "execute_failed": "Failed to execute agent",
+    "export_failed": "Failed to export agent",
+    "import_failed": "Failed to import agent",
+    "not_found": "Agent not found",
+    "invalid_configuration": "Invalid agent configuration"
+  },
+  "projects": {
+    "load_failed": "Failed to load projects",
+    "open_failed": "Failed to open project",
+    "invalid_path": "Invalid project path",
+    "not_found": "Project not found",
+    "access_denied": "Cannot access project directory"
+  },
+  "sessions": {
+    "load_failed": "Failed to load sessions",
+    "create_failed": "Failed to create session",
+    "delete_failed": "Failed to delete session",
+    "not_found": "Session not found",
+    "invalid_session": "Invalid session data"
+  },
+  "settings": {
+    "load_failed": "Failed to load settings",
+    "save_failed": "Failed to save settings",
+    "invalid_format": "Invalid settings format",
+    "directory_not_found": "Settings directory not found. Please ensure ~/.claude directory exists."
+  },
+  "mcp": {
+    "load_failed": "Failed to load MCP servers",
+    "add_failed": "Failed to add MCP server",
+    "remove_failed": "Failed to remove MCP server",
+    "import_failed": "Failed to import MCP servers",
+    "export_failed": "Failed to export MCP servers",
+    "invalid_configuration": "Invalid MCP server configuration",
+    "server_not_found": "MCP server not found"
+  },
+  "usage": {
+    "load_failed": "Failed to load usage statistics",
+    "no_data": "No usage data available",
+    "invalid_date_range": "Invalid date range"
+  },
+  "files": {
+    "read_failed": "Failed to read file",
+    "write_failed": "Failed to write file",
+    "delete_failed": "Failed to delete file",
+    "not_found": "File not found",
+    "access_denied": "Cannot access file",
+    "invalid_path": "Invalid file path"
+  },
+  "validation": {
+    "required_field": "This field is required",
+    "invalid_format": "Invalid format",
+    "invalid_email": "Invalid email address",
+    "invalid_url": "Invalid URL",
+    "too_short": "Value is too short",
+    "too_long": "Value is too long",
+    "must_be_number": "Must be a number",
+    "must_be_positive": "Must be a positive number"
+  },
+  "auth": {
+    "unauthorized": "Unauthorized. Please check your API key.",
+    "session_expired": "Session expired. Please log in again.",
+    "invalid_credentials": "Invalid credentials"
+  },
+  "clipboard": {
+    "copy_failed": "Failed to copy to clipboard",
+    "paste_failed": "Failed to paste from clipboard"
+  }
+}

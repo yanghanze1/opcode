@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Toast, ToastContainer } from "@/components/ui/toast";
 import { api, type ClaudeMdFile } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface ClaudeFileEditorProps {
   /**
@@ -36,20 +37,21 @@ export const ClaudeFileEditor: React.FC<ClaudeFileEditorProps> = ({
   onBack,
   className,
 }) => {
+  const { t } = useTranslation('sessions');
   const [content, setContent] = useState<string>("");
   const [originalContent, setOriginalContent] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-  
+
   const hasChanges = content !== originalContent;
-  
+
   // Load the file content on mount
   useEffect(() => {
     loadFileContent();
   }, [file.absolute_path]);
-  
+
   const loadFileContent = async () => {
     try {
       setLoading(true);
@@ -59,12 +61,12 @@ export const ClaudeFileEditor: React.FC<ClaudeFileEditorProps> = ({
       setOriginalContent(fileContent);
     } catch (err) {
       console.error("Failed to load file:", err);
-      setError("Failed to load CLAUDE.md file");
+      setError(t('claude_file_editor.failed_to_load'));
     } finally {
       setLoading(false);
     }
   };
-  
+
   const handleSave = async () => {
     try {
       setSaving(true);
@@ -72,26 +74,26 @@ export const ClaudeFileEditor: React.FC<ClaudeFileEditorProps> = ({
       setToast(null);
       await api.saveClaudeMdFile(file.absolute_path, content);
       setOriginalContent(content);
-      setToast({ message: "File saved successfully", type: "success" });
+      setToast({ message: t('claude_file_editor.saved_successfully'), type: "success" });
     } catch (err) {
       console.error("Failed to save file:", err);
-      setError("Failed to save CLAUDE.md file");
-      setToast({ message: "Failed to save file", type: "error" });
+      setError(t('claude_file_editor.failed_to_save'));
+      setToast({ message: t('claude_file_editor.failed_to_save'), type: "error" });
     } finally {
       setSaving(false);
     }
   };
-  
+
   const handleBack = () => {
     if (hasChanges) {
       const confirmLeave = window.confirm(
-        "You have unsaved changes. Are you sure you want to leave?"
+        t('claude_file_editor.unsaved_changes_warning')
       );
       if (!confirmLeave) return;
     }
     onBack();
   };
-  
+
   return (
     <div className={cn("flex flex-col h-full bg-background", className)}>
       <div className="w-full max-w-5xl mx-auto flex flex-col h-full">
@@ -114,11 +116,11 @@ export const ClaudeFileEditor: React.FC<ClaudeFileEditorProps> = ({
             <div className="min-w-0 flex-1">
               <h2 className="text-lg font-semibold truncate">{file.relative_path}</h2>
               <p className="text-xs text-muted-foreground">
-                Edit project-specific Claude Code system prompt
+                {t('claude_file_editor.subtitle')}
               </p>
             </div>
           </div>
-          
+
           <Button
             onClick={handleSave}
             disabled={!hasChanges || saving}
@@ -129,10 +131,10 @@ export const ClaudeFileEditor: React.FC<ClaudeFileEditorProps> = ({
             ) : (
               <Save className="mr-2 h-4 w-4" />
             )}
-            {saving ? "Saving..." : "Save"}
+            {saving ? t('common:buttons.saving') : t('common:buttons.save')}
           </Button>
         </motion.div>
-        
+
         {/* Error display */}
         {error && (
           <motion.div
@@ -143,7 +145,7 @@ export const ClaudeFileEditor: React.FC<ClaudeFileEditorProps> = ({
             {error}
           </motion.div>
         )}
-        
+
         {/* Editor */}
         <div className="flex-1 p-4 overflow-hidden">
           {loading ? (
@@ -163,7 +165,7 @@ export const ClaudeFileEditor: React.FC<ClaudeFileEditorProps> = ({
           )}
         </div>
       </div>
-      
+
       {/* Toast Notification */}
       <ToastContainer>
         {toast && (

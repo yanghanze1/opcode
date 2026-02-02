@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { 
-  CheckCircle2, 
-  Circle, 
+import {
+  CheckCircle2,
+  Circle,
   Clock,
   FolderOpen,
   FileText,
@@ -58,6 +58,7 @@ import { createPortal } from "react-dom";
 import * as Diff from 'diff';
 import { Card, CardContent } from "@/components/ui/card";
 import { detectLinks, makeLinksClickable } from "@/lib/linkDetector";
+import { useTranslation } from "@/hooks/useTranslation";
 import ReactMarkdown from "react-markdown";
 import { open } from "@tauri-apps/plugin-shell";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -68,6 +69,7 @@ import { motion, AnimatePresence } from "framer-motion";
  * Widget for TodoWrite tool - displays a beautiful TODO list
  */
 export const TodoWidget: React.FC<{ todos: any[]; result?: any }> = ({ todos, result: _result }) => {
+  const { t } = useTranslation('sessions');
   const statusIcons = {
     completed: <CheckCircle2 className="h-4 w-4 text-green-500" />,
     in_progress: <Clock className="h-4 w-4 text-blue-500 animate-pulse" />,
@@ -84,7 +86,7 @@ export const TodoWidget: React.FC<{ todos: any[]; result?: any }> = ({ todos, re
     <div className="space-y-2">
       <div className="flex items-center gap-2 mb-3">
         <FileEdit className="h-4 w-4 text-primary" />
-        <span className="text-sm font-medium">Todo List</span>
+        <span className="text-sm font-medium">{t('sessions:widgets.todo.title')}</span>
       </div>
       <div className="space-y-2">
         {todos.map((todo, idx) => (
@@ -106,8 +108,8 @@ export const TodoWidget: React.FC<{ todos: any[]; result?: any }> = ({ todos, re
                 {todo.content}
               </p>
               {todo.priority && (
-                <Badge 
-                  variant="outline" 
+                <Badge
+                  variant="outline"
                   className={cn("text-xs", priorityColors[todo.priority as keyof typeof priorityColors])}
                 >
                   {todo.priority}
@@ -125,6 +127,7 @@ export const TodoWidget: React.FC<{ todos: any[]; result?: any }> = ({ todos, re
  * Widget for LS (List Directory) tool
  */
 export const LSWidget: React.FC<{ path: string; result?: any }> = ({ path, result }) => {
+  const { t } = useTranslation();
   // If we have a result, show it using the LSResultWidget
   if (result) {
     let resultContent = '';
@@ -141,12 +144,12 @@ export const LSWidget: React.FC<{ path: string; result?: any }> = ({ path, resul
         resultContent = JSON.stringify(result.content, null, 2);
       }
     }
-    
+
     return (
       <div className="space-y-2">
         <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
           <FolderOpen className="h-4 w-4 text-primary" />
-          <span className="text-sm">Directory contents for:</span>
+          <span className="text-sm">{t('sessions:widgets.ls.directory_contents')}</span>
           <code className="text-sm font-mono bg-background px-2 py-0.5 rounded">
             {path}
           </code>
@@ -155,18 +158,18 @@ export const LSWidget: React.FC<{ path: string; result?: any }> = ({ path, resul
       </div>
     );
   }
-  
+
   return (
     <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
       <FolderOpen className="h-4 w-4 text-primary" />
-      <span className="text-sm">Listing directory:</span>
+      <span className="text-sm">{t('sessions:widgets.ls.listing_directory')}</span>
       <code className="text-sm font-mono bg-background px-2 py-0.5 rounded">
         {path}
       </code>
       {!result && (
         <div className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
           <div className="h-2 w-2 bg-blue-500 rounded-full animate-pulse" />
-          <span>Loading...</span>
+          <span>{t('sessions:widgets.ls.loading')}</span>
         </div>
       )}
     </div>
@@ -178,7 +181,7 @@ export const LSWidget: React.FC<{ path: string; result?: any }> = ({ path, resul
  */
 export const LSResultWidget: React.FC<{ content: string }> = ({ content }) => {
   const [expandedDirs, setExpandedDirs] = useState<Set<string>>(new Set());
-  
+
   // Parse the directory tree structure
   const parseDirectoryTree = (rawContent: string) => {
     const lines = rawContent.split('\n');
@@ -188,34 +191,34 @@ export const LSResultWidget: React.FC<{ content: string }> = ({ content }) => {
       type: 'file' | 'directory';
       level: number;
     }> = [];
-    
+
     let currentPath: string[] = [];
-    
+
     for (const line of lines) {
       // Skip NOTE section and everything after it
       if (line.startsWith('NOTE:')) {
         break;
       }
-      
+
       // Skip empty lines
       if (!line.trim()) continue;
-      
+
       // Calculate indentation level
       const indent = line.match(/^(\s*)/)?.[1] || '';
       const level = Math.floor(indent.length / 2);
-      
+
       // Extract the entry name
       const entryMatch = line.match(/^\s*-\s+(.+?)(\/$)?$/);
       if (!entryMatch) continue;
-      
+
       const fullName = entryMatch[1];
       const isDirectory = line.trim().endsWith('/');
       const name = isDirectory ? fullName : fullName;
-      
+
       // Update current path based on level
       currentPath = currentPath.slice(0, level);
       currentPath.push(name);
-      
+
       entries.push({
         path: currentPath.join('/'),
         name,
@@ -223,12 +226,12 @@ export const LSResultWidget: React.FC<{ content: string }> = ({ content }) => {
         level,
       });
     }
-    
+
     return entries;
   };
-  
+
   const entries = parseDirectoryTree(content);
-  
+
   const toggleDirectory = (path: string) => {
     setExpandedDirs(prev => {
       const next = new Set(prev);
@@ -240,38 +243,38 @@ export const LSResultWidget: React.FC<{ content: string }> = ({ content }) => {
       return next;
     });
   };
-  
+
   // Group entries by parent for collapsible display
   const getChildren = (parentPath: string, parentLevel: number) => {
     return entries.filter(e => {
       if (e.level !== parentLevel + 1) return false;
       const parentParts = parentPath.split('/').filter(Boolean);
       const entryParts = e.path.split('/').filter(Boolean);
-      
+
       // Check if this entry is a direct child of the parent
       if (entryParts.length !== parentParts.length + 1) return false;
-      
+
       // Check if all parent parts match
       for (let i = 0; i < parentParts.length; i++) {
         if (parentParts[i] !== entryParts[i]) return false;
       }
-      
+
       return true;
     });
   };
-  
+
   const renderEntry = (entry: typeof entries[0], isRoot = false) => {
-    const hasChildren = entry.type === 'directory' && 
+    const hasChildren = entry.type === 'directory' &&
       entries.some(e => e.path.startsWith(entry.path + '/') && e.level === entry.level + 1);
     const isExpanded = expandedDirs.has(entry.path) || isRoot;
-    
+
     const getIcon = () => {
       if (entry.type === 'directory') {
-        return isExpanded ? 
-          <FolderOpen className="h-3.5 w-3.5 text-blue-500" /> : 
+        return isExpanded ?
+          <FolderOpen className="h-3.5 w-3.5 text-blue-500" /> :
           <Folder className="h-3.5 w-3.5 text-blue-500" />;
       }
-      
+
       // File type icons based on extension
       const ext = entry.name.split('.').pop()?.toLowerCase();
       switch (ext) {
@@ -300,10 +303,10 @@ export const LSResultWidget: React.FC<{ content: string }> = ({ content }) => {
           return <FileText className="h-3.5 w-3.5 text-muted-foreground" />;
       }
     };
-    
+
     return (
       <div key={entry.path}>
-        <div 
+        <div
           className={cn(
             "flex items-center gap-2 py-1 px-2 rounded hover:bg-muted/50 transition-colors cursor-pointer",
             !isRoot && "ml-4"
@@ -322,7 +325,7 @@ export const LSResultWidget: React.FC<{ content: string }> = ({ content }) => {
           {getIcon()}
           <span className="text-sm font-mono">{entry.name}</span>
         </div>
-        
+
         {entry.type === 'directory' && hasChildren && isExpanded && (
           <div className="ml-2">
             {getChildren(entry.path, entry.level).map(child => renderEntry(child))}
@@ -331,10 +334,10 @@ export const LSResultWidget: React.FC<{ content: string }> = ({ content }) => {
       </div>
     );
   };
-  
+
   // Get root entries
   const rootEntries = entries.filter(e => e.level === 0);
-  
+
   return (
     <div className="rounded-lg border bg-muted/20 p-3">
       <div className="space-y-1">
@@ -348,6 +351,7 @@ export const LSResultWidget: React.FC<{ content: string }> = ({ content }) => {
  * Widget for Read tool
  */
 export const ReadWidget: React.FC<{ filePath: string; result?: any }> = ({ filePath, result }) => {
+  const { t } = useTranslation('sessions');
   // If we have a result, show it using the ReadResultWidget
   if (result) {
     let resultContent = '';
@@ -364,12 +368,12 @@ export const ReadWidget: React.FC<{ filePath: string; result?: any }> = ({ fileP
         resultContent = JSON.stringify(result.content, null, 2);
       }
     }
-    
+
     return (
       <div className="space-y-2">
         <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
           <FileText className="h-4 w-4 text-primary" />
-          <span className="text-sm">File content:</span>
+          <span className="text-sm">{t('sessions:widgets.read.file_content_label')}:</span>
           <code className="text-sm font-mono bg-background px-2 py-0.5 rounded flex-1 truncate">
             {filePath}
           </code>
@@ -378,18 +382,18 @@ export const ReadWidget: React.FC<{ filePath: string; result?: any }> = ({ fileP
       </div>
     );
   }
-  
+
   return (
     <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
       <FileText className="h-4 w-4 text-primary" />
-      <span className="text-sm">Reading file:</span>
+      <span className="text-sm">{t('sessions:widgets.read.reading_file')}</span>
       <code className="text-sm font-mono bg-background px-2 py-0.5 rounded flex-1 truncate">
         {filePath}
       </code>
       {!result && (
         <div className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
           <div className="h-2 w-2 bg-blue-500 rounded-full animate-pulse" />
-          <span>Loading...</span>
+          <span>{t('sessions:widgets.ls.loading')}</span>
         </div>
       )}
     </div>
@@ -401,9 +405,10 @@ export const ReadWidget: React.FC<{ filePath: string; result?: any }> = ({ fileP
  */
 export const ReadResultWidget: React.FC<{ content: string; filePath?: string }> = ({ content, filePath }) => {
   const [isExpanded, setIsExpanded] = useState(false);
+  const { t } = useTranslation('sessions');
   const { theme } = useTheme();
   const syntaxTheme = getClaudeSyntaxTheme(theme);
-  
+
   // Extract file extension for syntax highlighting
   const getLanguage = (path?: string) => {
     if (!path) return "text";
@@ -465,7 +470,7 @@ export const ReadResultWidget: React.FC<{ content: string; filePath?: string }> 
     if (!isLikelyNumbered) {
       return { codeContent: rawContent, startLineNumber: 1 };
     }
-    
+
     // If it's a numbered list, parse it strictly.
     for (const line of lines) {
       // Remove leading whitespace before parsing
@@ -487,12 +492,12 @@ export const ReadResultWidget: React.FC<{ content: string; filePath?: string }> 
         codeLines.push('');
       }
     }
-    
+
     // Remove trailing empty lines
     while (codeLines.length > 0 && codeLines[codeLines.length - 1] === '') {
       codeLines.pop();
     }
-    
+
     return {
       codeContent: codeLines.join('\n'),
       startLineNumber: minLineNumber === Infinity ? 1 : minLineNumber
@@ -510,7 +515,7 @@ export const ReadResultWidget: React.FC<{ content: string; filePath?: string }> 
         <div className="flex items-center gap-2">
           <FileText className="h-3.5 w-3.5 text-muted-foreground" />
           <span className="text-xs font-mono text-muted-foreground">
-            {filePath || "File content"}
+            {filePath || t('sessions:widgets.read.file_content_label')}
           </span>
           {isLargeFile && (
             <span className="text-xs text-muted-foreground">
@@ -524,11 +529,11 @@ export const ReadResultWidget: React.FC<{ content: string; filePath?: string }> 
             className="flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors"
           >
             <ChevronRight className={cn("h-3 w-3 transition-transform", isExpanded && "rotate-90")} />
-            {isExpanded ? "Collapse" : "Expand"}
+            {isExpanded ? t('sessions:widgets.collapse') : t('sessions:widgets.expand')}
           </button>
         )}
       </div>
-      
+
       {(!isLargeFile || isExpanded) && (
         <div className="relative overflow-x-auto">
           <SyntaxHighlighter
@@ -558,10 +563,10 @@ export const ReadResultWidget: React.FC<{ content: string; filePath?: string }> 
           </SyntaxHighlighter>
         </div>
       )}
-      
+
       {isLargeFile && !isExpanded && (
         <div className="px-4 py-3 text-xs text-muted-foreground text-center bg-muted/30">
-          Click "Expand" to view the full file
+          {t('sessions:widgets.click_expand')}
         </div>
       )}
     </div>
@@ -573,9 +578,10 @@ export const ReadResultWidget: React.FC<{ content: string; filePath?: string }> 
  */
 export const GlobWidget: React.FC<{ pattern: string; result?: any }> = ({ pattern, result }) => {
   // Extract result content if available
+  const { t } = useTranslation('sessions');
   let resultContent = '';
   let isError = false;
-  
+
   if (result) {
     isError = result.is_error || false;
     if (typeof result.content === 'string') {
@@ -592,29 +598,29 @@ export const GlobWidget: React.FC<{ pattern: string; result?: any }> = ({ patter
       }
     }
   }
-  
+
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
         <Search className="h-4 w-4 text-primary" />
-        <span className="text-sm">Searching for pattern:</span>
+        <span className="text-sm">{t('sessions:widgets.glob.searching_pattern')}</span>
         <code className="text-sm font-mono bg-background px-2 py-0.5 rounded">
           {pattern}
         </code>
         {!result && (
           <div className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
             <div className="h-2 w-2 bg-blue-500 rounded-full animate-pulse" />
-            <span>Searching...</span>
+            <span>{t('sessions:widgets.glob.searching')}</span>
           </div>
         )}
       </div>
-      
+
       {/* Show result if available */}
       {result && (
         <div className={cn(
           "p-3 rounded-md border text-xs font-mono whitespace-pre-wrap overflow-x-auto",
-          isError 
-            ? "border-red-500/20 bg-red-500/5 text-red-400" 
+          isError
+            ? "border-red-500/20 bg-red-500/5 text-red-400"
             : "border-green-500/20 bg-green-500/5 text-green-300"
         )}>
           {resultContent || (isError ? "Search failed" : "No matches found")}
@@ -627,15 +633,16 @@ export const GlobWidget: React.FC<{ pattern: string; result?: any }> = ({ patter
 /**
  * Widget for Bash tool
  */
-export const BashWidget: React.FC<{ 
-  command: string; 
+export const BashWidget: React.FC<{
+  command: string;
   description?: string;
   result?: any;
 }> = ({ command, description, result }) => {
   // Extract result content if available
+  const { t } = useTranslation('sessions');
   let resultContent = '';
   let isError = false;
-  
+
   if (result) {
     isError = result.is_error || false;
     if (typeof result.content === 'string') {
@@ -652,12 +659,12 @@ export const BashWidget: React.FC<{
       }
     }
   }
-  
+
   return (
     <div className="rounded-lg border bg-background overflow-hidden">
       <div className="px-4 py-2 bg-muted/50 flex items-center gap-2 border-b">
         <Terminal className="h-3.5 w-3.5 text-green-500" />
-        <span className="text-xs font-mono text-muted-foreground">Terminal</span>
+        <span className="text-xs font-mono text-muted-foreground">{t('sessions:widgets.terminal')}</span>
         {description && (
           <>
             <ChevronRight className="h-3 w-3 text-muted-foreground" />
@@ -668,7 +675,7 @@ export const BashWidget: React.FC<{
         {!result && (
           <div className="ml-auto flex items-center gap-1 text-xs text-muted-foreground">
             <div className="h-2 w-2 bg-green-500 rounded-full animate-pulse" />
-            <span>Running...</span>
+            <span>{t('sessions:widgets.bash.running_indicator')}</span>
           </div>
         )}
       </div>
@@ -676,16 +683,16 @@ export const BashWidget: React.FC<{
         <code className="text-xs font-mono text-green-400 block">
           $ {command}
         </code>
-        
+
         {/* Show result if available */}
         {result && (
           <div className={cn(
             "mt-3 p-3 rounded-md border text-xs font-mono whitespace-pre-wrap overflow-x-auto",
-            isError 
-              ? "border-red-500/20 bg-red-500/5 text-red-400" 
+            isError
+              ? "border-red-500/20 bg-red-500/5 text-red-400"
               : "border-green-500/20 bg-green-500/5 text-green-300"
           )}>
-            {resultContent || (isError ? "Command failed" : "Command completed")}
+            {resultContent || (isError ? t('sessions:widgets.bash.command_failed') : t('sessions:widgets.bash.command_completed'))}
           </div>
         )}
       </div>
@@ -697,10 +704,11 @@ export const BashWidget: React.FC<{
  * Widget for Write tool
  */
 export const WriteWidget: React.FC<{ filePath: string; content: string; result?: any }> = ({ filePath, content, result: _result }) => {
+  const { t } = useTranslation(['sessions', 'agents']);
   const [isMaximized, setIsMaximized] = useState(false);
   const { theme } = useTheme();
   const syntaxTheme = getClaudeSyntaxTheme(theme);
-  
+
   // Extract file extension for syntax highlighting
   const getLanguage = (path: string) => {
     const ext = path.split('.').pop()?.toLowerCase();
@@ -750,15 +758,15 @@ export const WriteWidget: React.FC<{ filePath: string; content: string; result?:
   // Maximized view as a modal
   const MaximizedView = () => {
     if (!isMaximized) return null;
-    
+
     return createPortal(
       <div className="fixed inset-0 z-50 flex items-center justify-center">
         {/* Backdrop with blur */}
-        <div 
+        <div
           className="absolute inset-0 bg-black/60 backdrop-blur-sm"
           onClick={() => setIsMaximized(false)}
         />
-        
+
         {/* Modal content */}
         <div className="relative w-[90vw] h-[90vh] max-w-7xl bg-background rounded-lg border shadow-2xl overflow-hidden flex flex-col">
           {/* Header */}
@@ -767,16 +775,16 @@ export const WriteWidget: React.FC<{ filePath: string; content: string; result?:
               <FileText className="h-4 w-4 text-muted-foreground" />
               <span className="text-sm font-mono text-muted-foreground">{filePath}</span>
             </div>
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               className="h-8 w-8"
               onClick={() => setIsMaximized(false)}
             >
               <X className="h-4 w-4" />
             </Button>
           </div>
-          
+
           {/* Code content */}
           <div className="flex-1 overflow-auto">
             <SyntaxHighlighter
@@ -802,25 +810,25 @@ export const WriteWidget: React.FC<{ filePath: string; content: string; result?:
   };
 
   const CodePreview = ({ codeContent, truncated }: { codeContent: string; truncated: boolean }) => (
-    <div 
+    <div
       className="rounded-lg border bg-background overflow-hidden w-full"
-      style={{ 
-        height: truncated ? '440px' : 'auto', 
+      style={{
+        height: truncated ? '440px' : 'auto',
         maxHeight: truncated ? '440px' : undefined,
-        display: 'flex', 
-        flexDirection: 'column' 
+        display: 'flex',
+        flexDirection: 'column'
       }}
     >
       <div className="px-4 py-2 border-b bg-background flex items-center justify-between sticky top-0 z-10">
-        <span className="text-xs font-mono text-muted-foreground">Preview</span>
+        <span className="text-xs font-mono text-muted-foreground">{t('agents:preview')}</span>
         {isLargeContent && truncated && (
           <div className="flex items-center gap-2">
             <Badge variant="outline" className="text-xs whitespace-nowrap">
               Truncated to 1000 chars
             </Badge>
-            <Button 
-              variant="ghost" 
-              size="icon" 
+            <Button
+              variant="ghost"
+              size="icon"
               className="h-6 w-6"
               onClick={() => setIsMaximized(true)}
             >
@@ -853,7 +861,7 @@ export const WriteWidget: React.FC<{ filePath: string; content: string; result?:
     <div className="space-y-2">
       <div className="flex items-center gap-2 p-3 rounded-lg bg-muted/50">
         <FileEdit className="h-4 w-4 text-primary" />
-        <span className="text-sm">Writing to file:</span>
+        <span className="text-sm">{t('sessions:widgets.write.writing_file')}</span>
         <code className="text-sm font-mono bg-background px-2 py-0.5 rounded flex-1 truncate">
           {filePath}
         </code>
@@ -867,19 +875,19 @@ export const WriteWidget: React.FC<{ filePath: string; content: string; result?:
 /**
  * Widget for Grep tool
  */
-export const GrepWidget: React.FC<{ 
-  pattern: string; 
-  include?: string; 
+export const GrepWidget: React.FC<{
+  pattern: string;
+  include?: string;
   path?: string;
   exclude?: string;
   result?: any;
 }> = ({ pattern, include, path, exclude, result }) => {
   const [isExpanded, setIsExpanded] = useState(true);
-  
+
   // Extract result content if available
   let resultContent = '';
   let isError = false;
-  
+
   if (result) {
     isError = result.is_error || false;
     if (typeof result.content === 'string') {
@@ -896,7 +904,7 @@ export const GrepWidget: React.FC<{
       }
     }
   }
-  
+
   // Parse grep results to extract file paths and matches
   const parseGrepResults = (content: string) => {
     const lines = content.split('\n').filter(line => line.trim());
@@ -905,7 +913,7 @@ export const GrepWidget: React.FC<{
       lineNumber: number;
       content: string;
     }> = [];
-    
+
     lines.forEach(line => {
       // Common grep output format: filename:lineNumber:content
       const match = line.match(/^(.+?):(\d+):(.*)$/);
@@ -917,12 +925,12 @@ export const GrepWidget: React.FC<{
         });
       }
     });
-    
+
     return results;
   };
-  
+
   const grepResults = result && !isError ? parseGrepResults(resultContent) : [];
-  
+
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2 p-3 rounded-lg bg-gradient-to-r from-emerald-500/10 to-teal-500/10 border border-emerald-500/20">
@@ -935,7 +943,7 @@ export const GrepWidget: React.FC<{
           </div>
         )}
       </div>
-      
+
       {/* Search Parameters */}
       <div className="rounded-lg border bg-muted/20 p-3 space-y-2">
         <div className="grid gap-2">
@@ -949,7 +957,7 @@ export const GrepWidget: React.FC<{
               {pattern}
             </code>
           </div>
-          
+
           {/* Path */}
           {path && (
             <div className="flex items-start gap-3">
@@ -962,7 +970,7 @@ export const GrepWidget: React.FC<{
               </code>
             </div>
           )}
-          
+
           {/* Include/Exclude patterns in a row */}
           {(include || exclude) && (
             <div className="flex gap-4">
@@ -977,7 +985,7 @@ export const GrepWidget: React.FC<{
                   </code>
                 </div>
               )}
-              
+
               {exclude && (
                 <div className="flex items-center gap-2 flex-1">
                   <div className="flex items-center gap-1.5">
@@ -993,7 +1001,7 @@ export const GrepWidget: React.FC<{
           )}
         </div>
       </div>
-      
+
       {/* Results */}
       {result && (
         <div className="space-y-2">
@@ -1017,17 +1025,17 @@ export const GrepWidget: React.FC<{
                 )}
                 <span>{grepResults.length} matches found</span>
               </button>
-              
+
               {isExpanded && (
                 <div className="rounded-lg border bg-background overflow-hidden">
                   <div className="max-h-[400px] overflow-y-auto">
                     {grepResults.map((match, idx) => {
                       const fileName = match.file.split('/').pop() || match.file;
                       const dirPath = match.file.substring(0, match.file.lastIndexOf('/'));
-                      
+
                       return (
-                        <div 
-                          key={idx} 
+                        <div
+                          key={idx}
                           className={cn(
                             "flex items-start gap-3 p-3 border-b border-border hover:bg-muted/50 transition-colors",
                             idx === grepResults.length - 1 && "border-b-0"
@@ -1039,7 +1047,7 @@ export const GrepWidget: React.FC<{
                               {match.lineNumber}
                             </span>
                           </div>
-                          
+
                           <div className="flex-1 space-y-1 min-w-0">
                             <div className="flex items-center gap-2">
                               <span className="text-xs font-medium text-blue-400 truncate">
@@ -1120,18 +1128,18 @@ const getLanguage = (path: string) => {
 /**
  * Widget for Edit tool - shows the edit operation
  */
-export const EditWidget: React.FC<{ 
-  file_path: string; 
-  old_string: string; 
+export const EditWidget: React.FC<{
+  file_path: string;
+  old_string: string;
   new_string: string;
   result?: any;
 }> = ({ file_path, old_string, new_string, result: _result }) => {
   const { theme } = useTheme();
   const syntaxTheme = getClaudeSyntaxTheme(theme);
 
-  const diffResult = Diff.diffLines(old_string || '', new_string || '', { 
+  const diffResult = Diff.diffLines(old_string || '', new_string || '', {
     newlineIsToken: true,
-    ignoreWhitespace: false 
+    ignoreWhitespace: false
   });
   const language = getLanguage(file_path);
 
@@ -1148,12 +1156,12 @@ export const EditWidget: React.FC<{
       <div className="rounded-lg border bg-background overflow-hidden text-xs font-mono">
         <div className="max-h-[440px] overflow-y-auto overflow-x-auto">
           {diffResult.map((part, index) => {
-            const partClass = part.added 
-              ? 'bg-green-950/20' 
-              : part.removed 
-              ? 'bg-red-950/20'
-              : '';
-            
+            const partClass = part.added
+              ? 'bg-green-950/20'
+              : part.removed
+                ? 'bg-red-950/20'
+                : '';
+
             if (!part.added && !part.removed && part.count && part.count > 8) {
               return (
                 <div key={index} className="px-4 py-1 bg-muted border-y border-border text-center text-muted-foreground text-xs">
@@ -1161,7 +1169,7 @@ export const EditWidget: React.FC<{
                 </div>
               );
             }
-            
+
             const value = part.value.endsWith('\n') ? part.value.slice(0, -1) : part.value;
 
             return (
@@ -1205,13 +1213,13 @@ export const EditWidget: React.FC<{
 export const EditResultWidget: React.FC<{ content: string }> = ({ content }) => {
   const { theme } = useTheme();
   const syntaxTheme = getClaudeSyntaxTheme(theme);
-  
+
   // Parse the content to extract file path and code snippet
   const lines = content.split('\n');
   let filePath = '';
   const codeLines: { lineNumber: string; code: string }[] = [];
   let inCodeBlock = false;
-  
+
   for (const rawLine of lines) {
     const line = rawLine.replace(/\r$/, '');
     if (line.includes('The file') && line.includes('has been updated')) {
@@ -1286,21 +1294,21 @@ export const EditResultWidget: React.FC<{ content: string }> = ({ content }) => 
 /**
  * Widget for MCP (Model Context Protocol) tools
  */
-export const MCPWidget: React.FC<{ 
-  toolName: string; 
+export const MCPWidget: React.FC<{
+  toolName: string;
   input?: any;
   result?: any;
 }> = ({ toolName, input, result: _result }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const { theme } = useTheme();
   const syntaxTheme = getClaudeSyntaxTheme(theme);
-  
+
   // Parse the tool name to extract components
   // Format: mcp__namespace__method
   const parts = toolName.split('__');
   const namespace = parts[1] || '';
   const method = parts[2] || '';
-  
+
   // Format namespace for display (handle kebab-case and snake_case)
   const formatNamespace = (ns: string) => {
     return ns
@@ -1310,7 +1318,7 @@ export const MCPWidget: React.FC<{
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   };
-  
+
   // Format method name
   const formatMethod = (m: string) => {
     return m
@@ -1319,17 +1327,17 @@ export const MCPWidget: React.FC<{
       .map(word => word.charAt(0).toUpperCase() + word.slice(1))
       .join(' ');
   };
-  
+
   const hasInput = input && Object.keys(input).length > 0;
   const inputString = hasInput ? JSON.stringify(input, null, 2) : '';
   const isLargeInput = inputString.length > 200;
-  
+
   // Count tokens approximation (very rough estimate)
   const estimateTokens = (str: string) => {
     // Rough approximation: ~4 characters per token
     return Math.ceil(str.length / 4);
   };
-  
+
   const inputTokens = hasInput ? estimateTokens(inputString) : 0;
 
   return (
@@ -1346,8 +1354,8 @@ export const MCPWidget: React.FC<{
           </div>
           {hasInput && (
             <div className="flex items-center gap-2">
-              <Badge 
-                variant="outline" 
+              <Badge
+                variant="outline"
                 className="text-xs border-violet-500/30 text-violet-600 dark:text-violet-400"
               >
                 ~{inputTokens} tokens
@@ -1368,7 +1376,7 @@ export const MCPWidget: React.FC<{
           )}
         </div>
       </div>
-      
+
       {/* Tool Path */}
       <div className="px-4 py-3 space-y-3">
         <div className="flex items-center gap-2 text-sm">
@@ -1386,7 +1394,7 @@ export const MCPWidget: React.FC<{
             </code>
           </div>
         </div>
-        
+
         {/* Input Parameters */}
         {hasInput && (
           <div className={cn(
@@ -1422,13 +1430,13 @@ export const MCPWidget: React.FC<{
                   </SyntaxHighlighter>
                 </div>
               </div>
-              
+
               {/* Gradient fade for collapsed view */}
               {!isExpanded && isLargeInput && (
                 <div className="absolute bottom-0 left-0 right-0 h-12 bg-gradient-to-t from-background/80 to-transparent pointer-events-none" />
               )}
             </div>
-            
+
             {/* Expand hint */}
             {!isExpanded && isLargeInput && (
               <div className="text-center mt-2">
@@ -1443,7 +1451,7 @@ export const MCPWidget: React.FC<{
             )}
           </div>
         )}
-        
+
         {/* No input message */}
         {!hasInput && (
           <div className="text-xs text-muted-foreground italic px-2">
@@ -1458,7 +1466,7 @@ export const MCPWidget: React.FC<{
 /**
  * Widget for user commands (e.g., model, clear)
  */
-export const CommandWidget: React.FC<{ 
+export const CommandWidget: React.FC<{
   commandName: string;
   commandMessage: string;
   commandArgs?: string;
@@ -1488,7 +1496,7 @@ export const CommandWidget: React.FC<{
 /**
  * Widget for command output/stdout
  */
-export const CommandOutputWidget: React.FC<{ 
+export const CommandOutputWidget: React.FC<{
   output: string;
   onLinkDetected?: (url: string) => void;
 }> = ({ output, onLinkDetected }) => {
@@ -1509,7 +1517,7 @@ export const CommandOutputWidget: React.FC<{
     const parts = text.split(/(\u001b\[\d+m)/);
     let isBold = false;
     const elements: React.ReactNode[] = [];
-    
+
     parts.forEach((part, idx) => {
       if (part === '\u001b[1m') {
         isBold = true;
@@ -1521,25 +1529,25 @@ export const CommandOutputWidget: React.FC<{
         // Ignore other ANSI codes for now
         return;
       }
-      
+
       if (!part) return;
-      
+
       // Make links clickable within this part
       const linkElements = makeLinksClickable(part, (url) => {
         onLinkDetected?.(url);
       });
-      
+
       if (isBold) {
         elements.push(
           <span key={idx} className="font-bold">
             {linkElements}
-        </span>
-      );
+          </span>
+        );
       } else {
         elements.push(...linkElements);
       }
     });
-    
+
     return elements;
   };
 
@@ -1561,7 +1569,7 @@ export const CommandOutputWidget: React.FC<{
 /**
  * Widget for AI-generated summaries
  */
-export const SummaryWidget: React.FC<{ 
+export const SummaryWidget: React.FC<{
   summary: string;
   leafUuid?: string;
 }> = ({ summary, leafUuid }) => {
@@ -1599,7 +1607,7 @@ export const MultiEditWidget: React.FC<{
   const language = getLanguage(file_path);
   const { theme } = useTheme();
   const syntaxTheme = getClaudeSyntaxTheme(theme);
-  
+
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2 mb-2">
@@ -1611,7 +1619,7 @@ export const MultiEditWidget: React.FC<{
           <FileText className="h-3 w-3 text-blue-500" />
           <code className="text-xs font-mono text-blue-500">{file_path}</code>
         </div>
-        
+
         <div className="space-y-1">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
@@ -1620,27 +1628,27 @@ export const MultiEditWidget: React.FC<{
             <ChevronRight className={cn("h-3 w-3 transition-transform", isExpanded && "rotate-90")} />
             {edits.length} edit{edits.length !== 1 ? 's' : ''}
           </button>
-          
+
           {isExpanded && (
             <div className="space-y-3 mt-3">
               {edits.map((edit, index) => {
-                const diffResult = Diff.diffLines(edit.old_string || '', edit.new_string || '', { 
+                const diffResult = Diff.diffLines(edit.old_string || '', edit.new_string || '', {
                   newlineIsToken: true,
-                  ignoreWhitespace: false 
+                  ignoreWhitespace: false
                 });
-                
+
                 return (
                   <div key={index} className="space-y-1">
                     <div className="text-xs font-medium text-muted-foreground">Edit {index + 1}</div>
                     <div className="rounded-lg border bg-background overflow-hidden text-xs font-mono">
                       <div className="max-h-[300px] overflow-y-auto overflow-x-auto">
                         {diffResult.map((part, partIndex) => {
-                          const partClass = part.added 
-                            ? 'bg-green-950/20' 
-                            : part.removed 
-                            ? 'bg-red-950/20'
-                            : '';
-                          
+                          const partClass = part.added
+                            ? 'bg-green-950/20'
+                            : part.removed
+                              ? 'bg-red-950/20'
+                              : '';
+
                           if (!part.added && !part.removed && part.count && part.count > 8) {
                             return (
                               <div key={partIndex} className="px-4 py-1 bg-muted border-y border-border text-center text-muted-foreground text-xs">
@@ -1648,7 +1656,7 @@ export const MultiEditWidget: React.FC<{
                               </div>
                             );
                           }
-                          
+
                           const value = part.value.endsWith('\n') ? part.value.slice(0, -1) : part.value;
 
                           return (
@@ -1696,7 +1704,7 @@ export const MultiEditWidget: React.FC<{
 /**
  * Widget for displaying MultiEdit tool results with diffs
  */
-export const MultiEditResultWidget: React.FC<{ 
+export const MultiEditResultWidget: React.FC<{
   content: string;
   edits?: Array<{ old_string: string; new_string: string }>;
 }> = ({ content, edits }) => {
@@ -1710,19 +1718,19 @@ export const MultiEditResultWidget: React.FC<{
             {edits.length} Changes Applied
           </span>
         </div>
-        
+
         <div className="space-y-4">
           {edits.map((edit, index) => {
             // Split the strings into lines for diff display
             const oldLines = edit.old_string.split('\n');
             const newLines = edit.new_string.split('\n');
-            
+
             return (
               <div key={index} className="border border-border/50 rounded-md overflow-hidden">
                 <div className="px-3 py-1 bg-muted/50 border-b border-border/50">
                   <span className="text-xs font-medium text-muted-foreground">Change {index + 1}</span>
                 </div>
-                
+
                 <div className="font-mono text-xs">
                   {/* Show removed lines */}
                   {oldLines.map((line, lineIndex) => (
@@ -1738,7 +1746,7 @@ export const MultiEditResultWidget: React.FC<{
                       </pre>
                     </div>
                   ))}
-                  
+
                   {/* Show added lines */}
                   {newLines.map((line, lineIndex) => (
                     <div
@@ -1761,7 +1769,7 @@ export const MultiEditResultWidget: React.FC<{
       </div>
     );
   }
-  
+
   // Fallback to simple content display
   return (
     <div className="p-3 bg-muted/50 rounded-md border">
@@ -1777,7 +1785,7 @@ export const SystemReminderWidget: React.FC<{ message: string }> = ({ message })
   // Extract icon based on message content
   let icon = <Info className="h-4 w-4" />;
   let colorClass = "border-blue-500/20 bg-blue-500/5 text-blue-600";
-  
+
   if (message.toLowerCase().includes("warning")) {
     icon = <AlertCircle className="h-4 w-4" />;
     colorClass = "border-yellow-500/20 bg-yellow-500/5 text-yellow-600";
@@ -1785,7 +1793,7 @@ export const SystemReminderWidget: React.FC<{ message: string }> = ({ message })
     icon = <AlertCircle className="h-4 w-4" />;
     colorClass = "border-destructive/20 bg-destructive/5 text-destructive";
   }
-  
+
   return (
     <div className={cn("flex items-start gap-2 p-3 rounded-md border", colorClass)}>
       <div className="mt-0.5">{icon}</div>
@@ -1805,11 +1813,11 @@ export const SystemInitializedWidget: React.FC<{
   tools?: string[];
 }> = ({ sessionId, model, cwd, tools = [] }) => {
   const [mcpExpanded, setMcpExpanded] = useState(false);
-  
+
   // Separate regular tools from MCP tools
   const regularTools = tools.filter(tool => !tool.startsWith('mcp__'));
   const mcpTools = tools.filter(tool => tool.startsWith('mcp__'));
-  
+
   // Tool icon mapping for regular tools
   const toolIcons: Record<string, LucideIcon> = {
     'task': CheckSquare,
@@ -1829,13 +1837,13 @@ export const SystemInitializedWidget: React.FC<{
     'todowrite': ListPlus,
     'websearch': Globe2,
   };
-  
+
   // Get icon for a tool, fallback to Wrench
   const getToolIcon = (toolName: string) => {
     const normalizedName = toolName.toLowerCase();
     return toolIcons[normalizedName] || Wrench;
   };
-  
+
   // Format MCP tool name (remove mcp__ prefix and format underscores)
   const formatMcpToolName = (toolName: string) => {
     // Remove mcp__ prefix
@@ -1863,7 +1871,7 @@ export const SystemInitializedWidget: React.FC<{
         .join(' ')
     };
   };
-  
+
   // Group MCP tools by provider
   const mcpToolsByProvider = mcpTools.reduce((acc, tool) => {
     const { provider } = formatMcpToolName(tool);
@@ -1873,7 +1881,7 @@ export const SystemInitializedWidget: React.FC<{
     acc[provider].push(tool);
     return acc;
   }, {} as Record<string, string[]>);
-  
+
   return (
     <Card className="border-blue-500/20 bg-blue-500/5">
       <CardContent className="p-4">
@@ -1881,7 +1889,7 @@ export const SystemInitializedWidget: React.FC<{
           <Settings className="h-5 w-5 text-blue-500 mt-0.5" />
           <div className="flex-1 space-y-4">
             <h4 className="font-semibold text-sm">System Initialized</h4>
-            
+
             {/* Session Info */}
             <div className="space-y-2">
               {sessionId && (
@@ -1893,7 +1901,7 @@ export const SystemInitializedWidget: React.FC<{
                   </code>
                 </div>
               )}
-              
+
               {model && (
                 <div className="flex items-center gap-2 text-xs">
                   <Cpu className="h-3.5 w-3.5 text-muted-foreground" />
@@ -1903,7 +1911,7 @@ export const SystemInitializedWidget: React.FC<{
                   </code>
                 </div>
               )}
-              
+
               {cwd && (
                 <div className="flex items-center gap-2 text-xs">
                   <FolderOpen className="h-3.5 w-3.5 text-muted-foreground" />
@@ -1914,7 +1922,7 @@ export const SystemInitializedWidget: React.FC<{
                 </div>
               )}
             </div>
-            
+
             {/* Regular Tools */}
             {regularTools.length > 0 && (
               <div className="space-y-2">
@@ -1928,9 +1936,9 @@ export const SystemInitializedWidget: React.FC<{
                   {regularTools.map((tool, idx) => {
                     const Icon = getToolIcon(tool);
                     return (
-                      <Badge 
-                        key={idx} 
-                        variant="secondary" 
+                      <Badge
+                        key={idx}
+                        variant="secondary"
                         className="text-xs py-0.5 px-2 flex items-center gap-1"
                       >
                         <Icon className="h-3 w-3" />
@@ -1941,7 +1949,7 @@ export const SystemInitializedWidget: React.FC<{
                 </div>
               </div>
             )}
-            
+
             {/* MCP Tools */}
             {mcpTools.length > 0 && (
               <div className="space-y-2">
@@ -1956,7 +1964,7 @@ export const SystemInitializedWidget: React.FC<{
                     mcpExpanded && "rotate-180"
                   )} />
                 </button>
-                
+
                 {mcpExpanded && (
                   <div className="ml-5 space-y-3">
                     {Object.entries(mcpToolsByProvider).map(([provider, providerTools]) => (
@@ -1970,9 +1978,9 @@ export const SystemInitializedWidget: React.FC<{
                           {providerTools.map((tool, idx) => {
                             const { method } = formatMcpToolName(tool);
                             return (
-                              <Badge 
-                                key={idx} 
-                                variant="outline" 
+                              <Badge
+                                key={idx}
+                                variant="outline"
                                 className="text-xs py-0 px-1.5 font-normal"
                               >
                                 {method}
@@ -1986,7 +1994,7 @@ export const SystemInitializedWidget: React.FC<{
                 )}
               </div>
             )}
-            
+
             {/* Show message if no tools */}
             {tools.length === 0 && (
               <div className="text-xs text-muted-foreground italic">
@@ -2003,13 +2011,13 @@ export const SystemInitializedWidget: React.FC<{
 /**
  * Widget for Task tool - displays sub-agent task information
  */
-export const TaskWidget: React.FC<{ 
-  description?: string; 
+export const TaskWidget: React.FC<{
+  description?: string;
   prompt?: string;
   result?: any;
 }> = ({ description, prompt, result: _result }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  
+
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2 mb-2">
@@ -2019,7 +2027,7 @@ export const TaskWidget: React.FC<{
         </div>
         <span className="text-sm font-medium">Spawning Sub-Agent Task</span>
       </div>
-      
+
       <div className="ml-6 space-y-3">
         {description && (
           <div className="rounded-lg border border-purple-500/20 bg-purple-500/5 p-3">
@@ -2030,7 +2038,7 @@ export const TaskWidget: React.FC<{
             <p className="text-sm text-foreground ml-5">{description}</p>
           </div>
         )}
-        
+
         {prompt && (
           <div className="space-y-2">
             <button
@@ -2040,7 +2048,7 @@ export const TaskWidget: React.FC<{
               <ChevronRight className={cn("h-3 w-3 transition-transform", isExpanded && "rotate-90")} />
               <span>Task Instructions</span>
             </button>
-            
+
             {isExpanded && (
               <div className="rounded-lg border bg-muted/30 p-3">
                 <pre className="text-xs font-mono text-muted-foreground whitespace-pre-wrap">
@@ -2058,41 +2066,41 @@ export const TaskWidget: React.FC<{
 /**
  * Widget for WebSearch tool - displays web search query and results
  */
-export const WebSearchWidget: React.FC<{ 
-  query: string; 
+export const WebSearchWidget: React.FC<{
+  query: string;
   result?: any;
 }> = ({ query, result }) => {
   const [expandedSections, setExpandedSections] = useState<Set<number>>(new Set());
-  
+
   // Parse the result to extract all links sections and build a structured representation
   const parseSearchResult = (resultContent: string) => {
     const sections: Array<{
       type: 'text' | 'links';
       content: string | Array<{ title: string; url: string }>;
     }> = [];
-    
+
     // Split by "Links: [" to find all link sections
     const parts = resultContent.split(/Links:\s*\[/);
-    
+
     // First part is always text (or empty)
     if (parts[0]) {
       sections.push({ type: 'text', content: parts[0].trim() });
     }
-    
+
     // Process each links section
     parts.slice(1).forEach(part => {
       try {
         // Find the closing bracket
         const closingIndex = part.indexOf(']');
         if (closingIndex === -1) return;
-        
+
         const linksJson = '[' + part.substring(0, closingIndex + 1);
         const remainingText = part.substring(closingIndex + 1).trim();
-        
+
         // Parse the JSON array
         const links = JSON.parse(linksJson);
         sections.push({ type: 'links', content: links });
-        
+
         // Add any remaining text
         if (remainingText) {
           sections.push({ type: 'text', content: remainingText });
@@ -2102,10 +2110,10 @@ export const WebSearchWidget: React.FC<{
         sections.push({ type: 'text', content: 'Links: [' + part });
       }
     });
-    
+
     return sections;
   };
-  
+
   const toggleSection = (index: number) => {
     const newExpanded = new Set(expandedSections);
     if (newExpanded.has(index)) {
@@ -2115,7 +2123,7 @@ export const WebSearchWidget: React.FC<{
     }
     setExpandedSections(newExpanded);
   };
-  
+
   // Extract result content if available
   let searchResults: {
     sections: Array<{
@@ -2124,7 +2132,7 @@ export const WebSearchWidget: React.FC<{
     }>;
     noResults: boolean;
   } = { sections: [], noResults: false };
-  
+
   if (result) {
     let resultContent = '';
     if (typeof result.content === 'string') {
@@ -2140,12 +2148,12 @@ export const WebSearchWidget: React.FC<{
         resultContent = JSON.stringify(result.content, null, 2);
       }
     }
-    
-    searchResults.noResults = resultContent.toLowerCase().includes('no links found') || 
-                               resultContent.toLowerCase().includes('no results');
+
+    searchResults.noResults = resultContent.toLowerCase().includes('no links found') ||
+      resultContent.toLowerCase().includes('no results');
     searchResults.sections = parseSearchResult(resultContent);
   }
-  
+
   const handleLinkClick = async (url: string) => {
     try {
       await open(url);
@@ -2153,7 +2161,7 @@ export const WebSearchWidget: React.FC<{
       console.error('Failed to open URL:', error);
     }
   };
-  
+
   return (
     <div className="flex flex-col gap-2">
       {/* Subtle Search Query Header */}
@@ -2162,7 +2170,7 @@ export const WebSearchWidget: React.FC<{
         <span className="text-xs font-medium uppercase tracking-wider text-blue-600/70 dark:text-blue-400/70">Web Search</span>
         <span className="text-sm text-muted-foreground/80 flex-1 truncate">{query}</span>
       </div>
-      
+
       {/* Results */}
       {result && (
         <div className="rounded-lg border bg-background/50 backdrop-blur-sm overflow-hidden">
@@ -2194,7 +2202,7 @@ export const WebSearchWidget: React.FC<{
                 } else if (section.type === 'links' && Array.isArray(section.content)) {
                   const links = section.content;
                   const isExpanded = expandedSections.has(idx);
-                  
+
                   return (
                     <div key={idx} className="space-y-1.5">
                       {/* Toggle Button */}
@@ -2209,7 +2217,7 @@ export const WebSearchWidget: React.FC<{
                         )}
                         <span>{links.length} result{links.length !== 1 ? 's' : ''}</span>
                       </button>
-                      
+
                       {/* Links Display */}
                       {isExpanded ? (
                         /* Expanded Card View */
@@ -2271,15 +2279,15 @@ export const WebSearchWidget: React.FC<{
  * Widget for displaying AI thinking/reasoning content
  * Collapsible and closed by default
  */
-export const ThinkingWidget: React.FC<{ 
+export const ThinkingWidget: React.FC<{
   thinking: string;
   signature?: string;
 }> = ({ thinking }) => {
   const [isExpanded, setIsExpanded] = useState(false);
-  
+
   // Strip whitespace from thinking content
   const trimmedThinking = thinking.trim();
-  
+
   return (
     <div className="rounded-lg border border-gray-500/20 bg-gray-500/5 overflow-hidden">
       <button
@@ -2300,7 +2308,7 @@ export const ThinkingWidget: React.FC<{
           isExpanded && "rotate-90"
         )} />
       </button>
-      
+
       {isExpanded && (
         <div className="px-4 pb-4 pt-2 border-t border-gray-500/20">
           <pre className="text-xs font-mono text-gray-600 dark:text-gray-400 whitespace-pre-wrap bg-gray-500/5 p-3 rounded-lg italic">
@@ -2315,19 +2323,19 @@ export const ThinkingWidget: React.FC<{
 /**
  * Widget for WebFetch tool - displays URL fetching with optional prompts
  */
-export const WebFetchWidget: React.FC<{ 
+export const WebFetchWidget: React.FC<{
   url: string;
   prompt?: string;
   result?: any;
 }> = ({ url, prompt, result }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [showFullContent, setShowFullContent] = useState(false);
-  
+
   // Extract result content if available
   let fetchedContent = '';
   let isLoading = !result;
   let hasError = false;
-  
+
   if (result) {
     if (typeof result.content === 'string') {
       fetchedContent = result.content;
@@ -2342,20 +2350,20 @@ export const WebFetchWidget: React.FC<{
         fetchedContent = JSON.stringify(result.content, null, 2);
       }
     }
-    
+
     // Check if there's an error
-    hasError = result.is_error || 
-               fetchedContent.toLowerCase().includes('error') ||
-               fetchedContent.toLowerCase().includes('failed');
+    hasError = result.is_error ||
+      fetchedContent.toLowerCase().includes('error') ||
+      fetchedContent.toLowerCase().includes('failed');
   }
-  
+
   // Truncate content for preview
   const maxPreviewLength = 500;
   const isTruncated = fetchedContent.length > maxPreviewLength;
   const previewContent = isTruncated && !showFullContent
     ? fetchedContent.substring(0, maxPreviewLength) + '...'
     : fetchedContent;
-  
+
   // Extract domain from URL for display
   const getDomain = (urlString: string) => {
     try {
@@ -2365,7 +2373,7 @@ export const WebFetchWidget: React.FC<{
       return urlString;
     }
   };
-  
+
   const handleUrlClick = async () => {
     try {
       await open(url);
@@ -2373,7 +2381,7 @@ export const WebFetchWidget: React.FC<{
       console.error('Failed to open URL:', error);
     }
   };
-  
+
   return (
     <div className="flex flex-col gap-2">
       {/* Header with URL and optional prompt */}
@@ -2389,7 +2397,7 @@ export const WebFetchWidget: React.FC<{
             {url}
           </button>
         </div>
-        
+
         {/* Prompt Display */}
         {prompt && (
           <div className="ml-6 space-y-1">
@@ -2401,7 +2409,7 @@ export const WebFetchWidget: React.FC<{
               <Info className="h-3 w-3" />
               <span>Analysis Prompt</span>
             </button>
-            
+
             {isExpanded && (
               <div className="rounded-lg border bg-muted/30 p-3 ml-4">
                 <p className="text-sm text-foreground/90">
@@ -2412,7 +2420,7 @@ export const WebFetchWidget: React.FC<{
           </div>
         )}
       </div>
-      
+
       {/* Results */}
       {isLoading ? (
         <div className="rounded-lg border bg-background/50 backdrop-blur-sm overflow-hidden">
@@ -2464,7 +2472,7 @@ export const WebFetchWidget: React.FC<{
                   </button>
                 )}
               </div>
-              
+
               {/* Fetched Content */}
               <div className="relative">
                 <div className={cn(
@@ -2555,12 +2563,12 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
 
   // Filter todos based on search and status
   const filteredTodos = todos.filter(todo => {
-    const matchesSearch = !searchQuery || 
+    const matchesSearch = !searchQuery ||
       todo.content.toLowerCase().includes(searchQuery.toLowerCase()) ||
       (todo.id && todo.id.toLowerCase().includes(searchQuery.toLowerCase()));
-    
+
     const matchesStatus = statusFilter === "all" || todo.status === statusFilter;
-    
+
     return matchesSearch && matchesStatus;
   });
 
@@ -2571,7 +2579,7 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
     inProgress: todos.filter(t => t.status === "in_progress").length,
     pending: todos.filter(t => t.status === "pending").length,
     cancelled: todos.filter(t => t.status === "cancelled").length,
-    completionRate: todos.length > 0 
+    completionRate: todos.length > 0
       ? Math.round((todos.filter(t => t.status === "completed").length / todos.length) * 100)
       : 0
   };
@@ -2600,7 +2608,7 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
   // Export todos as JSON
   const exportAsJson = () => {
     const dataStr = JSON.stringify(todos, null, 2);
-    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+    const dataUri = 'data:application/json;charset=utf-8,' + encodeURIComponent(dataStr);
     const exportFileDefaultName = 'todos.json';
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
@@ -2612,7 +2620,7 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
   const exportAsMarkdown = () => {
     let markdown = "# Todo List\n\n";
     markdown += `**Total**: ${stats.total} | **Completed**: ${stats.completed} | **In Progress**: ${stats.inProgress} | **Pending**: ${stats.pending}\n\n`;
-    
+
     const statusGroups = ["pending", "in_progress", "completed", "cancelled"];
     statusGroups.forEach(status => {
       const todosInStatus = todos.filter(t => t.status === status);
@@ -2628,8 +2636,8 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
         markdown += "\n";
       }
     });
-    
-    const dataUri = 'data:text/markdown;charset=utf-8,'+ encodeURIComponent(markdown);
+
+    const dataUri = 'data:text/markdown;charset=utf-8,' + encodeURIComponent(markdown);
     const linkElement = document.createElement('a');
     linkElement.setAttribute('href', dataUri);
     linkElement.setAttribute('download', 'todos.md');
@@ -2639,7 +2647,7 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
   // Render todo card
   const TodoCard = ({ todo, isExpanded }: { todo: any; isExpanded: boolean }) => {
     const config = statusConfig[todo.status as keyof typeof statusConfig] || statusConfig.pending;
-    
+
     return (
       <motion.div
         layout
@@ -2665,7 +2673,7 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
             )}>
               {todo.content}
             </p>
-            
+
             {/* Todo metadata */}
             <div className="flex flex-wrap items-center gap-2 text-xs text-muted-foreground">
               {todo.id && (
@@ -2681,7 +2689,7 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
                 </div>
               )}
             </div>
-            
+
             {/* Expanded details */}
             <AnimatePresence>
               {isExpanded && todo.dependencies?.length > 0 && (
@@ -2738,7 +2746,7 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
         {Object.entries(statusConfig).map(([status, config]) => {
           const count = stats[status as keyof typeof stats] || 0;
           const percentage = stats.total > 0 ? Math.round((count / stats.total) * 100) : 0;
-          
+
           return (
             <Card key={status} className={cn("p-4", config.bgColor)}>
               <div className="flex items-center gap-3">
@@ -2764,7 +2772,7 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
           {Object.entries(statusConfig).map(([status, config]) => {
             const count = stats[status as keyof typeof stats] || 0;
             const percentage = stats.total > 0 ? (count / stats.total) * 100 : 0;
-            
+
             return (
               <div key={status} className="flex items-center gap-3">
                 <span className="text-xs w-20 text-right">{config.label}</span>
@@ -2790,7 +2798,7 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
       {Object.entries(todosByStatus).map(([status, todos]) => {
         const config = statusConfig[status as keyof typeof statusConfig];
-        
+
         return (
           <div key={status} className="space-y-3">
             <div className="flex items-center gap-2 pb-2 border-b">
@@ -2802,9 +2810,9 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
             </div>
             <div className="space-y-2">
               {todos.map(todo => (
-                <TodoCard 
-                  key={todo.id || todos.indexOf(todo)} 
-                  todo={todo} 
+                <TodoCard
+                  key={todo.id || todos.indexOf(todo)}
+                  todo={todo}
                   isExpanded={expandedTodos.has(todo.id)}
                 />
               ))}
@@ -2825,15 +2833,15 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
     // Group todos by their dependencies to create a timeline
     const rootTodos = todos.filter(t => !t.dependencies || t.dependencies.length === 0);
     const rendered = new Set<string>();
-    
+
     const renderTodoWithDependents = (todo: any, level = 0) => {
       if (rendered.has(todo.id)) return null;
       rendered.add(todo.id);
-      
-      const dependents = todos.filter(t => 
+
+      const dependents = todos.filter(t =>
         t.dependencies?.includes(todo.id) && !rendered.has(t.id)
       );
-      
+
       return (
         <div key={todo.id} className="relative">
           {level > 0 && (
@@ -2850,8 +2858,8 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
               )}
             </div>
             <div className="flex-1 pb-6">
-              <TodoCard 
-                todo={todo} 
+              <TodoCard
+                todo={todo}
                 isExpanded={expandedTodos.has(todo.id)}
               />
             </div>
@@ -2860,7 +2868,7 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
         </div>
       );
     };
-    
+
     return (
       <div className="space-y-4">
         {rootTodos.map(todo => renderTodoWithDependents(todo))}
@@ -2882,7 +2890,7 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
             </p>
           </div>
         </div>
-        
+
         {/* Export Options */}
         <div className="flex items-center gap-2">
           <Button
@@ -2918,7 +2926,7 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
             className="pl-9 h-9"
           />
         </div>
-        
+
         <div className="flex gap-2">
           <div className="flex gap-1 p-1 bg-muted rounded-md">
             {["all", "pending", "in_progress", "completed", "cancelled"].map(status => (
@@ -2966,17 +2974,17 @@ export const TodoReadWidget: React.FC<{ todos?: any[]; result?: any }> = ({ todo
           <div className="space-y-2">
             <AnimatePresence mode="popLayout">
               {filteredTodos.map(todo => (
-                <TodoCard 
-                  key={todo.id || filteredTodos.indexOf(todo)} 
-                  todo={todo} 
+                <TodoCard
+                  key={todo.id || filteredTodos.indexOf(todo)}
+                  todo={todo}
                   isExpanded={expandedTodos.has(todo.id)}
                 />
               ))}
             </AnimatePresence>
             {filteredTodos.length === 0 && (
               <div className="text-center py-8 text-sm text-muted-foreground">
-                {searchQuery || statusFilter !== "all" 
-                  ? "No todos match your filters" 
+                {searchQuery || statusFilter !== "all"
+                  ? "No todos match your filters"
                   : "No todos available"}
               </div>
             )}

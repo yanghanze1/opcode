@@ -1,0 +1,205 @@
+{
+  "title": "Sessions",
+  "subtitle": "查看和管理你的 Claude Code sessions",
+  "labels": {
+    "session_on": "Session 于 {{date}}",
+    "session_id": "Session ID",
+    "first_message": "第一条消息",
+    "no_messages": "暂无消息",
+    "todo": "待办",
+    "queued_prompts": "排队的提示词 ({{count}})",
+    "session_timeline": "Session 时间线",
+    "checkpoint_settings": "Checkpoint 设置",
+    "copy_conversation": "复制对话",
+    "scroll_to_top": "滚动到顶部",
+    "scroll_to_bottom": "滚动到底部",
+    "expand_queue": "展开队列",
+    "collapse_queue": "收起队列",
+    "tokens": "tokens"
+  },
+  "messages": {
+    "no_sessions": "未找到 sessions",
+    "no_sessions_description": "开始一个新 session 以使用 Claude Code",
+    "loading": "加载 sessions 中...",
+    "loading_history": "加载 session 历史中...",
+    "initializing": "初始化 Claude Code 中...",
+    "select_project_first": "请先选择一个 project 目录",
+    "session_cancelled": "Session 已被用户取消",
+    "failed_cancel": "取消执行失败：{{error}}。进程可能仍在后台运行。"
+  },
+  "pagination": {
+    "page": "第 {{current}} 页，共 {{total}} 页"
+  },
+  "memories": {
+    "title": "CLAUDE.md 记忆",
+    "description": "管理 project 特定的上下文文件",
+    "edit": "编辑记忆"
+  },
+  "copy": {
+    "as_markdown": "复制为 Markdown",
+    "as_jsonl": "复制为 JSONL"
+  },
+  "fork": {
+    "title": "Fork Session",
+    "description": "从选定的 checkpoint 创建一个新的 session 分支。",
+    "new_session_name": "新 Session 名称",
+    "placeholder": "例如：替代方案",
+    "create": "创建 Fork",
+    "cancel": "取消"
+  },
+  "slash_commands": {
+    "title": "Slash Commands",
+    "description": "管理 {{projectPath}} 的 project 特定 slash commands"
+  },
+  "timeline": {
+    "experimental_warning": "实验性功能",
+    "experimental_description": "Checkpointing 可能会影响目录结构或导致数据丢失。请谨慎使用。",
+    "title": "Timeline",
+    "checkpoints": "{{count}} 个 checkpoints",
+    "checkpoint": "Checkpoint",
+    "current": "Current",
+    "restore_to_checkpoint": "恢复到此 checkpoint",
+    "fork_from_checkpoint": "从此 checkpoint 创建分支",
+    "compare_checkpoint": "与另一个 checkpoint 比较",
+    "create_checkpoint": "创建 Checkpoint",
+    "save_current_state": "保存当前 session 状态并添加可选描述。",
+    "description_optional": "描述（可选）",
+    "description_placeholder": "例如：重大重构前",
+    "create": "创建 Checkpoint",
+    "loading_timeline": "加载 timeline 中...",
+    "no_checkpoints": "暂无 checkpoints",
+    "failed_to_load": "加载 timeline 失败",
+    "failed_to_create": "创建 checkpoint 失败",
+    "failed_to_restore": "恢复 checkpoint 失败",
+    "restore_confirm": "恢复到 checkpoint \"{{description}}\"？当前状态将保存为新 checkpoint。",
+    "no_prompt": "无提示",
+    "tokens_count": "{{count}} tokens",
+    "files_count": "{{count}} 个文件",
+    "checkpoint_comparison": "Checkpoint 比较",
+    "changes_between": "\"{{from}}\" 和 \"{{to}}\" 之间的更改",
+    "modified_files": "修改的文件",
+    "added_files": "添加的文件",
+    "deleted_files": "删除的文件",
+    "token_delta": "{{delta}} tokens",
+    "additions": "+{{count}}",
+    "deletions": "-{{count}}",
+    "close": "关闭"
+  },
+  "output_viewer": {
+    "title": "{{name}} - 输出",
+    "live": "实时",
+    "messages_count": "{{count}} 条消息",
+    "fullscreen": "全屏",
+    "copy_output": "复制输出",
+    "copy_as_jsonl": "复制为 JSONL",
+    "copy_as_markdown": "复制为 Markdown",
+    "refresh_output": "刷新输出",
+    "loading_output": "加载输出中...",
+    "waiting_for_output": "等待输出中...",
+    "agent_running_no_output": "Agent 正在运行但尚未收到输出",
+    "no_output_available": "无可用输出",
+    "refresh": "刷新",
+    "output_refreshed": "输出已刷新",
+    "output_copied_jsonl": "输出已复制为 JSONL",
+    "output_copied_markdown": "输出已复制为 Markdown",
+    "failed_to_load_output": "加载 session 输出失败",
+    "failed_to_refresh": "刷新输出失败",
+    "agent_complete": "Agent 执行已完成",
+    "agent_cancelled": "Agent 执行已取消",
+    "running": "运行中",
+    "close": "关闭",
+    "additions": "+{{count}}",
+    "deletions": "-{{count}}"
+  },
+  "claude_file_editor": {
+    "subtitle": "编辑项目特定的 Claude Code 系统提示词",
+    "failed_to_load": "加载 CLAUDE.md 文件失败",
+    "failed_to_save": "保存 CLAUDE.md 文件失败",
+    "saved_successfully": "文件保存成功",
+    "unsaved_changes_warning": "您有未保存的更改。确定要离开吗？"
+  },
+  "markdown_editor": {
+    "subtitle": "编辑你的 Claude Code 系统提示词",
+    "failed_to_load": "加载 CLAUDE.md 文件失败",
+    "failed_to_save": "保存 CLAUDE.md 文件失败",
+    "saved_successfully": "CLAUDE.md 保存成功"
+  },
+  "running_sessions": {
+    "title": "运行中的 Claude Sessions",
+    "count": "{{count}} 个运行中",
+    "running": "运行中",
+    "resume": "继续",
+    "started": "开始时间：{{time}}",
+    "model": "模型：{{model}}",
+    "task": "任务：{{task}}",
+    "failed_to_load": "加载运行中的 sessions 失败"
+  },
+  "widgets": {
+    "bash": {
+      "terminal": "Terminal",
+      "running": "运行中...",
+      "command_failed": "命令失败",
+      "command_completed": "命令完成",
+      "running_indicator": "运行中..."
+    },
+    "ls": {
+      "directory_contents": "目录内容：",
+      "listing_directory": "列出目录：",
+      "loading": "加载中...",
+      "directory_contents_label": "目录内容"
+    },
+    "todo": {
+      "title": "Todo List",
+      "high": "高",
+      "medium": "中",
+      "low": "低"
+    },
+    "read": {
+      "reading_file": "读取文件：",
+      "read_result": "读取结果",
+      "file_content_label": "文件内容"
+    },
+    "write": {
+      "writing_file": "写入文件：",
+      "write_complete": "写入完成"
+    },
+    "edit": {
+      "editing_file": "编辑文件：",
+      "edit_result": "编辑结果"
+    },
+    "glob": {
+      "searching_pattern": "搜索模式：",
+      "searching": "搜索中...",
+      "search_failed": "搜索失败",
+      "no_matches": "未找到匹配项",
+      "found_files": "找到 {{count}} 个文件"
+    },
+    "grep": {
+      "searching": "搜索：",
+      "in_path": "在路径：",
+      "found_matches": "找到 {{count}} 个匹配"
+    },
+    "tool_result": "工具结果",
+    "tool_did_not_return": "工具未返回任何输出",
+    "using_tool": "使用工具：",
+    "execution_failed": "执行失败",
+    "execution_complete": "执行完成",
+    "error_rendering": "渲染消息时出错",
+    "unknown_error": "未知错误",
+    "file_content": "文件内容：",
+    "click_expand": "点击\"展开\"查看完整文件",
+    "expand": "展开",
+    "collapse": "收起",
+    "terminal": "终端",
+    "command_failed": "命令失败",
+    "command_completed": "命令完成",
+    "no_content": "无内容"
+  },
+  "stream_message": {
+    "tokens_usage": "Tokens: {{input}} 输入, {{output}} 输出",
+    "cost": "成本：${{cost}} USD",
+    "duration": "时长：{{duration}}s",
+    "turns": "轮次：{{turns}}",
+    "total_tokens": "总 tokens: {{total}} ({{input}} 输入, {{output}} 输出)"
+  }
+}

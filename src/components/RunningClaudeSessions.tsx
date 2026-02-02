@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { api, type ProcessInfo, type Session } from "@/lib/api";
 import { cn } from "@/lib/utils";
 import { formatISOTimestamp } from "@/lib/date-utils";
+import { useTranslation } from "react-i18next";
 
 interface RunningClaudeSessionsProps {
   /**
@@ -25,13 +26,14 @@ export const RunningClaudeSessions: React.FC<RunningClaudeSessionsProps> = ({
   onSessionClick,
   className,
 }) => {
+  const { t } = useTranslation();
   const [runningSessions, setRunningSessions] = useState<ProcessInfo[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     loadRunningSessions();
-    
+
     // Poll for updates every 5 seconds
     const interval = setInterval(loadRunningSessions, 5000);
     return () => clearInterval(interval);
@@ -44,7 +46,7 @@ export const RunningClaudeSessions: React.FC<RunningClaudeSessionsProps> = ({
       setError(null);
     } catch (err) {
       console.error("Failed to load running sessions:", err);
-      setError("Failed to load running sessions");
+      setError(t('sessions:running_sessions.failed_to_load'));
     } finally {
       setLoading(false);
     }
@@ -54,7 +56,7 @@ export const RunningClaudeSessions: React.FC<RunningClaudeSessionsProps> = ({
     // Extract session ID from process type
     if ('ClaudeSession' in processInfo.process_type) {
       const sessionId = processInfo.process_type.ClaudeSession.session_id;
-      
+
       // Create a minimal session object for resumption
       const session: Session = {
         id: sessionId,
@@ -62,13 +64,13 @@ export const RunningClaudeSessions: React.FC<RunningClaudeSessionsProps> = ({
         project_path: processInfo.project_path,
         created_at: new Date(processInfo.started_at).getTime() / 1000,
       };
-      
+
       // Emit event to navigate to the session
-      const event = new CustomEvent('claude-session-selected', { 
-        detail: { session, projectPath: processInfo.project_path } 
+      const event = new CustomEvent('claude-session-selected', {
+        detail: { session, projectPath: processInfo.project_path }
       });
       window.dispatchEvent(event);
-      
+
       onSessionClick?.(session);
     }
   };
@@ -99,19 +101,19 @@ export const RunningClaudeSessions: React.FC<RunningClaudeSessionsProps> = ({
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-1">
           <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-          <h3 className="text-sm font-medium">Active Claude Sessions</h3>
+          <h3 className="text-sm font-medium">{t('sessions:running_sessions.title')}</h3>
         </div>
         <span className="text-xs text-muted-foreground">
-          ({runningSessions.length} running)
+          {t('sessions:running_sessions.count', { count: runningSessions.length })}
         </span>
       </div>
 
       <div className="space-y-2">
         {runningSessions.map((session) => {
-          const sessionId = 'ClaudeSession' in session.process_type 
-            ? session.process_type.ClaudeSession.session_id 
+          const sessionId = 'ClaudeSession' in session.process_type
+            ? session.process_type.ClaudeSession.session_id
             : null;
-          
+
           if (!sessionId) return null;
 
           return (
@@ -122,7 +124,7 @@ export const RunningClaudeSessions: React.FC<RunningClaudeSessionsProps> = ({
               transition={{ duration: 0.15 }}
             >
               <Card className="transition-all hover:shadow-md hover:scale-[1.01] cursor-pointer">
-                <CardContent 
+                <CardContent
                   className="p-3"
                   onClick={() => handleResumeSession(session)}
                 >
@@ -135,33 +137,33 @@ export const RunningClaudeSessions: React.FC<RunningClaudeSessionsProps> = ({
                             {sessionId.substring(0, 20)}...
                           </p>
                           <span className="text-xs text-green-600 font-medium">
-                            Running
+                            {t('sessions:running_sessions.running')}
                           </span>
                         </div>
-                        
+
                         <p className="text-xs text-muted-foreground truncate">
                           {session.project_path}
                         </p>
-                        
+
                         <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                          <span>Started: {formatISOTimestamp(session.started_at)}</span>
-                          <span>Model: {session.model}</span>
+                          <span>{t('sessions:running_sessions.started', { time: formatISOTimestamp(session.started_at) })}</span>
+                          <span>{t('sessions:running_sessions.model', { model: session.model })}</span>
                           {session.task && (
                             <span className="truncate max-w-[200px]" title={session.task}>
-                              Task: {session.task}
+                              {t('sessions:running_sessions.task', { task: session.task })}
                             </span>
                           )}
                         </div>
                       </div>
                     </div>
-                    
+
                     <Button
                       size="sm"
                       variant="ghost"
                       className="flex-shrink-0"
                     >
                       <Play className="h-3 w-3 mr-1" />
-                      Resume
+                      {t('sessions:running_sessions.resume')}
                     </Button>
                   </div>
                 </CardContent>

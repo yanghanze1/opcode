@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use anyhow::Result;
 use chrono;
 use dirs;
@@ -382,6 +383,7 @@ pub async fn list_agents(db: State<'_, AgentDb>) -> Result<Vec<Agent>, String> {
 
 /// Create a new agent
 #[tauri::command]
+#[allow(clippy::too_many_arguments)]
 pub async fn create_agent(
     db: State<'_, AgentDb>,
     name: String,
@@ -437,6 +439,7 @@ pub async fn create_agent(
 
 /// Update an existing agent
 #[tauri::command]
+#[allow(clippy::too_many_arguments)]
 pub async fn update_agent(
     db: State<'_, AgentDb>,
     id: i64,
@@ -806,6 +809,7 @@ fn create_agent_system_command(
 }
 
 /// Spawn agent using system binary command
+#[allow(clippy::too_many_arguments)]
 async fn spawn_agent_system(
     app: AppHandle,
     run_id: i64,
@@ -1675,7 +1679,7 @@ fn create_command_with_env(program: &str) -> Command {
         if let Some(node_bin_dir) = std::path::Path::new(program).parent() {
             let current_path = std::env::var("PATH").unwrap_or_default();
             let node_bin_str = node_bin_dir.to_string_lossy();
-            if !current_path.contains(&node_bin_str.as_ref()) {
+            if !current_path.contains(node_bin_str.as_ref()) {
                 let new_path = format!("{}:{}", node_bin_str, current_path);
                 tokio_cmd.env("PATH", new_path);
             }
@@ -1981,11 +1985,9 @@ pub async fn load_agent_session_history(
         let reader = BufReader::new(file);
         let mut messages = Vec::new();
 
-        for line in reader.lines() {
-            if let Ok(line) = line {
-                if let Ok(json) = serde_json::from_str::<serde_json::Value>(&line) {
-                    messages.push(json);
-                }
+        for line in reader.lines().map_while(Result::ok) {
+            if let Ok(json) = serde_json::from_str::<serde_json::Value>(&line) {
+                messages.push(json);
             }
         }
 

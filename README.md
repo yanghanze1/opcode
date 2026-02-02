@@ -10,7 +10,11 @@
   <p>
     <strong>Create custom agents, manage interactive Claude Code sessions, run secure background agents, and more.</strong>
   </p>
-  
+
+  <p>
+    <strong>English</strong> | <a href="README.zh-CN.md">简体中文</a>
+  </p>
+
   <p>
     <a href="#features"><img src="https://img.shields.io/badge/Features-✨-blue?style=for-the-badge" alt="Features"></a>
     <a href="#installation"><img src="https://img.shields.io/badge/Install-🚀-green?style=for-the-badge" alt="Installation"></a>
@@ -46,17 +50,19 @@ Think of opcode as your command center for Claude Code - bridging the gap betwee
 - [✨ Features](#-features)
   - [🗂️ Project & Session Management](#️-project--session-management)
   - [🤖 CC Agents](#-cc-agents)
-  
+
   - [📊 Usage Analytics Dashboard](#-usage-analytics-dashboard)
   - [🔌 MCP Server Management](#-mcp-server-management)
   - [⏰ Timeline & Checkpoints](#-timeline--checkpoints)
   - [📝 CLAUDE.md Management](#-claudemd-management)
+  - [🌐 Internationalization](#-internationalization)
 - [📖 Usage](#-usage)
   - [Getting Started](#getting-started)
   - [Managing Projects](#managing-projects)
   - [Creating Agents](#creating-agents)
   - [Tracking Usage](#tracking-usage)
   - [Working with MCP Servers](#working-with-mcp-servers)
+  - [Changing Language](#changing-language)
 - [🚀 Installation](#-installation)
 - [🔨 Build from Source](#-build-from-source)
 - [🛠️ Development](#️-development)
@@ -106,6 +112,12 @@ Think of opcode as your command center for Claude Code - bridging the gap betwee
 - **Project Scanner**: Find all CLAUDE.md files in your projects
 - **Syntax Highlighting**: Full markdown support with syntax highlighting
 
+### 🌐 **Internationalization**
+- **Multi-language Support**: Full support for English and Simplified Chinese
+- **Easy Language Switching**: Change language from Settings with one click
+- **Technical Terms Preserved**: Technical terminology (Agent, MCP Server, Token, etc.) kept in English for consistency
+- **Extensible**: Easy to add more languages with the i18next framework
+
 ## 📖 Usage
 
 ### Getting Started
@@ -154,6 +166,16 @@ Menu → MCP Manager → Add Server → Configure
 - Add servers manually or via JSON
 - Import from Claude Desktop configuration
 - Test connections before using
+
+### Changing Language
+
+```
+Menu → Settings → General → Language
+```
+
+- Switch between English and Simplified Chinese
+- Changes apply immediately
+- Language preference is saved automatically
 
 ## 🚀 Installation
 

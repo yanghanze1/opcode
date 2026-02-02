@@ -19,6 +19,7 @@ import { api, type GitHubAgentFile, type AgentExport, type Agent } from "@/lib/a
 import { type AgentIconName } from "./CCAgents";
 import { ICON_MAP } from "./IconPicker";
 import { open } from "@tauri-apps/plugin-shell";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface GitHubAgentBrowserProps {
   isOpen: boolean;
@@ -38,6 +39,7 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
   onClose,
   onImportSuccess,
 }) => {
+  const { t } = useTranslation('agents');
   const [agents, setAgents] = useState<GitHubAgentFile[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -70,7 +72,7 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
       setAgents(agentFiles);
     } catch (err) {
       console.error("Failed to fetch GitHub agents:", err);
-      setError("Failed to fetch agents from GitHub. Please check your internet connection.");
+      setError(t('messages.failed_to_fetch_github'));
     } finally {
       setLoading(false);
     }
@@ -98,14 +100,14 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
         file,
         data: null,
         loading: false,
-        error: "Failed to load agent details",
+        error: t('messages.failed_to_load_details'),
       });
     }
   };
 
   const isAgentImported = (fileName: string) => {
     const agentName = getAgentDisplayName(fileName);
-    return existingAgents.some(agent => 
+    return existingAgents.some(agent =>
       agent.name.toLowerCase() === agentName.toLowerCase()
     );
   };
@@ -116,18 +118,18 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
     try {
       setImporting(true);
       await api.importAgentFromGitHub(selectedAgent.file.download_url);
-      
+
       // Refresh existing agents list
       await fetchExistingAgents();
-      
+
       // Close preview
       setSelectedAgent(null);
-      
+
       // Notify parent
       onImportSuccess();
     } catch (err) {
       console.error("Failed to import agent:", err);
-      alert(`Failed to import agent: ${err instanceof Error ? err.message : "Unknown error"}`);
+      alert(t('messages.failed_to_import_error', { error: err instanceof Error ? err.message : t('sessions:widgets.unknown_error') }));
     } finally {
       setImporting(false);
     }
@@ -164,7 +166,7 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <Globe className="h-5 w-5" />
-            Import Agent from GitHub
+            {t('labels.github_import_title')}
           </DialogTitle>
         </DialogHeader>
 
@@ -172,7 +174,7 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
           {/* Repository Info */}
           <div className="px-4 py-3 bg-muted/50 rounded-lg mb-4">
             <p className="text-sm text-muted-foreground">
-              Agents are fetched from{" "}
+              {t('labels.agents_fetched_from')}{" "}
               <button
                 onClick={handleGitHubLinkClick}
                 className="text-primary hover:underline inline-flex items-center gap-1"
@@ -182,7 +184,7 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
               </button>
             </p>
             <p className="text-sm text-muted-foreground mt-1">
-              You can contribute your custom agents to the repository!
+              {t('labels.contribute_hint')}
             </p>
           </div>
 
@@ -191,7 +193,7 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search agents..."
+                placeholder={t('labels.search_agents')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
@@ -210,14 +212,14 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
                 <AlertCircle className="h-12 w-12 text-destructive mb-4" />
                 <p className="text-sm text-muted-foreground mb-4">{error}</p>
                 <Button onClick={fetchAgents} variant="outline" size="sm">
-                  Try Again
+                  {t('buttons.try_again')}
                 </Button>
               </div>
             ) : filteredAgents.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-64 text-center">
                 <FileJson className="h-12 w-12 text-muted-foreground mb-4" />
                 <p className="text-sm text-muted-foreground">
-                  {searchQuery ? "No agents found matching your search" : "No agents available"}
+                  {searchQuery ? t('labels.search_no_results') : t('labels.no_agents_available_github')}
                 </p>
               </div>
             ) : (
@@ -232,7 +234,7 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
                       transition={{ duration: 0.2, delay: index * 0.05 }}
                     >
                       <Card className="h-full hover:shadow-lg transition-shadow cursor-pointer"
-                            onClick={() => handlePreviewAgent(agent)}>
+                        onClick={() => handlePreviewAgent(agent)}>
                         <CardContent className="p-4">
                           <div className="flex items-start justify-between mb-3">
                             <div className="flex items-center gap-3 flex-1">
@@ -250,7 +252,7 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
                             {isAgentImported(agent.name) && (
                               <Badge variant="secondary" className="ml-2 flex-shrink-0">
                                 <Check className="h-3 w-3 mr-1" />
-                                Imported
+                                {t('buttons.already_imported')}
                               </Badge>
                             )}
                           </div>
@@ -269,7 +271,7 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
                             }}
                           >
                             <Eye className="h-3 w-3 mr-2" />
-                            Preview
+                            {t('buttons.preview')}
                           </Button>
                         </CardFooter>
                       </Card>
@@ -288,7 +290,7 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
           <Dialog open={!!selectedAgent} onOpenChange={() => setSelectedAgent(null)}>
             <DialogContent className="max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
               <DialogHeader>
-                <DialogTitle>Agent Preview</DialogTitle>
+                <DialogTitle>{t('labels.agent_preview')}</DialogTitle>
               </DialogHeader>
 
               <div className="flex-1 overflow-y-auto">
@@ -320,7 +322,7 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
 
                     {/* System Prompt */}
                     <div>
-                      <h4 className="text-sm font-medium mb-2">System Prompt</h4>
+                      <h4 className="text-sm font-medium mb-2">{t('labels.system_prompt_label')}</h4>
                       <div className="bg-muted rounded-lg p-3 max-h-48 overflow-y-auto">
                         <pre className="text-xs whitespace-pre-wrap font-mono">
                           {selectedAgent.data.agent.system_prompt}
@@ -331,7 +333,7 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
                     {/* Default Task */}
                     {selectedAgent.data.agent.default_task && (
                       <div>
-                        <h4 className="text-sm font-medium mb-2">Default Task</h4>
+                        <h4 className="text-sm font-medium mb-2">{t('labels.default_task_label')}</h4>
                         <div className="bg-muted rounded-lg p-3">
                           <p className="text-sm">{selectedAgent.data.agent.default_task}</p>
                         </div>
@@ -341,9 +343,10 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
 
 
                     {/* Metadata */}
+                    {/* Metadata */}
                     <div className="text-xs text-muted-foreground">
-                      <p>Version: {selectedAgent.data.version}</p>
-                      <p>Exported: {new Date(selectedAgent.data.exported_at).toLocaleDateString()}</p>
+                      <p>{t('labels.version')}: {selectedAgent.data.version}</p>
+                      <p>{t('labels.exported_at')}: {new Date(selectedAgent.data.exported_at).toLocaleDateString()}</p>
                     </div>
                   </div>
                 ) : null}
@@ -356,7 +359,7 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
                     variant="outline"
                     onClick={() => setSelectedAgent(null)}
                   >
-                    Cancel
+                    {t('buttons.cancel')}
                   </Button>
                   <Button
                     onClick={handleImportAgent}
@@ -365,17 +368,17 @@ export const GitHubAgentBrowser: React.FC<GitHubAgentBrowserProps> = ({
                     {importing ? (
                       <>
                         <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                        Importing...
+                        {t('buttons.importing')}
                       </>
                     ) : isAgentImported(selectedAgent.file.name) ? (
                       <>
                         <Check className="h-4 w-4 mr-2" />
-                        Already Imported
+                        {t('buttons.already_imported')}
                       </>
                     ) : (
                       <>
                         <Download className="h-4 w-4 mr-2" />
-                        Import Agent
+                        {t('buttons.import_agent')}
                       </>
                     )}
                   </Button>

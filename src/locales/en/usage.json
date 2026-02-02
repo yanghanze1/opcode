@@ -1,0 +1,87 @@
+{
+  "title": "Usage Dashboard",
+  "subtitle": "Track your Claude Code usage and costs",
+  "tabs": {
+    "overview": "Overview",
+    "models": "By Model",
+    "projects": "By Project",
+    "sessions": "By Session",
+    "timeline": "Timeline"
+  },
+  "date_ranges": {
+    "all": "All Time",
+    "7d": "Last 7 Days",
+    "30d": "Last 30 Days"
+  },
+  "summary": {
+    "total_cost": "Total Cost",
+    "total_sessions": "Total Sessions",
+    "total_tokens": "Total Tokens",
+    "avg_cost_per_session": "Avg Cost/Session"
+  },
+  "overview": {
+    "token_breakdown": "Token Breakdown",
+    "input_tokens": "Input Tokens",
+    "output_tokens": "Output Tokens",
+    "cache_write": "Cache Write",
+    "cache_read": "Cache Read",
+    "most_used_models": "Most Used Models",
+    "top_projects": "Top Projects"
+  },
+  "models": {
+    "title": "Usage by Model",
+    "most_used": "Most Used Models",
+    "sessions": "{{count}} sessions",
+    "no_data": "No model usage data available",
+    "input": "Input:",
+    "output": "Output:",
+    "cache_w": "Cache W:",
+    "cache_r": "Cache R:"
+  },
+  "projects": {
+    "title": "Usage by Project",
+    "top_projects": "Top Projects",
+    "project_path": "Project Path",
+    "no_data": "No project usage data available",
+    "total_projects": "{{count}} total projects",
+    "showing": "Showing {{start}}-{{end}} of {{total}}",
+    "per_session": "/session"
+  },
+  "sessions": {
+    "title": "Usage by Session",
+    "session_id": "Session ID",
+    "date": "Date",
+    "cost": "Cost",
+    "tokens": "Tokens",
+    "model": "Model",
+    "no_data": "No session data available for the selected period",
+    "total_sessions": "{{count}} total sessions",
+    "showing": "Showing {{start}}-{{end}} of {{total}}"
+  },
+  "timeline": {
+    "title": "Daily Usage",
+    "daily_cost": "Daily Cost",
+    "daily_sessions": "Daily Sessions",
+    "no_data": "No usage data available for the selected period",
+    "daily_usage_over_time": "Daily Usage Over Time",
+    "models_used": "{{count}} model(s)"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "page": "Page {{current}} of {{total}}"
+  },
+  "messages": {
+    "loading": "Loading usage statistics...",
+    "failed_to_load": "Failed to load usage statistics. Please try again.",
+    "no_data": "No usage data available for the selected period"
+  },
+  "filters": {
+    "filter_by_date": "Filter by Date",
+    "filter_by_model": "Filter by Model",
+    "filter_by_project": "Filter by Project"
+  },
+  "buttons": {
+    "try_again": "Try Again"
+  }
+}

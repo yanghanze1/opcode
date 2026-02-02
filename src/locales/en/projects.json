@@ -1,0 +1,63 @@
+{
+  "title": "Projects",
+  "subtitle": "Select a project to start working with Claude Code",
+  "buttons": {
+    "open_project": "Open Project",
+    "open_first_project": "Open Your First Project",
+    "back_to_projects": "Back to Projects",
+    "new_session": "New session",
+    "new_project": "New Project",
+    "back": "Back",
+    "add_to_gitignore": "Add to .gitignore"
+  },
+  "labels": {
+    "recent_projects": "Recent Projects",
+    "project_path": "Project Path",
+    "sessions_count": "{{count}} session",
+    "sessions_count_plural": "{{count}} sessions",
+    "select_project_folder": "Select Project Folder"
+  },
+  "messages": {
+    "no_recent_projects": "No recent projects",
+    "no_recent_projects_description": "Open a project to get started with Claude Code",
+    "view_all": "View all ({{count}})",
+    "view_less": "View less",
+    "failed_load_projects": "Failed to load projects. Please ensure ~/.claude directory exists.",
+    "failed_load_sessions": "Failed to load sessions for this project.",
+    "failed_open_folder": "Failed to open folder picker",
+    "no_agent_run_id": "No agent run ID specified",
+    "no_agent_data": "No agent data specified",
+    "no_claude_file_id": "No Claude file ID specified",
+    "claude_file_editor_not_implemented": "Claude file editor not yet implemented in tabs",
+    "import_agent_coming_soon": "Import agent functionality coming soon...",
+    "unknown_tab_type": "Unknown tab type",
+    "no_projects_open": "No projects open",
+    "click_to_start": "Click to start a new project",
+    "added_to_gitignore": "Added to .gitignore",
+    "failed_update_gitignore": "Failed to update .gitignore",
+    "local_settings_not_in_gitignore": "Local settings file is not in .gitignore"
+  },
+  "pagination": {
+    "page": "Page {{current}} of {{total}}"
+  },
+  "settings": {
+    "title": "Project Settings",
+    "tabs": {
+      "commands": "Slash Commands",
+      "project_hooks": "Project Hooks",
+      "local_hooks": "Local Hooks"
+    },
+    "commands": {
+      "title": "Project Slash Commands",
+      "description": "Custom commands that are specific to this project. These commands are stored in .claude/slash-commands/ and can be committed to version control."
+    },
+    "project_hooks": {
+      "title": "Project Hooks",
+      "description": "These hooks apply to all users working on this project. They are stored in .claude/settings.json and should be committed to version control."
+    },
+    "local_hooks": {
+      "title": "Local Hooks",
+      "description": "These hooks only apply to your machine. They are stored in .claude/settings.local.json and should NOT be committed to version control."
+    }
+  }
+}

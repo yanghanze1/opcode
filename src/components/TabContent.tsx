@@ -8,6 +8,7 @@ import { api, type Project, type Session, type ClaudeMdFile } from '@/lib/api';
 import { ProjectList } from '@/components/ProjectList';
 import { SessionList } from '@/components/SessionList';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from '@/hooks/useTranslation';
 
 // Lazy load heavy components
 const ClaudeCodeSession = lazy(() => import('@/components/ClaudeCodeSession').then(m => ({ default: m.ClaudeCodeSession })));
@@ -29,6 +30,7 @@ interface TabPanelProps {
 }
 
 const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
+  const { t } = useTranslation('projects');
   const { updateTab } = useTabState();
   const [projects, setProjects] = React.useState<Project[]>([]);
   const [selectedProject, setSelectedProject] = React.useState<Project | null>(null);
@@ -54,7 +56,7 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
       setProjects(projectList);
     } catch (err) {
       console.error("Failed to load projects:", err);
-      setError("Failed to load projects. Please ensure ~/.claude directory exists.");
+      setError(t('messages.failed_load_projects'));
     } finally {
       setLoading(false);
     }
@@ -75,7 +77,7 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
       });
     } catch (err) {
       console.error("Failed to load sessions:", err);
-      setError("Failed to load sessions for this project.");
+      setError(t('messages.failed_load_sessions'));
     } finally {
       setLoading(false);
     }
@@ -89,7 +91,7 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
       const selected = await open({
         directory: true,
         multiple: false,
-        title: 'Select Project Folder',
+        title: t('labels.select_project_folder'),
         defaultPath: await api.getHomeDirectory(),
       });
       
@@ -103,7 +105,7 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
       }
     } catch (err) {
       console.error('Failed to open folder picker:', err);
-      setError('Failed to open folder picker');
+      setError(t('messages.failed_open_folder'));
     }
   };
   
@@ -156,11 +158,11 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
                                 setSessions([]);
                                 // Restore tab title to "Projects"
                                 updateTab(tab.id, {
-                                  title: 'Projects'
+                                  title: t('title')
                                 });
                               }}
                               className="h-8 w-8 -ml-2"
-                              title="Back to Projects"
+                              title={t('buttons.back_to_projects')}
                             >
                               <ArrowLeft className="h-4 w-4" />
                             </Button>
@@ -170,7 +172,10 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
                               {selectedProject.path.split('/').pop()}
                             </h1>
                             <p className="mt-1 text-sm text-muted-foreground">
-                              {`${sessions.length} session${sessions.length !== 1 ? 's' : ''}`}
+                              {sessions.length === 1
+                                ? t('labels.sessions_count', { count: sessions.length })
+                                : t('labels.sessions_count_plural', { count: sessions.length })
+                              }
                             </p>
                           </div>
                         </div>
@@ -183,7 +188,7 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
                             size="default"
                           >
                             <Plus className="mr-2 h-4 w-4" />
-                            New session
+                            {t('buttons.new_session')}
                           </Button>
                         </motion.div>
                       </div>
@@ -273,7 +278,7 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
         if (!tab.agentRunId) {
           return (
             <div className="h-full">
-              <div className="p-4">No agent run ID specified</div>
+              <div className="p-4">{t('messages.no_agent_run_id')}</div>
             </div>
           );
         }
@@ -323,15 +328,15 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
       
       case 'claude-file':
         if (!tab.claudeFileId) {
-          return <div className="p-4">No Claude file ID specified</div>;
+          return <div className="p-4">{t('messages.no_claude_file_id')}</div>;
         }
         // Note: We need to get the actual file object for ClaudeFileEditor
         // For now, returning a placeholder
-        return <div className="p-4">Claude file editor not yet implemented in tabs</div>;
+        return <div className="p-4">{t('messages.claude_file_editor_not_implemented')}</div>;
       
       case 'agent-execution':
         if (!tab.agentData) {
-          return <div className="p-4">No agent data specified</div>;
+          return <div className="p-4">{t('messages.no_agent_data')}</div>;
         }
         return (
           <AgentExecution
@@ -360,14 +365,14 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
         // TODO: Implement import agent component
         return (
           <div className="h-full">
-            <div className="p-4">Import agent functionality coming soon...</div>
+            <div className="p-4">{t('messages.import_agent_coming_soon')}</div>
           </div>
         );
       
       default:
         return (
           <div className="h-full">
-            <div className="p-4">Unknown tab type: {tab.type}</div>
+            <div className="p-4">{t('messages.unknown_tab_type')}: {tab.type}</div>
           </div>
         );
     }
@@ -398,6 +403,7 @@ const TabPanel: React.FC<TabPanelProps> = ({ tab, isActive }) => {
 };
 
 export const TabContent: React.FC = () => {
+  const { t } = useTranslation('projects');
   const { tabs, activeTabId, createChatTab, createProjectsTab, findTabBySessionId, createClaudeFileTab, createAgentExecutionTab, createCreateAgentTab, createImportAgentTab, closeTab, updateTab } = useTabState();
   
   // Listen for events to open sessions in tabs
@@ -516,14 +522,14 @@ export const TabContent: React.FC = () => {
       {tabs.length === 0 && (
         <div className="flex items-center justify-center h-full text-muted-foreground">
           <div className="text-center">
-            <p className="text-lg mb-2">No projects open</p>
-            <p className="text-sm mb-4">Click to start a new project</p>
+            <p className="text-lg mb-2">{t('messages.no_projects_open')}</p>
+            <p className="text-sm mb-4">{t('messages.click_to_start')}</p>
             <Button
               onClick={() => createProjectsTab()}
               size="default"
             >
               <Plus className="w-4 h-4 mr-2" />
-              New Project
+              {t('buttons.new_project')}
             </Button>
           </div>
         </div>

@@ -1,0 +1,195 @@
+{
+  "title": "Sessions",
+  "subtitle": "View and manage your Claude Code sessions",
+  "labels": {
+    "session_on": "Session on {{date}}",
+    "session_id": "Session ID",
+    "first_message": "First Message",
+    "no_messages": "No messages yet",
+    "todo": "Todo",
+    "queued_prompts": "Queued Prompts ({{count}})",
+    "session_timeline": "Session Timeline",
+    "checkpoint_settings": "Checkpoint Settings",
+    "copy_conversation": "Copy conversation",
+    "scroll_to_top": "Scroll to top",
+    "scroll_to_bottom": "Scroll to bottom",
+    "expand_queue": "Expand queue",
+    "collapse_queue": "Collapse queue",
+    "tokens": "tokens"
+  },
+  "messages": {
+    "no_sessions": "No sessions found",
+    "no_sessions_description": "Start a new session to begin working with Claude Code",
+    "loading": "Loading sessions...",
+    "loading_history": "Loading session history...",
+    "initializing": "Initializing Claude Code...",
+    "select_project_first": "Please select a project directory first",
+    "session_cancelled": "Session cancelled by user",
+    "failed_cancel": "Failed to cancel execution: {{error}}. The process may still be running in the background."
+  },
+  "pagination": {
+    "page": "Page {{current}} of {{total}}"
+  },
+  "memories": {
+    "title": "CLAUDE.md Memories",
+    "description": "Manage project-specific context files",
+    "edit": "Edit Memory"
+  },
+  "copy": {
+    "as_markdown": "Copy as Markdown",
+    "as_jsonl": "Copy as JSONL"
+  },
+  "fork": {
+    "title": "Fork Session",
+    "description": "Create a new session branch from the selected checkpoint.",
+    "new_session_name": "New Session Name",
+    "placeholder": "e.g., Alternative approach",
+    "create": "Create Fork",
+    "cancel": "Cancel"
+  },
+  "timeline": {
+    "title": "Session Timeline"
+  },
+  "slash_commands": {
+    "title": "Slash Commands",
+    "description": "Manage project-specific slash commands for {{projectPath}}"
+  },
+  "timeline": {
+    "experimental_warning": "Experimental Feature",
+    "experimental_description": "Checkpointing may affect directory structure or cause data loss. Use with caution.",
+    "title": "Timeline",
+    "checkpoints": "{{count}} checkpoints",
+    "checkpoint": "Checkpoint",
+    "current": "Current",
+    "restore_to_checkpoint": "Restore to this checkpoint",
+    "fork_from_checkpoint": "Fork from this checkpoint",
+    "compare_checkpoint": "Compare with another checkpoint",
+    "create_checkpoint": "Create Checkpoint",
+    "save_current_state": "Save the current state of your session with an optional description.",
+    "description_optional": "Description (optional)",
+    "description_placeholder": "e.g., Before major refactoring",
+    "create": "Create Checkpoint",
+    "loading_timeline": "Loading timeline...",
+    "no_checkpoints": "No checkpoints yet",
+    "failed_to_load": "Failed to load timeline",
+    "failed_to_create": "Failed to create checkpoint",
+    "failed_to_restore": "Failed to restore checkpoint",
+    "restore_confirm": "Restore to checkpoint \"{{description}}\"? Current state will be saved as a new checkpoint.",
+    "no_prompt": "No prompt",
+    "tokens_count": "{{count}} tokens",
+    "files_count": "{{count}} files",
+    "checkpoint_comparison": "Checkpoint Comparison",
+    "changes_between": "Changes between \"{{from}}\" and \"{{to}}\"",
+    "modified_files": "Modified Files",
+    "added_files": "Added Files",
+    "deleted_files": "Deleted Files",
+    "token_delta": "{{delta}} tokens",
+    "additions": "+{{count}}",
+    "deletions": "-{{count}}",
+    "close": "Close"
+  },
+  "output_viewer": {
+    "title": "{{name}} - Output",
+    "live": "Live",
+    "messages_count": "{{count}} messages",
+    "fullscreen": "Fullscreen",
+    "copy_output": "Copy Output",
+    "copy_as_jsonl": "Copy as JSONL",
+    "copy_as_markdown": "Copy as Markdown",
+    "refresh_output": "Refresh output",
+    "loading_output": "Loading output...",
+    "waiting_for_output": "Waiting for output...",
+    "agent_running_no_output": "Agent is running but no output received yet",
+    "no_output_available": "No output available",
+    "refresh": "Refresh",
+    "output_refreshed": "Output refreshed",
+    "output_copied_jsonl": "Output copied as JSONL",
+    "output_copied_markdown": "Output copied as Markdown",
+    "failed_to_load_output": "Failed to load session output",
+    "failed_to_refresh": "Failed to refresh output",
+    "agent_complete": "Agent execution completed",
+    "agent_cancelled": "Agent execution was cancelled",
+    "running": "Running",
+    "close": "Close",
+    "additions": "+{{count}}",
+    "deletions": "-{{count}}"
+  },
+  "claude_file_editor": {
+    "subtitle": "Edit project-specific Claude Code system prompt",
+    "failed_to_load": "Failed to load CLAUDE.md file",
+    "failed_to_save": "Failed to save CLAUDE.md file",
+    "saved_successfully": "File saved successfully",
+    "unsaved_changes_warning": "You have unsaved changes. Are you sure you want to leave?"
+  },
+  "markdown_editor": {
+    "subtitle": "Edit your Claude Code system prompt",
+    "failed_to_load": "Failed to load CLAUDE.md file",
+    "failed_to_save": "Failed to save CLAUDE.md file",
+    "saved_successfully": "CLAUDE.md saved successfully"
+  },
+  "running_sessions": {
+    "title": "Running Claude Sessions",
+    "count": "{{count}} running",
+    "running": "Running",
+    "resume": "Resume",
+    "started": "Started: {{time}}",
+    "model": "Model: {{model}}",
+    "task": "Task: {{task}}",
+    "failed_to_load": "Failed to load running sessions"
+  },
+  "widgets": {
+    "bash": {
+      "terminal": "Terminal",
+      "running": "Running...",
+      "command_failed": "Command failed",
+      "command_completed": "Command completed"
+    },
+    "ls": {
+      "directory_contents": "Directory contents:",
+      "listing_directory": "Listing directory:",
+      "loading": "Loading...",
+      "directory_contents_label": "Directory Contents"
+    },
+    "todo": {
+      "title": "Todo List",
+      "high": "High",
+      "medium": "Medium",
+      "low": "Low"
+    },
+    "read": {
+      "reading_file": "Reading file:",
+      "read_result": "Read Result"
+    },
+    "write": {
+      "writing_file": "Writing file:",
+      "write_complete": "Write Complete"
+    },
+    "edit": {
+      "editing_file": "Editing file:",
+      "edit_result": "Edit Result"
+    },
+    "glob": {
+      "searching_pattern": "Searching pattern:",
+      "found_files": "Found {{count}} files"
+    },
+    "grep": {
+      "searching": "Searching:",
+      "in_path": "In path:",
+      "found_matches": "Found {{count}} matches"
+    },
+    "tool_result": "Tool Result",
+    "tool_did_not_return": "Tool did not return any output",
+    "using_tool": "Using tool:",
+    "execution_failed": "Execution failed",
+    "execution_complete": "Execution complete",
+    "error_rendering": "Error rendering message",
+    "unknown_error": "Unknown error"
+  },
+  "stream_message": {
+    "tokens_usage": "Tokens: {{input}} input, {{output}} output",
+    "cost": "Cost: ${{cost}} USD",
+    "duration": "Duration: {{duration}}s",
+    "turns": "Turns: {{turns}}",
+    "total_tokens": "Total tokens: {{total}} ({{input}} input, {{output}} output)"
+  }
+}

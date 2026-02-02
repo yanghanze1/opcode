@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ExternalLink, FileQuestion, Terminal, AlertCircle, Loader2 } from "lucide-react";
 import { ClaudeVersionSelector } from "./ClaudeVersionSelector";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface ClaudeBinaryDialogProps {
   open: boolean;
@@ -13,6 +14,7 @@ interface ClaudeBinaryDialogProps {
 }
 
 export function ClaudeBinaryDialog({ open, onOpenChange, onSuccess, onError }: ClaudeBinaryDialogProps) {
+  const { t } = useTranslation('settings');
   const [selectedInstallation, setSelectedInstallation] = useState<ClaudeInstallation | null>(null);
   const [isValidating, setIsValidating] = useState(false);
   const [hasInstallations, setHasInstallations] = useState(true);
@@ -39,7 +41,7 @@ export function ClaudeBinaryDialog({ open, onOpenChange, onSuccess, onError }: C
 
   const handleSave = async () => {
     if (!selectedInstallation) {
-      onError("Please select a Claude installation");
+      onError(t('claude_binary_dialog.select_installation_first'));
       return;
     }
 
@@ -50,7 +52,7 @@ export function ClaudeBinaryDialog({ open, onOpenChange, onSuccess, onError }: C
       onOpenChange(false);
     } catch (error) {
       console.error("Failed to save Claude binary path:", error);
-      onError(error instanceof Error ? error.message : "Failed to save Claude binary path");
+      onError(error instanceof Error ? error.message : t('claude_binary_dialog.failed_to_save'));
     } finally {
       setIsValidating(false);
     }
@@ -62,29 +64,27 @@ export function ClaudeBinaryDialog({ open, onOpenChange, onSuccess, onError }: C
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <FileQuestion className="w-5 h-5" />
-            Select Claude Code Installation
+            {t('claude_binary_dialog.title')}
           </DialogTitle>
           <DialogDescription className="space-y-3 mt-4">
             {checkingInstallations ? (
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
-                <span className="ml-2 text-sm text-muted-foreground">Searching for Claude installations...</span>
+                <span className="ml-2 text-sm text-muted-foreground">{t('claude_binary_dialog.searching')}</span>
               </div>
             ) : hasInstallations ? (
               <p>
-                Multiple Claude Code installations were found on your system. 
-                Please select which one you'd like to use.
+                {t('claude_binary_dialog.multiple_found')}
               </p>
             ) : (
               <>
                 <p>
-                  Claude Code was not found in any of the common installation locations. 
-                  Please install Claude Code to continue.
+                  {t('claude_binary_dialog.not_found')}
                 </p>
                 <div className="flex items-center gap-2 p-3 bg-muted rounded-md">
                   <AlertCircle className="w-4 h-4 text-muted-foreground" />
                   <p className="text-sm text-muted-foreground">
-                    <span className="font-medium">Searched locations:</span> PATH, /usr/local/bin, 
+                    <span className="font-medium">{t('claude_binary_dialog.searched_locations')}</span> PATH, /usr/local/bin,
                     /opt/homebrew/bin, ~/.nvm/versions/node/*/bin, ~/.claude/local, ~/.local/bin
                   </p>
                 </div>
@@ -94,7 +94,7 @@ export function ClaudeBinaryDialog({ open, onOpenChange, onSuccess, onError }: C
               <div className="flex items-center gap-2 p-3 bg-muted rounded-md">
                 <Terminal className="w-4 h-4 text-muted-foreground" />
                 <p className="text-sm text-muted-foreground">
-                  <span className="font-medium">Tip:</span> You can install Claude Code using{" "}
+                  <span className="font-medium">{t('claude_binary_dialog.install_tip')}</span> {t('claude_binary_dialog.install_command')}{" "}
                   <code className="px-1 py-0.5 bg-black/10 dark:bg-white/10 rounded">npm install -g @claude</code>
                 </p>
               </div>
@@ -118,20 +118,20 @@ export function ClaudeBinaryDialog({ open, onOpenChange, onSuccess, onError }: C
             className="mr-auto"
           >
             <ExternalLink className="w-4 h-4 mr-2" />
-            Installation Guide
+            {t('claude_binary_dialog.installation_guide')}
           </Button>
           <Button
             variant="outline"
             onClick={() => onOpenChange(false)}
             disabled={isValidating}
           >
-            Cancel
+            {t('claude_binary_dialog.cancel')}
           </Button>
-          <Button 
-            onClick={handleSave} 
+          <Button
+            onClick={handleSave}
             disabled={isValidating || !selectedInstallation || !hasInstallations}
           >
-            {isValidating ? "Validating..." : hasInstallations ? "Save Selection" : "No Installations Found"}
+            {isValidating ? t('claude_binary_dialog.validating') : hasInstallations ? t('claude_binary_dialog.save_selection') : t('claude_binary_dialog.no_installations_found')}
           </Button>
         </DialogFooter>
       </DialogContent>

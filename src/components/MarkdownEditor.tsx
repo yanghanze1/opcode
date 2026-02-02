@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Toast, ToastContainer } from "@/components/ui/toast";
 import { api } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 interface MarkdownEditorProps {
   /**
@@ -27,20 +28,21 @@ interface MarkdownEditorProps {
 export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
   className,
 }) => {
+  const { t } = useTranslation('sessions');
   const [content, setContent] = useState<string>("");
   const [originalContent, setOriginalContent] = useState<string>("");
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
-  
+
   const hasChanges = content !== originalContent;
-  
+
   // Load the system prompt on mount
   useEffect(() => {
     loadSystemPrompt();
   }, []);
-  
+
   const loadSystemPrompt = async () => {
     try {
       setLoading(true);
@@ -50,12 +52,12 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
       setOriginalContent(prompt);
     } catch (err) {
       console.error("Failed to load system prompt:", err);
-      setError("Failed to load CLAUDE.md file");
+      setError(t('markdown_editor.failed_to_load'));
     } finally {
       setLoading(false);
     }
   };
-  
+
   const handleSave = async () => {
     try {
       setSaving(true);
@@ -63,17 +65,17 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
       setToast(null);
       await api.saveSystemPrompt(content);
       setOriginalContent(content);
-      setToast({ message: "CLAUDE.md saved successfully", type: "success" });
+      setToast({ message: t('markdown_editor.saved_successfully'), type: "success" });
     } catch (err) {
       console.error("Failed to save system prompt:", err);
-      setError("Failed to save CLAUDE.md file");
-      setToast({ message: "Failed to save CLAUDE.md", type: "error" });
+      setError(t('markdown_editor.failed_to_save'));
+      setToast({ message: t('markdown_editor.failed_to_save'), type: "error" });
     } finally {
       setSaving(false);
     }
   };
-  
-  
+
+
   return (
     <div className={cn("h-full overflow-y-auto", className)}>
       <div className="max-w-6xl mx-auto flex flex-col h-full">
@@ -83,7 +85,7 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
             <div>
               <h1 className="text-3xl font-bold tracking-tight">CLAUDE.md</h1>
               <p className="mt-1 text-sm text-muted-foreground">
-                Edit your Claude Code system prompt
+                {t('markdown_editor.subtitle')}
               </p>
             </div>
             <Button
@@ -94,18 +96,18 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
               {saving ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Saving...
+                  {t('common:buttons.saving')}
                 </>
               ) : (
                 <>
                   <Save className="mr-2 h-4 w-4" />
-                  Save
+                  {t('common:buttons.save')}
                 </>
               )}
             </Button>
           </div>
         </div>
-        
+
         {/* Error display */}
         {error && (
           <motion.div
@@ -117,7 +119,7 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
             {error}
           </motion.div>
         )}
-        
+
         {/* Content */}
         <div className="flex-1 overflow-hidden p-6">
           {loading ? (
@@ -137,7 +139,7 @@ export const MarkdownEditor: React.FC<MarkdownEditorProps> = ({
           )}
         </div>
       </div>
-      
+
       {/* Toast Notification */}
       <ToastContainer>
         {toast && (

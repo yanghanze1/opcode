@@ -1,0 +1,166 @@
+{
+  "title": "CC Agents",
+  "subtitle": "管理你的 Claude Code agents",
+  "buttons": {
+    "create": "创建 CC Agent",
+    "import": "导入",
+    "import_from_file": "从文件导入",
+    "import_from_github": "从 GitHub 导入",
+    "export": "导出",
+    "execute": "执行",
+    "edit": "编辑",
+    "delete": "删除",
+    "save_agent": "保存 Agent",
+    "back_to_agents": "返回 Agents",
+    "configure_hooks": "配置 Hooks",
+    "stop": "停止",
+    "fullscreen": "全屏",
+    "exit_fullscreen": "退出全屏",
+    "copy_output": "复制输出",
+    "copy_as_jsonl": "复制为 JSONL",
+    "copy_as_markdown": "复制为 Markdown",
+    "saving": "保存中...",
+    "preview": "预览",
+    "delete_agent": "删除 Agent",
+    "try_again": "重试",
+    "import_agent": "导入 Agent",
+    "importing": "导入中...",
+    "already_imported": "已导入",
+    "cancel": "取消"
+  },
+  "labels": {
+    "agent_name": "Agent 名称",
+    "agent_icon": "Agent 图标",
+    "model": "模型",
+    "default_task": "默认任务（可选）",
+    "system_prompt": "System Prompt",
+    "task_description": "任务描述",
+    "model_selection": "模型选择",
+    "basic_information": "基本信息",
+    "configuration": "配置",
+    "created": "创建时间",
+    "edit_agent": "编辑 Agent",
+    "create_new_agent": "创建新 Agent",
+    "update_agent_config": "更新你的 Claude Code agent 配置",
+    "configure_new_agent": "配置一个新的 Claude Code agent",
+    "execution_history": "执行历史",
+    "task": "任务",
+    "github_import_title": "从 GitHub 导入 Agent",
+    "agents_fetched_from": "Agents 获取自",
+    "contribute_hint": "你可以向仓库贡献你的自定义 agents！",
+    "search_agents": "搜索 agents...",
+    "search_no_results": "未找到匹配的 agents",
+    "no_agents_available_github": "无可用 agents",
+    "agent_preview": "Agent 预览",
+    "system_prompt_label": "System Prompt",
+    "default_task_label": "默认任务",
+    "version": "版本",
+    "exported_at": "导出时间"
+  },
+  "models": {
+    "sonnet": {
+      "name": "Claude 4 Sonnet",
+      "description": "更快速，适合大多数任务",
+      "short_desc": "更快速，高效"
+    },
+    "opus": {
+      "name": "Claude 4 Opus",
+      "description": "更强大，适合复杂任务",
+      "short_desc": "更强大"
+    }
+  },
+  "messages": {
+    "no_agents": "暂无 agents",
+    "create_first_agent": "创建你的第一个 CC Agent 开始使用",
+    "agent_created": "Agent 创建成功",
+    "agent_updated": "Agent 更新成功",
+    "agent_deleted": "Agent 删除成功",
+    "agent_exported": "Agent \"{{name}}\" 导出成功",
+    "agent_imported": "Agent 导入成功",
+    "agent_imported_github": "从 GitHub 导入 Agent 成功",
+    "failed_to_load": "加载 agents 失败",
+    "failed_to_create": "创建 agent 失败",
+    "failed_to_update": "更新 agent 失败",
+    "failed_to_delete": "删除 agent 失败",
+    "failed_to_export": "导出 agent 失败",
+    "failed_to_import": "导入 agent 失败",
+    "failed_to_execute": "执行 agent 失败",
+    "failed_to_fetch_github": "从 GitHub 获取 agents 失败。请检查网络连接。",
+    "failed_to_fetch_content": "获取 agent 内容失败",
+    "failed_to_load_details": "加载 agent 详情失败",
+    "failed_to_import_error": "导入 agent 失败：{{error}}",
+    "unsaved_changes": "你有未保存的更改。确定要离开吗？",
+    "agent_running_warning": "有一个 agent 正在运行。如果你离开，agent 将继续在后台运行。你可以在 CC Agents 的\"运行中的 Sessions\"标签中查看运行中的 sessions。\\n\\n是否继续？",
+    "ready_to_execute": "准备执行",
+    "enter_task": "输入任务以运行 agent",
+    "initializing": "正在初始化 agent...",
+    "execution_cancelled": "Agent 执行已取消",
+    "execution_failed": "Agent 执行失败",
+    "execution_stopped": "Agent 执行已停止",
+    "failed_to_stop": "停止 agent 失败 - 它可能已经完成",
+    "failed_to_stop_with_error": "停止执行失败：{{error}}",
+    "loading": "加载 agent 运行中...",
+    "run_not_found": "未找到运行记录"
+  },
+  "placeholders": {
+    "agent_name": "例如：代码助手",
+    "default_task": "例如：检查此代码的安全问题",
+    "task_input": "你希望 agent 做什么？"
+  },
+  "validation": {
+    "name_required": "Agent 名称为必填项",
+    "prompt_required": "System prompt 为必填项"
+  },
+  "status": {
+    "running": "运行中",
+    "complete": "已完成",
+    "ready": "就绪",
+    "completed": "已完成",
+    "failed": "失败",
+    "pending": "待处理"
+  },
+  "execution": {
+    "title": "Agent 执行",
+    "working_in": "工作目录：",
+    "recent_executions": "最近执行",
+    "configure_hooks_title": "配置 Hooks",
+    "configure_hooks_description": "配置在工具执行前、中、后运行的 hooks",
+    "project_settings": "Project 设置",
+    "local_settings": "本地设置",
+    "project_hooks_info": "Project hooks 存储在 .claude/settings.json 中，会提交到版本控制，允许团队成员共享配置。",
+    "local_hooks_info": "本地 hooks 存储在 .claude/settings.local.json 中，不会提交到版本控制，适合个人偏好设置。"
+  },
+  "delete_dialog": {
+    "title": "删除 Agent",
+    "description": "确定要删除 agent \"{{name}}\" 吗？此操作无法撤销，将永久删除该 agent 及其所有关联数据。",
+    "deleting": "删除中..."
+  },
+  "system_prompt_description": "定义你的 Claude Code agent 的行为和能力",
+  "default_task_description": "这将作为执行 agent 时的默认任务占位符",
+  "pagination": {
+    "previous": "上一页",
+    "next": "下一页",
+    "page_of": "第 {{current}} 页，共 {{total}} 页"
+  },
+  "history": {
+    "recent_executions": "最近执行",
+    "no_history": "暂无执行历史"
+  },
+  "modal": {
+    "title": "Agent 管理",
+    "description": "创建新 agents 或管理运行中的 agent 执行",
+    "available_agents": "可用 Agents",
+    "running_agents": "运行中的 Agents",
+    "no_agents_available": "暂无可用 agents",
+    "create_first": "创建你的第一个 agent 开始使用",
+    "no_running": "暂无运行中的 agents",
+    "running_appear_here": "Agent 执行将在启动时显示在这里"
+  },
+  "execution_control": {
+    "executing": "执行中...",
+    "stop": "停止",
+    "time": "时间",
+    "tokens": "tokens",
+    "started": "开始时间"
+  }
+}

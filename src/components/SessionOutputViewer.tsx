@@ -12,6 +12,7 @@ import type { AgentRun } from '@/lib/api';
 import { listen, type UnlistenFn } from '@tauri-apps/api/event';
 import { StreamMessage } from './StreamMessage';
 import { ErrorBoundary } from './ErrorBoundary';
+import { useTranslation } from '@/hooks/useTranslation';
 
 interface SessionOutputViewerProps {
   session: AgentRun;
@@ -38,6 +39,7 @@ export interface ClaudeStreamMessage {
 }
 
 export function SessionOutputViewer({ session, onClose, className }: SessionOutputViewerProps) {
+  const { t } = useTranslation();
   const [messages, setMessages] = useState<ClaudeStreamMessage[]>([]);
   const [rawJsonlOutput, setRawJsonlOutput] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
@@ -46,7 +48,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
   const [toast, setToast] = useState<{ message: string; type: "success" | "error" } | null>(null);
   const [copyPopoverOpen, setCopyPopoverOpen] = useState(false);
   const [hasUserScrolled, setHasUserScrolled] = useState(false);
-  
+
   const scrollAreaRef = useRef<HTMLDivElement>(null);
   const outputEndRef = useRef<HTMLDivElement>(null);
   const fullscreenScrollRef = useRef<HTMLDivElement>(null);
@@ -114,16 +116,16 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
       if (session.session_id && session.session_id !== '') {
         try {
           const history = await api.loadAgentSessionHistory(session.session_id);
-          
+
           // Convert history to messages format using AgentExecution style
           const loadedMessages: ClaudeStreamMessage[] = history.map(entry => ({
             ...entry,
             type: entry.type || "assistant"
           }));
-          
+
           setMessages(loadedMessages);
           setRawJsonlOutput(history.map(h => JSON.stringify(h)));
-          
+
           // Update cache
           setCachedOutput(session.id, {
             output: history.map(h => JSON.stringify(h)).join('\n'),
@@ -131,18 +133,18 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
             lastUpdated: Date.now(),
             status: session.status
           });
-          
+
           // Set up live event listeners for running sessions
           if (session.status === 'running') {
             setupLiveEventListeners();
-            
+
             try {
               await api.streamSessionOutput(session.id);
             } catch (streamError) {
               console.warn('Failed to start streaming, will poll instead:', streamError);
             }
           }
-          
+
           return;
         } catch (err) {
           console.warn('Failed to load from JSONL, falling back to regular output:', err);
@@ -151,11 +153,11 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
 
       // Fallback to the original method if JSONL loading fails or no session_id
       const rawOutput = await api.getSessionOutput(session.id);
-      
+
       // Parse JSONL output into messages using AgentExecution style
       const jsonlLines = rawOutput.split('\n').filter(line => line.trim());
       setRawJsonlOutput(jsonlLines);
-      
+
       const parsedMessages: ClaudeStreamMessage[] = [];
       for (const line of jsonlLines) {
         try {
@@ -166,7 +168,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
         }
       }
       setMessages(parsedMessages);
-      
+
       // Update cache
       setCachedOutput(session.id, {
         output: rawOutput,
@@ -174,11 +176,11 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
         lastUpdated: Date.now(),
         status: session.status
       });
-      
+
       // Set up live event listeners for running sessions
       if (session.status === 'running') {
         setupLiveEventListeners();
-        
+
         try {
           await api.streamSessionOutput(session.id);
         } catch (streamError) {
@@ -187,7 +189,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
       }
     } catch (error) {
       console.error('Failed to load session output:', error);
-      setToast({ message: 'Failed to load session output', type: 'error' });
+      setToast({ message: t('sessions:output_viewer.failed_to_load_output'), type: 'error' });
     } finally {
       setLoading(false);
     }
@@ -195,7 +197,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
 
   const setupLiveEventListeners = async () => {
     if (!session.id) return;
-    
+
     try {
       // Clean up existing listeners
       unlistenRefs.current.forEach(unlisten => unlisten());
@@ -206,7 +208,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
         try {
           // Store raw JSONL
           setRawJsonlOutput(prev => [...prev, event.payload]);
-          
+
           // Parse and display
           const message = JSON.parse(event.payload) as ClaudeStreamMessage;
           setMessages(prev => [...prev, message]);
@@ -221,12 +223,12 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
       });
 
       const completeUnlisten = await listen<boolean>(`agent-complete:${session.id}`, () => {
-        setToast({ message: 'Agent execution completed', type: 'success' });
+        setToast({ message: t('sessions:output_viewer.agent_complete'), type: 'success' });
         // Don't set status here as the parent component should handle it
       });
 
       const cancelUnlisten = await listen<boolean>(`agent-cancelled:${session.id}`, () => {
-        setToast({ message: 'Agent execution was cancelled', type: 'error' });
+        setToast({ message: t('sessions:output_viewer.agent_cancelled'), type: 'error' });
       });
 
       unlistenRefs.current = [outputUnlisten, errorUnlisten, completeUnlisten, cancelUnlisten];
@@ -240,7 +242,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
     const jsonl = rawJsonlOutput.join('\n');
     await navigator.clipboard.writeText(jsonl);
     setCopyPopoverOpen(false);
-    setToast({ message: 'Output copied as JSONL', type: 'success' });
+    setToast({ message: t('sessions:output_viewer.output_copied_jsonl'), type: 'success' });
   };
 
   const handleCopyAsMarkdown = async () => {
@@ -295,7 +297,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
 
     await navigator.clipboard.writeText(markdown);
     setCopyPopoverOpen(false);
-    setToast({ message: 'Output copied as Markdown', type: 'success' });
+    setToast({ message: t('sessions:output_viewer.output_copied_markdown'), type: 'success' });
   };
 
 
@@ -303,10 +305,10 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
     setRefreshing(true);
     try {
       await loadOutput(true); // Skip cache when manually refreshing
-      setToast({ message: 'Output refreshed', type: 'success' });
+      setToast({ message: t('sessions:output_viewer.output_refreshed'), type: 'success' });
     } catch (error) {
       console.error('Failed to refresh output:', error);
-      setToast({ message: 'Failed to refresh output', type: 'error' });
+      setToast({ message: t('sessions:output_viewer.failed_to_refresh'), type: 'error' });
     } finally {
       setRefreshing(false);
     }
@@ -316,7 +318,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
   // Load output on mount and check cache first
   useEffect(() => {
     if (!session.id) return;
-    
+
     // Check cache immediately for instant display
     const cached = getCachedOutput(session.id);
     if (cached) {
@@ -324,7 +326,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
       setRawJsonlOutput(cachedJsonlLines);
       setMessages(cached.messages);
     }
-    
+
     // Then load fresh data
     loadOutput();
   }, [session.id]);
@@ -352,7 +354,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
                     const toolUse = prevMsg.message.content.find((c: any) => c.type === 'tool_use' && c.id === content.tool_use_id);
                     if (toolUse) {
                       const toolName = toolUse.name?.toLowerCase();
-                      const toolsWithWidgets = ['task','edit','multiedit','todowrite','ls','read','glob','bash','write','grep'];
+                      const toolsWithWidgets = ['task', 'edit', 'multiedit', 'todowrite', 'ls', 'read', 'glob', 'bash', 'write', 'grep'];
                       if (toolsWithWidgets.includes(toolName) || toolUse.name?.startsWith('mcp__')) {
                         willBeSkipped = true;
                       }
@@ -386,7 +388,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
               <div className="flex items-center space-x-3">
                 <div className="text-2xl">{session.agent_icon}</div>
                 <div>
-                  <CardTitle className="text-base">{session.agent_name} - Output</CardTitle>
+                  <CardTitle className="text-base">{t('sessions:output_viewer.title', { name: session.agent_name })}</CardTitle>
                   <div className="flex items-center space-x-2 mt-1">
                     <Badge variant={session.status === 'running' ? 'default' : 'secondary'}>
                       {session.status}
@@ -394,11 +396,11 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
                     {session.status === 'running' && (
                       <Badge variant="outline" className="text-xs bg-green-50 text-green-700 border-green-200">
                         <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse mr-1"></div>
-                        Live
+                        {t('sessions:output_viewer.live')}
                       </Badge>
                     )}
                     <span className="text-xs text-muted-foreground">
-                      {messages.length} messages
+                      {t('sessions:output_viewer.messages_count', { count: messages.length })}
                     </span>
                   </div>
                 </div>
@@ -410,7 +412,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
                       variant="outline"
                       size="sm"
                       onClick={() => setIsFullscreen(!isFullscreen)}
-                      title="Fullscreen"
+                      title={t('sessions:output_viewer.fullscreen')}
                     >
                       {isFullscreen ? <Minimize2 className="h-4 w-4" /> : <Maximize2 className="h-4 w-4" />}
                     </Button>
@@ -422,7 +424,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
                           className="flex items-center gap-2"
                         >
                           <Copy className="h-4 w-4" />
-                          Copy Output
+                          {t('sessions:output_viewer.copy_output')}
                           <ChevronDown className="h-3 w-3" />
                         </Button>
                       }
@@ -434,7 +436,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
                             className="w-full justify-start"
                             onClick={handleCopyAsJsonl}
                           >
-                            Copy as JSONL
+                            {t('sessions:output_viewer.copy_as_jsonl')}
                           </Button>
                           <Button
                             variant="ghost"
@@ -442,7 +444,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
                             className="w-full justify-start"
                             onClick={handleCopyAsMarkdown}
                           >
-                            Copy as Markdown
+                            {t('sessions:output_viewer.copy_as_markdown')}
                           </Button>
                         </div>
                       }
@@ -457,7 +459,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
                   size="sm"
                   onClick={refreshOutput}
                   disabled={refreshing}
-                  title="Refresh output"
+                  title={t('sessions:output_viewer.refresh_output')}
                 >
                   <RotateCcw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
                 </Button>
@@ -472,19 +474,19 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
               <div className="flex items-center justify-center h-full">
                 <div className="flex items-center space-x-2">
                   <RefreshCw className="h-4 w-4 animate-spin" />
-                  <span>Loading output...</span>
+                  <span>{t('sessions:output_viewer.loading_output')}</span>
                 </div>
               </div>
             ) : (
-              <div 
-                className="h-full overflow-y-auto p-6 space-y-3" 
+              <div
+                className="h-full overflow-y-auto p-6 space-y-3"
                 ref={scrollAreaRef}
                 onScroll={() => {
                   // Mark that user has scrolled manually
                   if (!hasUserScrolled) {
                     setHasUserScrolled(true);
                   }
-                  
+
                   // If user scrolls back to bottom, re-enable auto-scroll
                   if (isAtBottom()) {
                     setHasUserScrolled(false);
@@ -496,23 +498,23 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
                     {session.status === 'running' ? (
                       <>
                         <RefreshCw className="h-8 w-8 animate-spin text-muted-foreground mb-2" />
-                        <p className="text-muted-foreground">Waiting for output...</p>
+                        <p className="text-muted-foreground">{t('sessions:output_viewer.waiting_for_output')}</p>
                         <p className="text-xs text-muted-foreground mt-1">
-                          Agent is running but no output received yet
+                          {t('sessions:output_viewer.agent_running_no_output')}
                         </p>
                       </>
                     ) : (
                       <>
-                        <p className="text-muted-foreground">No output available</p>
-                        <Button 
-                          variant="outline" 
-                          size="sm" 
+                        <p className="text-muted-foreground">{t('sessions:output_viewer.no_output_available')}</p>
+                        <Button
+                          variant="outline"
+                          size="sm"
                           onClick={refreshOutput}
                           className="mt-2"
                           disabled={refreshing}
                         >
                           {refreshing ? <RefreshCw className="h-4 w-4 animate-spin mr-2" /> : <RotateCcw className="h-4 w-4 mr-2" />}
-                          Refresh
+                          {t('sessions:output_viewer.refresh')}
                         </Button>
                       </>
                     )}
@@ -549,11 +551,11 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
           <div className="flex items-center justify-between p-4 border-b border-border">
             <div className="flex items-center gap-2">
               <div className="text-2xl">{session.agent_icon}</div>
-              <h2 className="text-lg font-semibold">{session.agent_name} - Output</h2>
+              <h2 className="text-lg font-semibold">{t('sessions:output_viewer.title', { name: session.agent_name })}</h2>
               {session.status === 'running' && (
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-xs text-green-600 font-medium">Running</span>
+                  <span className="text-xs text-green-600 font-medium">{t('sessions:output_viewer.running')}</span>
                 </div>
               )}
             </div>
@@ -567,7 +569,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
                       className="flex items-center gap-2"
                     >
                       <Copy className="h-4 w-4" />
-                      Copy Output
+                      {t('sessions:output_viewer.copy_output')}
                       <ChevronDown className="h-3 w-3" />
                     </Button>
                   }
@@ -579,7 +581,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
                         className="w-full justify-start"
                         onClick={handleCopyAsJsonl}
                       >
-                        Copy as JSONL
+                        {t('sessions:output_viewer.copy_as_jsonl')}
                       </Button>
                       <Button
                         variant="ghost"
@@ -587,7 +589,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
                         className="w-full justify-start"
                         onClick={handleCopyAsMarkdown}
                       >
-                        Copy as Markdown
+                        {t('sessions:output_viewer.copy_as_markdown')}
                       </Button>
                     </div>
                   }
@@ -603,14 +605,14 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
                 className="flex items-center gap-2"
               >
                 <X className="h-4 w-4" />
-                Close
+                {t('sessions:output_viewer.close')}
               </Button>
             </div>
           </div>
 
           {/* Modal Content */}
           <div className="flex-1 overflow-hidden p-6">
-            <div 
+            <div
               ref={fullscreenScrollRef}
               className="h-full overflow-y-auto space-y-3"
               onScroll={() => {
@@ -618,7 +620,7 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
                 if (!hasUserScrolled) {
                   setHasUserScrolled(true);
                 }
-                
+
                 // If user scrolls back to bottom, re-enable auto-scroll
                 if (isAtBottom()) {
                   setHasUserScrolled(false);
@@ -630,14 +632,14 @@ export function SessionOutputViewer({ session, onClose, className }: SessionOutp
                   {session.status === 'running' ? (
                     <>
                       <RefreshCw className="h-8 w-8 animate-spin text-muted-foreground mb-2" />
-                      <p className="text-muted-foreground">Waiting for output...</p>
+                      <p className="text-muted-foreground">{t('sessions.output_viewer.waiting_for_output')}</p>
                       <p className="text-xs text-muted-foreground mt-1">
-                        Agent is running but no output received yet
+                        {t('sessions.output_viewer.agent_running_no_output')}
                       </p>
                     </>
                   ) : (
                     <>
-                      <p className="text-muted-foreground">No output available</p>
+                      <p className="text-muted-foreground">{t('sessions.output_viewer.no_output_available')}</p>
                     </>
                   )}
                 </div>

@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 use chrono::{DateTime, Utc};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
@@ -54,6 +55,7 @@ impl ProcessRegistry {
     }
 
     /// Register a new running agent process
+    #[allow(clippy::too_many_arguments)]
     pub fn register_process(
         &self,
         run_id: i64,
@@ -82,6 +84,7 @@ impl ProcessRegistry {
     }
 
     /// Register a new running agent process using sidecar (similar to register_process but for sidecar children)
+    #[allow(clippy::too_many_arguments)]
     pub fn register_sidecar_process(
         &self,
         run_id: i64,
@@ -497,15 +500,15 @@ impl ProcessRegistry {
         let processes_lock = self.processes.clone();
 
         // First, identify finished processes
-        {
+        // First, identify finished processes
+        let run_ids: Vec<i64> = {
             let processes = processes_lock.lock().map_err(|e| e.to_string())?;
-            let run_ids: Vec<i64> = processes.keys().cloned().collect();
-            drop(processes);
+            processes.keys().cloned().collect()
+        };
 
-            for run_id in run_ids {
-                if !self.is_process_running(run_id).await? {
-                    finished_runs.push(run_id);
-                }
+        for run_id in run_ids {
+            if !self.is_process_running(run_id).await? {
+                finished_runs.push(run_id);
             }
         }
 

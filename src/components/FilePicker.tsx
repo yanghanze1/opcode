@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { api } from "@/lib/api";
-import { 
-  X, 
-  Folder, 
-  File, 
+import {
+  X,
+  Folder,
+  File,
   ArrowLeft,
   FileCode,
   FileText,
@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import type { FileEntry } from "@/lib/api";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "@/hooks/useTranslation";
 
 // Global caches that persist across component instances
 const globalDirectoryCache = new Map<string, FileEntry[]>();
@@ -101,6 +102,7 @@ export const FilePicker: React.FC<FilePickerProps> = ({
   initialQuery = "",
   className,
 }) => {
+  const { t } = useTranslation('common');
   const searchQuery = initialQuery;
   
   const [currentPath, setCurrentPath] = useState(basePath);
@@ -402,14 +404,14 @@ export const FilePicker: React.FC<FilePickerProps> = ({
         {/* Show loading only if no cached data */}
         {isLoading && displayEntries.length === 0 && (
           <div className="flex items-center justify-center h-full">
-            <span className="text-sm text-muted-foreground">Loading...</span>
+            <span className="text-sm text-muted-foreground">{t('file_picker.loading')}</span>
           </div>
         )}
 
         {/* Show subtle indicator when displaying cached data while fetching fresh */}
         {isShowingCached && isLoading && displayEntries.length > 0 && (
           <div className="absolute top-1 right-2 text-xs text-muted-foreground/50 italic">
-            updating...
+            {t('file_picker.updating')}
           </div>
         )}
 
@@ -423,7 +425,7 @@ export const FilePicker: React.FC<FilePickerProps> = ({
           <div className="flex flex-col items-center justify-center h-full">
             <Search className="h-8 w-8 text-muted-foreground mb-2" />
             <span className="text-sm text-muted-foreground">
-              {searchQuery.trim() ? 'No files found' : 'Empty directory'}
+              {searchQuery.trim() ? t('file_picker.no_files_found') : t('file_picker.empty_directory')}
             </span>
           </div>
         )}
@@ -448,7 +450,7 @@ export const FilePicker: React.FC<FilePickerProps> = ({
                     "text-left text-sm",
                     isSelected && "bg-accent"
                   )}
-                  title={entry.is_directory ? "Click to select • Double-click to enter" : "Click to select"}
+                  title={entry.is_directory ? t('file_picker.click_to_select_double_click_to_enter') : t('file_picker.click_to_select')}
                 >
                   <Icon className={cn(
                     "h-4 w-4 flex-shrink-0",
@@ -484,7 +486,7 @@ export const FilePicker: React.FC<FilePickerProps> = ({
       {/* Footer */}
       <div className="border-t border-border p-2">
         <p className="text-xs text-muted-foreground text-center">
-          ↑↓ Navigate • Enter Select • → Enter Directory • ← Go Back • Esc Close
+          {t('file_picker.keyboard_shortcuts')}
         </p>
       </div>
     </motion.div>

@@ -8,6 +8,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { truncateText, getFirstLine } from "@/lib/date-utils";
 import type { Session, ClaudeMdFile } from "@/lib/api";
+import { useTranslation } from "react-i18next";
 
 interface SessionListProps {
   /**
@@ -56,6 +57,7 @@ export const SessionList: React.FC<SessionListProps> = ({
   onEditClaudeFile,
   className,
 }) => {
+  const { t } = useTranslation('sessions');
   const [currentPage, setCurrentPage] = useState(1);
   
   // Calculate pagination
@@ -122,28 +124,29 @@ export const SessionList: React.FC<SessionListProps> = ({
                         <Clock className="h-4 w-4 text-primary shrink-0 mt-0.5" />
                         <div className="flex-1 min-w-0">
                           <p className="text-body-small font-medium">
-                            Session on {session.message_timestamp 
-                              ? new Date(session.message_timestamp).toLocaleDateString('en-US', { 
-                                  month: 'short', 
-                                  day: 'numeric',
-                                  year: 'numeric'
-                                })
-                              : new Date(session.created_at * 1000).toLocaleDateString('en-US', { 
-                                  month: 'short', 
-                                  day: 'numeric',
-                                  year: 'numeric'
-                                })
-                            }
+                            {t('labels.session_on', {
+                              date: session.message_timestamp
+                                ? new Date(session.message_timestamp).toLocaleDateString('en-US', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                  })
+                                : new Date(session.created_at * 1000).toLocaleDateString('en-US', {
+                                    month: 'short',
+                                    day: 'numeric',
+                                    year: 'numeric'
+                                  })
+                            })}
                           </p>
                         </div>
                       </div>
                       {session.todo_data && (
                         <span className="inline-flex items-center px-1.5 py-0.5 rounded text-caption font-medium bg-primary/10 text-primary">
-                          Todo
+                          {t('labels.todo')}
                         </span>
                       )}
                     </div>
-                    
+
                     {/* First message preview */}
                     {session.first_message ? (
                       <p className="text-caption text-muted-foreground line-clamp-2 mb-2">
@@ -151,7 +154,7 @@ export const SessionList: React.FC<SessionListProps> = ({
                       </p>
                     ) : (
                       <p className="text-caption text-muted-foreground/60 italic mb-2">
-                        No messages yet
+                        {t('labels.no_messages')}
                       </p>
                     )}
                   </div>

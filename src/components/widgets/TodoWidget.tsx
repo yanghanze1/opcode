@@ -2,6 +2,7 @@ import React from "react";
 import { CheckCircle2, Circle, Clock, FileEdit } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { useTranslation } from "react-i18next";
 
 interface TodoWidgetProps {
   todos: any[];
@@ -9,6 +10,8 @@ interface TodoWidgetProps {
 }
 
 export const TodoWidget: React.FC<TodoWidgetProps> = ({ todos, result: _result }) => {
+  const { t } = useTranslation();
+
   const statusIcons = {
     completed: <CheckCircle2 className="h-4 w-4 text-green-500" />,
     in_progress: <Clock className="h-4 w-4 text-blue-500 animate-pulse" />,
@@ -25,7 +28,7 @@ export const TodoWidget: React.FC<TodoWidgetProps> = ({ todos, result: _result }
     <div className="space-y-2">
       <div className="flex items-center gap-2 mb-3">
         <FileEdit className="h-4 w-4 text-primary" />
-        <span className="text-sm font-medium">Todo List</span>
+        <span className="text-sm font-medium">{t('sessions:widgets.todo.title')}</span>
       </div>
       <div className="space-y-2">
         {todos.map((todo, idx) => (
@@ -47,11 +50,11 @@ export const TodoWidget: React.FC<TodoWidgetProps> = ({ todos, result: _result }
                 {todo.content}
               </p>
               {todo.priority && (
-                <Badge 
-                  variant="outline" 
+                <Badge
+                  variant="outline"
                   className={cn("text-xs", priorityColors[todo.priority as keyof typeof priorityColors])}
                 >
-                  {todo.priority}
+                  {t(`sessions:widgets.todo.${todo.priority}`)}
                 </Badge>
               )}
             </div>

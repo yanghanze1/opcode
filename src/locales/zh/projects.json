@@ -1,0 +1,63 @@
+{
+  "title": "Projects",
+  "subtitle": "选择一个 project 开始使用 Claude Code",
+  "buttons": {
+    "open_project": "打开 Project",
+    "open_first_project": "打开你的第一个 Project",
+    "back_to_projects": "返回 Projects",
+    "new_session": "新建 Session",
+    "new_project": "新建 Project",
+    "back": "返回",
+    "add_to_gitignore": "添加到 .gitignore"
+  },
+  "labels": {
+    "recent_projects": "最近的 Projects",
+    "project_path": "Project 路径",
+    "sessions_count": "{{count}} 个 session",
+    "sessions_count_plural": "{{count}} 个 sessions",
+    "select_project_folder": "选择 Project 文件夹"
+  },
+  "messages": {
+    "no_recent_projects": "暂无最近的 projects",
+    "no_recent_projects_description": "打开一个 project 开始使用 Claude Code",
+    "view_all": "查看全部 ({{count}})",
+    "view_less": "收起",
+    "failed_load_projects": "加载 projects 失败。请确保 ~/.claude 目录存在。",
+    "failed_load_sessions": "加载此 project 的 sessions 失败。",
+    "failed_open_folder": "打开文件夹选择器失败",
+    "no_agent_run_id": "未指定 agent run ID",
+    "no_agent_data": "未指定 agent 数据",
+    "no_claude_file_id": "未指定 Claude 文件 ID",
+    "claude_file_editor_not_implemented": "Claude 文件编辑器尚未在标签页中实现",
+    "import_agent_coming_soon": "导入 agent 功能即将推出...",
+    "unknown_tab_type": "未知的标签页类型",
+    "no_projects_open": "没有打开的 projects",
+    "click_to_start": "点击开始一个新 project",
+    "added_to_gitignore": "已添加到 .gitignore",
+    "failed_update_gitignore": "更新 .gitignore 失败",
+    "local_settings_not_in_gitignore": "本地设置文件未在 .gitignore 中"
+  },
+  "pagination": {
+    "page": "第 {{current}} 页，共 {{total}} 页"
+  },
+  "settings": {
+    "title": "Project 设置",
+    "tabs": {
+      "commands": "Slash Commands",
+      "project_hooks": "Project Hooks",
+      "local_hooks": "Local Hooks"
+    },
+    "commands": {
+      "title": "Project Slash Commands",
+      "description": "自定义此 project 特定的命令。这些命令存储在 .claude/slash-commands/ 中，可以提交到版本控制。"
+    },
+    "project_hooks": {
+      "title": "Project Hooks",
+      "description": "这些 hooks 适用于所有在此 project 上工作的用户。它们存储在 .claude/settings.json 中，应该提交到版本控制。"
+    },
+    "local_hooks": {
+      "title": "Local Hooks",
+      "description": "这些 hooks 仅适用于你的机器。它们存储在 .claude/settings.local.json 中，不应提交到版本控制。"
+    }
+  }
+}

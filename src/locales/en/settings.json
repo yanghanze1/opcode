@@ -1,0 +1,462 @@
+{
+  "title": "Settings",
+  "subtitle": "Configure Claude Code preferences",
+  "buttons": {
+    "save_settings": "Save Settings",
+    "add_rule": "Add Rule",
+    "add_variable": "Add Variable"
+  },
+  "tabs": {
+    "general": "General",
+    "permissions": "Permissions",
+    "environment": "Environment",
+    "advanced": "Advanced",
+    "hooks": "Hooks",
+    "commands": "Commands",
+    "storage": "Storage",
+    "proxy": "Proxy"
+  },
+  "general": {
+    "title": "General Settings",
+    "theme": {
+      "label": "Theme",
+      "description": "Choose your preferred color theme",
+      "dark": "Dark",
+      "gray": "Gray",
+      "light": "Light",
+      "custom": "Custom"
+    },
+    "custom_theme": {
+      "title": "Custom Theme Colors",
+      "background": "Background",
+      "foreground": "Foreground",
+      "primary": "Primary",
+      "card": "Card",
+      "accent": "Accent",
+      "destructive": "Destructive",
+      "description": "Use CSS color values (hex, rgb, oklch, etc.). Changes apply immediately."
+    },
+    "coauthored": {
+      "label": "Include \"Co-authored by Claude\"",
+      "description": "Add Claude attribution to git commits and pull requests"
+    },
+    "verbose": {
+      "label": "Verbose Output",
+      "description": "Show full bash and command outputs"
+    },
+    "cleanup": {
+      "label": "Chat Transcript Retention (days)",
+      "description": "How long to retain chat transcripts locally (default: 30 days)"
+    },
+    "analytics": {
+      "label": "Enable Analytics",
+      "description": "Help improve opcode by sharing anonymous usage data",
+      "enabled": "Analytics enabled",
+      "disabled": "Analytics disabled",
+      "privacy_title": "Your privacy is protected",
+      "privacy_items": [
+        "No personal information or file contents collected",
+        "All data is anonymous with random IDs",
+        "You can disable analytics at any time"
+      ]
+    },
+    "tab_persistence": {
+      "label": "Remember Open Tabs",
+      "description": "Restore your tabs when you restart the app",
+      "enabled": "Tab persistence enabled - your tabs will be restored on restart",
+      "disabled": "Tab persistence disabled - tabs will not be saved"
+    },
+    "startup_intro": {
+      "label": "Show Welcome Intro on Startup",
+      "description": "Display a brief welcome animation when the app launches",
+      "enabled": "Welcome intro enabled",
+      "disabled": "Welcome intro disabled"
+    },
+    "binary_path_changed": "Changes will be applied when you save settings."
+  },
+  "permissions": {
+    "title": "Permission Rules",
+    "description": "Control which tools Claude Code can use without manual approval",
+    "allow_rules": "Allow Rules",
+    "deny_rules": "Deny Rules",
+    "no_allow_rules": "No allow rules configured. Claude will ask for approval for all tools.",
+    "no_deny_rules": "No deny rules configured.",
+    "examples": {
+      "title": "Examples:",
+      "bash_all": "Allow all bash commands",
+      "bash_exact": "Allow exact command",
+      "bash_prefix": "Allow commands with prefix",
+      "read_file": "Allow reading specific file",
+      "edit_directory": "Allow editing files in docs directory"
+    }
+  },
+  "environment": {
+    "title": "Environment Variables",
+    "description": "Environment variables applied to every Claude Code session",
+    "no_variables": "No environment variables configured.",
+    "key_placeholder": "KEY",
+    "value_placeholder": "value",
+    "common_variables": {
+      "title": "Common variables:",
+      "telemetry": "Enable/disable telemetry (0 or 1)",
+      "model": "Custom model name",
+      "cost_warnings": "Disable cost warnings (1)"
+    }
+  },
+  "advanced": {
+    "title": "Advanced Settings",
+    "description": "Additional configuration options for advanced users",
+    "api_key_helper": {
+      "label": "API Key Helper Script",
+      "description": "Custom script to generate auth values for API requests"
+    },
+    "raw_settings": {
+      "label": "Raw Settings (JSON)",
+      "description": "This shows the raw JSON that will be saved to ~/.claude/settings.json"
+    }
+  },
+  "hooks": {
+    "title": "User Hooks",
+    "description": "Configure hooks that apply to all Claude Code sessions for your user account. These are stored in ~/.claude/settings.json"
+  },
+  "messages": {
+    "saving": "Saving...",
+    "saved": "Settings saved successfully!",
+    "failed_to_save": "Failed to save settings",
+    "failed_to_load": "Failed to load settings. Please ensure ~/.claude directory exists.",
+    "failed_to_update": "Failed to update preference"
+  },
+  "proxy": {
+    "title": "Proxy Settings",
+    "description": "Configure proxy settings for Claude API requests",
+    "enable_proxy": {
+      "label": "Enable Proxy",
+      "description": "Use proxy for all Claude API requests"
+    },
+    "http_proxy": "HTTP Proxy",
+    "https_proxy": "HTTPS Proxy",
+    "no_proxy": {
+      "label": "No Proxy",
+      "description": "Comma-separated list of hosts that should bypass the proxy"
+    },
+    "all_proxy": {
+      "label": "All Proxy (Optional)",
+      "description": "Proxy URL to use for all protocols if protocol-specific proxies are not set"
+    },
+    "messages": {
+      "saved": "Proxy settings saved and applied successfully.",
+      "failed_to_save": "Failed to save proxy settings",
+      "failed_to_load": "Failed to load proxy settings"
+    }
+  },
+  "checkpoint": {
+    "title": "Checkpoint Settings",
+    "description": "Manage session checkpoints and recovery",
+    "experimental_warning": {
+      "title": "Experimental Feature",
+      "description": "Checkpointing may affect directory structure or cause data loss. Use with caution."
+    },
+    "auto_checkpoint": {
+      "label": "Automatic Checkpoints",
+      "description": "Automatically create checkpoints based on the selected strategy"
+    },
+    "strategy": {
+      "label": "Checkpoint Strategy",
+      "manual": "Manual Only",
+      "per_prompt": "After Each Prompt",
+      "per_tool_use": "After Tool Use",
+      "smart": "Smart (Recommended)",
+      "descriptions": {
+        "manual": "Checkpoints will only be created manually",
+        "per_prompt": "A checkpoint will be created after each user prompt",
+        "per_tool_use": "A checkpoint will be created after each tool use",
+        "smart": "Checkpoints will be created after destructive operations"
+      }
+    },
+    "storage": {
+      "title": "Storage Management",
+      "total_checkpoints": "Total checkpoints:",
+      "keep_count": "Keep Recent Checkpoints",
+      "cleanup_button": "Clean Up",
+      "cleanup_description": "Remove old checkpoints, keeping only the most recent"
+    },
+    "messages": {
+      "saving": "Saving...",
+      "saved": "Settings saved successfully",
+      "cleanup_success": "Removed {{count}} old checkpoints",
+      "failed_to_save": "Failed to save checkpoint settings",
+      "failed_to_load": "Failed to load checkpoint settings",
+      "failed_to_cleanup": "Failed to cleanup checkpoints"
+    }
+  },
+  "hooks_editor": {
+    "title": "Hooks Configuration",
+    "description": "Configure shell commands to execute at various points in Claude Code's lifecycle.",
+    "local_note": "These settings are not committed to version control.",
+    "unsaved_changes": "You have unsaved changes. Click Save to persist them.",
+    "scope": {
+      "project": "Project",
+      "local": "Local",
+      "user": "User"
+    },
+    "buttons": {
+      "templates": "Templates",
+      "save": "Save",
+      "saving": "Saving...",
+      "add_hook": "Add Hook",
+      "add_matcher": "Add Another Matcher",
+      "add_command": "Add Another Command"
+    },
+    "events": {
+      "pre_tool_use": {
+        "label": "Pre Tool Use",
+        "description": "Runs before tool calls, can block and provide feedback"
+      },
+      "post_tool_use": {
+        "label": "Post Tool Use",
+        "description": "Runs after successful tool completion"
+      },
+      "notification": {
+        "label": "Notification",
+        "description": "Customizes notifications when Claude needs attention"
+      },
+      "stop": {
+        "label": "Stop",
+        "description": "Runs when Claude finishes responding"
+      },
+      "subagent_stop": {
+        "label": "Subagent Stop",
+        "description": "Runs when a Claude subagent (Task) finishes"
+      }
+    },
+    "matcher": {
+      "pattern_label": "Pattern",
+      "pattern_tooltip": "Tool name pattern (regex supported). Leave empty to match all tools.",
+      "pattern_placeholder": "e.g., Bash, Edit|Write, mcp__.*",
+      "common_patterns": "Common patterns",
+      "custom": "Custom"
+    },
+    "command": {
+      "commands_label": "Commands",
+      "add_command": "Add Command",
+      "no_commands": "No commands added yet",
+      "placeholder": "Enter shell command...",
+      "timeout_seconds": "seconds"
+    },
+    "validation": {
+      "errors_title": "Validation Errors:",
+      "warnings_title": "Security Warnings:"
+    },
+    "templates": {
+      "title": "Hook Templates",
+      "description": "Choose a pre-configured hook template to get started quickly"
+    },
+    "no_hooks": "No hooks configured for this event",
+    "loading": "Loading hooks configuration...",
+    "messages": {
+      "failed_to_load": "Failed to load hooks configuration",
+      "failed_to_save": "Failed to save hooks"
+    }
+  },
+  "slash_commands": {
+    "title": "Slash Commands",
+    "project_title": "Project Slash Commands",
+    "description": "Create custom commands to streamline your workflow",
+    "project_description": "Create custom commands for this project",
+    "picker": {
+      "title": "Slash Commands",
+      "searching": "Searching: \"{{query}}\"",
+      "tabs": {
+        "default": "Default",
+        "custom": "Custom"
+      },
+      "loading": "Loading commands...",
+      "no_commands": "No commands found",
+      "no_default_commands": "No default commands available",
+      "no_custom_commands": "No custom commands available",
+      "default_commands_description": "Default commands are built-in system commands",
+      "custom_commands_description": "Create commands in <code>.claude/commands/</code> or <code>~/.claude/commands/</code>",
+      "user_commands": "User Commands",
+      "project_commands": "Project Commands",
+      "arguments": "[args]",
+      "tools": "{{count}} tool",
+      "tools_plural": "{{count}} tools",
+      "footer": "↑↓ Navigate • Enter Select • Esc Close"
+    },
+    "buttons": {
+      "new_command": "New Command",
+      "save": "Save",
+      "saving": "Saving...",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting..."
+    },
+    "search_placeholder": "Search commands...",
+    "scope_filter": {
+      "all": "All Commands",
+      "project": "Project",
+      "user": "User"
+    },
+    "no_commands": "No commands created yet",
+    "no_commands_project": "No project commands created yet",
+    "no_commands_search": "No commands found",
+    "create_first": "Create your first command",
+    "create_first_project": "Create your first project command",
+    "badges": {
+      "arguments": "Arguments",
+      "bash": "Bash",
+      "files": "Files"
+    },
+    "tools_count": "{{count}} tool",
+    "tools_count_plural": "{{count}} tools",
+    "show_content": "Show content",
+    "hide_content": "Hide content",
+    "dialog": {
+      "create_title": "Create New Command",
+      "edit_title": "Edit Command",
+      "delete_title": "Delete Command",
+      "delete_message": "Are you sure you want to delete this command?",
+      "delete_warning": "This action cannot be undone. The command file will be permanently deleted."
+    },
+    "form": {
+      "scope": "Scope",
+      "scope_user": "User (Global)",
+      "scope_project": "Project",
+      "scope_user_description": "Available across all projects",
+      "scope_project_description": "Only available in this project",
+      "name": "Command Name*",
+      "name_placeholder": "e.g., review, fix-issue",
+      "namespace": "Namespace (Optional)",
+      "namespace_placeholder": "e.g., frontend, backend",
+      "description": "Description (Optional)",
+      "description_placeholder": "Brief description of what this command does",
+      "content": "Command Content*",
+      "content_placeholder": "Enter the prompt content. Use $ARGUMENTS for dynamic values.",
+      "content_help": "Use $ARGUMENTS for user input, @filename for files, and !`command` for bash commands",
+      "allowed_tools": "Allowed Tools",
+      "allowed_tools_description": "Select which tools Claude can use with this command",
+      "examples": "Examples",
+      "preview": "Preview"
+    },
+    "groups": {
+      "project_commands": "Project Commands",
+      "user_commands": "User Commands"
+    },
+    "messages": {
+      "failed_to_load": "Failed to load commands",
+      "failed_to_save": "Failed to save command",
+      "failed_to_delete": "Failed to delete command"
+    }
+  },
+  "claude_version_selector": {
+    "title": "Claude Code Installation",
+    "description": "Select your preferred Claude Code installation",
+    "loading": "Loading available installations...",
+    "error_loading": "Error loading installations",
+    "retry": "Retry",
+    "label": "Claude Installation",
+    "select_version": "Select which Claude version to use",
+    "no_installations": "No Claude installations found",
+    "choose_installation": "Choose Claude Installation",
+    "available_installations": "Available Installations",
+    "select_installation": "Select Claude Installation",
+    "system_installations": "System Installations",
+    "custom_installations": "Custom Installations",
+    "selected_installation": "Selected Installation",
+    "path": "Path",
+    "source": "Source",
+    "version": "Version",
+    "version_unknown": "Version unknown",
+    "save_selection": "Save Selection",
+    "saving": "Saving...",
+    "installation_type": {
+      "system": "System",
+      "custom": "Custom"
+    }
+  },
+  "claude_binary_dialog": {
+    "title": "Select Claude Code Installation",
+    "searching": "Searching for Claude installations...",
+    "multiple_found": "Multiple Claude Code installations found on your system. Please select which installation you'd like to use.",
+    "not_found": "Claude Code was not found in any common installation locations. Please install Claude Code to continue.",
+    "searched_locations": "Searched locations:",
+    "install_tip": "Tip:",
+    "install_command": "You can install Claude Code using:",
+    "installation_guide": "Installation Guide",
+    "cancel": "Cancel",
+    "save_selection": "Save Selection",
+    "validating": "Validating...",
+    "no_installations_found": "No installations found",
+    "failed_to_save": "Failed to save Claude binary path",
+    "select_installation_first": "Please select a Claude installation"
+  },
+  "storage_tab": {
+    "title": "Database Storage",
+    "table_selector": "Select Table",
+    "search_placeholder": "Search in table...",
+    "sql_query": "SQL Query",
+    "reset_db": "Reset Database",
+    "new_row": "New Row",
+    "actions": "Actions",
+    "showing_rows": "Showing {{start}} to {{end}} of {{total}} rows",
+    "page_info": "Page {{current}} of {{total}}",
+    "previous": "Previous",
+    "next": "Next",
+    "rows_count": "{{count}} rows",
+    "edit_row": {
+      "title": "Edit Row",
+      "description": "Update the values for this row in the {{table}} table.",
+      "primary_key": "(Primary Key)",
+      "type": "Type:",
+      "not_null": ", NOT NULL",
+      "default": ", Default:",
+      "cancel": "Cancel",
+      "update": "Update",
+      "updating": "Updating..."
+    },
+    "new_row": {
+      "title": "New Row",
+      "description": "Add a new row to the {{table}} table.",
+      "required": "(Required)",
+      "cancel": "Cancel",
+      "insert": "Insert",
+      "inserting": "Inserting..."
+    },
+    "delete_row": {
+      "title": "Delete Row",
+      "description": "Are you sure you want to delete this row? This action cannot be undone.",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "deleting": "Deleting..."
+    },
+    "reset_database": {
+      "title": "Reset Database",
+      "description": "This will delete all data and recreate the database with the default structure (empty tables for agents, agent_runs, and app_settings). The database will be restored to the state it was in when you first installed the app. This action cannot be undone.",
+      "warning": "All your agents, runs, and settings will be permanently deleted!",
+      "cancel": "Cancel",
+      "reset": "Reset Database",
+      "resetting": "Resetting...",
+      "success": "Database reset complete: The database has been restored to its default state with empty tables (agents, agent_runs, app_settings).",
+      "failed": "Reset failed: Unable to reset the database. Please try again."
+    },
+    "sql_editor": {
+      "title": "SQL Query Editor",
+      "description": "Execute raw SQL queries on the database. Use with caution.",
+      "query_label": "SQL Query",
+      "query_placeholder": "SELECT * FROM agents LIMIT 10;",
+      "error": "Error",
+      "success": "Query executed successfully. {{count}} rows affected.",
+      "last_insert_id": "Last Insert ID:",
+      "close": "Close",
+      "execute": "Execute",
+      "executing": "Executing..."
+    },
+    "messages": {
+      "failed_to_load_tables": "Failed to load tables",
+      "failed_to_load_data": "Failed to load table data",
+      "failed_to_update": "Failed to update row",
+      "failed_to_delete": "Failed to delete row",
+      "failed_to_insert": "Failed to insert row"
+    }
+  }
+}

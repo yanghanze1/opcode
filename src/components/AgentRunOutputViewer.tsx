@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  Maximize2, 
-  Minimize2, 
-  Copy, 
-  RefreshCw, 
-  RotateCcw, 
+import {
+  Maximize2,
+  Minimize2,
+  Copy,
+  RefreshCw,
+  RotateCcw,
   ChevronDown,
   Bot,
   Clock,
@@ -27,6 +27,7 @@ import { formatISOTimestamp } from '@/lib/date-utils';
 import { AGENT_ICONS } from './CCAgents';
 import type { ClaudeStreamMessage } from './AgentExecution';
 import { useTabState } from '@/hooks/useTabState';
+import { useTranslation } from 'react-i18next';
 
 interface AgentRunOutputViewerProps {
   /**
@@ -52,11 +53,12 @@ interface AgentRunOutputViewerProps {
  *   onClose={() => setSelectedRun(null)}
  * />
  */
-export function AgentRunOutputViewer({ 
-  agentRunId, 
+export function AgentRunOutputViewer({
+  agentRunId,
   tabId,
-  className 
+  className
 }: AgentRunOutputViewerProps) {
+  const { t } = useTranslation(['agents', 'common']);
   const { updateTabTitle, updateTabStatus } = useTabState();
   const [run, setRun] = useState<AgentRunWithMetrics | null>(null);
   const [messages, setMessages] = useState<ClaudeStreamMessage[]>([]);
@@ -323,7 +325,7 @@ export function AgentRunOutputViewer({
     const jsonl = rawJsonlOutput.join('\n');
     await navigator.clipboard.writeText(jsonl);
     setCopyPopoverOpen(false);
-    setToast({ message: 'Output copied as JSONL', type: 'success' });
+    setToast({ message: t('sessions:output_viewer.output_copied_jsonl'), type: 'success' });
   };
 
   const handleCopyAsMarkdown = async () => {
@@ -381,7 +383,7 @@ export function AgentRunOutputViewer({
 
     await navigator.clipboard.writeText(markdown);
     setCopyPopoverOpen(false);
-    setToast({ message: 'Output copied as Markdown', type: 'success' });
+    setToast({ message: t('sessions:output_viewer.output_copied_markdown'), type: 'success' });
   };
 
   const handleRefresh = async () => {
@@ -399,10 +401,10 @@ export function AgentRunOutputViewer({
     try {
       // Call the API to kill the agent session
       const success = await api.killAgentSession(run.id);
-      
+
       if (success) {
         console.log(`[AgentRunOutputViewer] Successfully stopped agent session ${run.id}`);
-        setToast({ message: 'Agent execution stopped', type: 'success' });
+        setToast({ message: t('agents:messages.execution_stopped'), type: 'success' });
         
         // Clean up listeners
         unlistenRefs.current.forEach(unlisten => unlisten());
@@ -430,13 +432,13 @@ export function AgentRunOutputViewer({
         await loadOutput(true);
       } else {
         console.warn(`[AgentRunOutputViewer] Failed to stop agent session ${run.id} - it may have already finished`);
-        setToast({ message: 'Failed to stop agent - it may have already finished', type: 'error' });
+        setToast({ message: t('agents:messages.failed_to_stop'), type: 'error' });
       }
     } catch (err) {
       console.error('[AgentRunOutputViewer] Failed to stop agent:', err);
-      setToast({ 
-        message: `Failed to stop execution: ${err instanceof Error ? err.message : 'Unknown error'}`, 
-        type: 'error' 
+      setToast({
+        message: t('agents:messages.failed_to_stop_with_error', { error: err instanceof Error ? err.message : 'Unknown error' }),
+        type: 'error'
       });
     }
   };
@@ -535,7 +537,7 @@ export function AgentRunOutputViewer({
       <div className="flex items-center justify-center h-full">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Loading agent run...</p>
+          <p className="text-muted-foreground">{t('agents:messages.loading')}</p>
         </div>
       </div>
     );
@@ -557,7 +559,7 @@ export function AgentRunOutputViewer({
                     {run.status === 'running' && (
                       <div className="flex items-center gap-1">
                         <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                        <span className="text-xs text-green-600 font-medium">Running</span>
+                        <span className="text-xs text-green-600 font-medium">{t('agents:status.running')}</span>
                       </div>
                     )}
                   </CardTitle>
@@ -599,7 +601,7 @@ export function AgentRunOutputViewer({
                       className="h-8 px-2"
                     >
                       <Copy className="h-4 w-4 mr-1" />
-                      Copy
+                      {t('agents:buttons.copy_output')}
                       <ChevronDown className="h-3 w-3 ml-1" />
                     </Button>
                   }
@@ -611,7 +613,7 @@ export function AgentRunOutputViewer({
                         className="w-full justify-start"
                         onClick={handleCopyAsJsonl}
                       >
-                        Copy as JSONL
+                        {t('agents:buttons.copy_as_jsonl')}
                       </Button>
                       <Button
                         variant="ghost"
@@ -619,7 +621,7 @@ export function AgentRunOutputViewer({
                         className="w-full justify-start"
                         onClick={handleCopyAsMarkdown}
                       >
-                        Copy as Markdown
+                        {t('agents:buttons.copy_as_markdown')}
                       </Button>
                     </div>
                   }
@@ -631,7 +633,7 @@ export function AgentRunOutputViewer({
                   variant="ghost"
                   size="sm"
                   onClick={() => setIsFullscreen(!isFullscreen)}
-                  title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                  title={isFullscreen ? t('common:actions.minimize') : t('common:actions.maximize')}
                   className="h-8 px-2"
                 >
                   {isFullscreen ? (
@@ -645,7 +647,7 @@ export function AgentRunOutputViewer({
                   size="sm"
                   onClick={handleRefresh}
                   disabled={refreshing}
-                  title="Refresh output"
+                  title={t('sessions:output_viewer.refresh_output')}
                   className="h-8 px-2"
                 >
                   <RotateCcw className={`h-4 w-4 ${refreshing ? 'animate-spin' : ''}`} />
@@ -656,7 +658,7 @@ export function AgentRunOutputViewer({
                     size="sm"
                     onClick={handleStop}
                     disabled={refreshing}
-                    title="Stop execution"
+                    title={t('agents:buttons.stop')}
                     className="h-8 px-2 text-destructive hover:text-destructive"
                   >
                     <StopCircle className="h-4 w-4" />
@@ -670,12 +672,12 @@ export function AgentRunOutputViewer({
               <div className="flex items-center justify-center h-full">
                 <div className="flex items-center space-x-2">
                   <RefreshCw className="h-4 w-4 animate-spin" />
-                  <span>Loading output...</span>
+                  <span>{t('sessions:output_viewer.loading_output')}</span>
                 </div>
               </div>
             ) : messages.length === 0 ? (
               <div className="flex items-center justify-center h-full text-muted-foreground">
-                <p>No output available yet</p>
+                <p>{t('sessions:output_viewer.no_output_available')}</p>
               </div>
             ) : (
               <div 
@@ -723,7 +725,7 @@ export function AgentRunOutputViewer({
                     size="sm"
                   >
                     <Copy className="h-4 w-4 mr-2" />
-                    Copy Output
+                    {t('agents:buttons.copy_output')}
                     <ChevronDown className="h-3 w-3 ml-2" />
                   </Button>
                 }
@@ -735,7 +737,7 @@ export function AgentRunOutputViewer({
                       className="w-full justify-start"
                       onClick={handleCopyAsJsonl}
                     >
-                      Copy as JSONL
+                      {t('agents:buttons.copy_as_jsonl')}
                     </Button>
                     <Button
                       variant="ghost"
@@ -743,7 +745,7 @@ export function AgentRunOutputViewer({
                       className="w-full justify-start"
                       onClick={handleCopyAsMarkdown}
                     >
-                      Copy as Markdown
+                      {t('agents:buttons.copy_as_markdown')}
                     </Button>
                   </div>
                 }
@@ -765,7 +767,7 @@ export function AgentRunOutputViewer({
                   disabled={refreshing}
                 >
                   <StopCircle className="h-4 w-4 mr-2" />
-                  Stop
+                  {t('agents:buttons.stop')}
                 </Button>
               )}
               <Button
@@ -774,7 +776,7 @@ export function AgentRunOutputViewer({
                 onClick={() => setIsFullscreen(false)}
               >
                 <Minimize2 className="h-4 w-4 mr-2" />
-                Exit Fullscreen
+                {t('agents:buttons.exit_fullscreen')}
               </Button>
             </div>
           </div>
@@ -786,7 +788,7 @@ export function AgentRunOutputViewer({
             <div className="max-w-4xl mx-auto space-y-2">
               {messages.length === 0 ? (
                 <div className="text-center text-muted-foreground py-8">
-                  No output available yet
+                  {t('sessions:output_viewer.no_output_available')}
                 </div>
               ) : (
                 <>
